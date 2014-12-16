@@ -323,7 +323,7 @@ class RegressorMixin(object):
         score : float
             R^2 of self.predict(X) wrt. y.
         """
-
+        print "RegressorMixin"
         from .metrics import r2_score
         return r2_score(y, self.predict(X), sample_weight=sample_weight)
 
@@ -333,7 +333,7 @@ class ClusterMixin(object):
     """Mixin class for all cluster estimators in scikit-learn."""
     def fit_predict(self, X, y=None):
         """Performs clustering on X and returns cluster labels.
-
+    
         Parameters
         ----------
         X : ndarray, shape (n_samples, n_features)
@@ -346,6 +346,7 @@ class ClusterMixin(object):
         """
         # non-optimized default implementation; override when a better
         # method is possible for a given clustering algorithm
+        print "ClusterMixin"
         self.fit(X)
         return self.labels_
 
@@ -428,6 +429,7 @@ class TransformerMixin(object):
         """
         # non-optimized default implementation; override when a better
         # method is possible for a given clustering algorithm
+        print "TransformerMixin"
         if y is None:
             # fit method of arity 1 (unsupervised transformation)
             return self.fit(X, **fit_params).transform(X)

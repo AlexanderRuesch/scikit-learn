@@ -263,28 +263,28 @@ def test_importances():
                                         n_repeated=0,
                                         shuffle=False,
                                         random_state=0)
-
+ 
     for name, Tree in CLF_TREES.items():
         clf = Tree(random_state=0)
-
+ 
         clf.fit(X, y)
         importances = clf.feature_importances_
         n_important = np.sum(importances > 0.1)
-
+ 
         assert_equal(importances.shape[0], 10, "Failed with {0}".format(name))
         assert_equal(n_important, 3, "Failed with {0}".format(name))
-
+ 
         X_new = clf.transform(X, threshold="mean")
         assert_less(0, X_new.shape[1], "Failed with {0}".format(name))
         assert_less(X_new.shape[1], X.shape[1], "Failed with {0}".format(name))
-
+ 
     # Check on iris that importances are the same for all builders
     clf = DecisionTreeClassifier(random_state=0)
     clf.fit(iris.data, iris.target)
     clf2 = DecisionTreeClassifier(random_state=0,
                                   max_leaf_nodes=len(iris.data))
     clf2.fit(iris.data, iris.target)
-
+ 
     assert_array_equal(clf.feature_importances_,
                        clf2.feature_importances_)
 
