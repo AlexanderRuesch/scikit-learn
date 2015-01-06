@@ -101,7 +101,7 @@ cdef class Splitter:
     cdef SIZE_t start                    # Start position for the current node
     cdef SIZE_t end                      # End position for the current node
     
-    cdef DTYPE_t* func_para              # Functions and Parameters for on demand features
+    cdef OnDemandFeature func_para       # Functions and Parameters for on demand features
 
     cdef DTYPE_t* X
     cdef SIZE_t X_sample_stride
@@ -141,9 +141,9 @@ cdef class Splitter:
 
     cdef double node_impurity(self) nogil
 
-#------------------------------------------------------------------------------#
-#-------------------------- On Demand Work Around -----------------------------#
-#------------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+#-------------------------- On Demand Work Around ----------------------------#
+#-----------------------------------------------------------------------------#
 cdef class OnDemandBestSplitter:
     # The splitter searches in the input space for a feature and a threshold
     # to split the samples samples[start:end].
@@ -169,7 +169,7 @@ cdef class OnDemandBestSplitter:
     cdef SIZE_t start                    # Start position for the current node
     cdef SIZE_t end                      # End position for the current node
     
-    cdef DTYPE_t* func_para              # Functions and Parameters for on demand features
+    cdef OnDemandFeature func_para      # Functions and Parameters for on demand features
 
     cdef DTYPE_t* X
     cdef SIZE_t X_sample_stride
@@ -195,7 +195,7 @@ cdef class OnDemandBestSplitter:
     # This allows optimization with depth-based tree building.
 
     # Methods
-    cdef void init(self, np.ndarray X, np.ndarray func_para, np.ndarray y, DOUBLE_t* sample_weight)
+    cdef void init(self, np.ndarray X, OnDemandFeature func_para, np.ndarray y, DOUBLE_t* sample_weight)
     
     cdef void node_reset(self, SIZE_t start, SIZE_t end,
                          double* weighted_n_node_samples) nogil
@@ -260,9 +260,9 @@ cdef class Tree:
     cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X)
     cpdef compute_feature_importances(self, normalize=*)
 
-#------------------------------------------------------------------------------#
-#-------------------------- On Demand Work Around -----------------------------#
-#------------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+#-------------------------- On Demand Work Around ----------------------------#
+#-----------------------------------------------------------------------------#
 cdef class OnDemandTree:
     # The Tree object is a binary tree structure constructed by the
     # TreeBuilder. The tree structure is used for predictions and
@@ -294,8 +294,8 @@ cdef class OnDemandTree:
     cdef np.ndarray _get_value_ndarray(self)
     cdef np.ndarray _get_node_ndarray(self)
 
-    cpdef np.ndarray predict(self, np.ndarray[DTYPE_t, ndim=2] X, np.ndarray[DTYPE_t, ndim=2] func_para)
-    cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X, np.ndarray[DTYPE_t, ndim=2] func_para)
+    cpdef np.ndarray predict(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para)
+    cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para)
     cpdef compute_feature_importances(self, normalize=*)
 
 
@@ -321,9 +321,9 @@ cdef class TreeBuilder:
     cpdef build(self, Tree tree, np.ndarray X, np.ndarray y,
                 np.ndarray sample_weight=*)
 
-#------------------------------------------------------------------------------#
-#-------------------------- On Demand Work Around -----------------------------#
-#------------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+#-------------------------- On Demand Work Around ----------------------------#
+#-----------------------------------------------------------------------------#
 cdef class OnDemandTreeBuilder:
     # The TreeBuilder recursively builds a Tree object from training samples,
     # using a Splitter object for splitting internal nodes and assigning
@@ -339,11 +339,17 @@ cdef class OnDemandTreeBuilder:
     cdef double min_weight_leaf     # Minimum weight in a leaf
     cdef SIZE_t max_depth           # Maximal tree depth
 
-    cpdef build(self, OnDemandTree tree, np.ndarray X, np.ndarray func_para, np.ndarray y,
-                np.ndarray sample_weight=*)             
+    cpdef build(self, OnDemandTree tree, np.ndarray X, OnDemandFeature func_para, np.ndarray y,
+                np.ndarray sample_weight=*)
 
-#cdef class testat:
-#    cdef public int a
-#    cpdef int addition(self, int other)
+# =============================================================================
+# Test classes
+# =============================================================================
 
-cpdef int fpara(int id) nogil
+cdef class OnDemandFeature:
+    cdef public double get_feature(self) nogil
+    cdef public SIZE_t get_n_features(self) nogil
+    cdef double _feature
+    cdef SIZE_t n_new_features
+
+cpdef double run(OnDemandFeature cls)

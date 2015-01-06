@@ -1649,7 +1649,7 @@ class OnDemandForestClassifier(ForestClassifier):
         # ensure_2d=False because there are actually unit test checking we fail
         # for 1d.
         X = check_array(X, ensure_2d=False)
-        func_para = check_array(func_para, ensure_2d=True)
+        
         n_samples = len(X)
         proba = self.predict_proba(X, func_para)
 
@@ -1780,11 +1780,10 @@ class OnDemandForestClassifier(ForestClassifier):
         # for 1d. FIXME make this consistent in the future.
 
         X = check_array(X, dtype=DTYPE, ensure_2d=False)
-        func_para = check_array(func_para, ensure_2d=True) #don't know if neccessary
 
         # Remap output
         n_samples, self.n_features_ = X.shape
-        n_functions, n_arguments = func_para.shape
+#         n_functions, n_arguments = func_para.shape
         y = np.atleast_1d(y)
         if y.ndim == 2 and y.shape[1] == 1:
             warn("A column-vector y was passed when a 1d array was"
@@ -1797,8 +1796,8 @@ class OnDemandForestClassifier(ForestClassifier):
             # [:, np.newaxis] that does not.
             y = np.reshape(y, (-1, 1))
             
-        if n_samples != n_functions:
-            warn("The amount of training points in X and func_para must be the same.",DataConversionWarning, stacklevel=2)
+#         if n_samples != n_functions:
+#             warn("The amount of training points in X and func_para must be the same.",DataConversionWarning, stacklevel=2)
     
         self.n_outputs_ = y.shape[1]
 

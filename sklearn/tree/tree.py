@@ -932,8 +932,6 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTree, ClassifierMixin):
 
         if getattr(X, "dtype", None) != DTYPE or X.ndim != 2:
             X = check_array(X, dtype=DTYPE)
-        if getattr(func_para, "dtype", None) != DTYPE or X.ndim != 2:
-            func_para = check_array(func_para, dtype=DTYPE)
         n_samples, n_features = X.shape
 
         if self.tree_ is None:

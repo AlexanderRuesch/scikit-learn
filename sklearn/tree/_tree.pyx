@@ -1780,7 +1780,7 @@ cdef class PresortBestSplitter(Splitter):
 
 
 cdef class OnDemandBestSplitter:
-    """Splitter for finding the best split."""
+    """Splitter for finding the best split in on demand built classifier."""
     
     def __cinit__(self, Criterion criterion, SIZE_t max_features,
                   SIZE_t min_samples_leaf,
@@ -1801,7 +1801,6 @@ cdef class OnDemandBestSplitter:
         self.y_stride = 0
         self.sample_weight = NULL
 
-        self.func_para = NULL
 
         self.max_features = max_features
         self.min_samples_leaf = min_samples_leaf
@@ -1814,7 +1813,6 @@ cdef class OnDemandBestSplitter:
         free(self.features)
         free(self.constant_features)
         free(self.feature_values)
-        
 
     def __reduce__(self):
         return (OnDemandBestSplitter, (self.criterion,
@@ -1855,7 +1853,7 @@ cdef class OnDemandBestSplitter:
     
     cdef void init(self,
                    np.ndarray[DTYPE_t, ndim=2] X,
-                   np.ndarray[DTYPE_t, ndim=2] func_para,
+                   OnDemandFeature func_para,
                    np.ndarray[DOUBLE_t, ndim=2, mode="c"] y,
                    DOUBLE_t* sample_weight) except *:
         """Initialize the splitter."""
@@ -1893,10 +1891,13 @@ cdef class OnDemandBestSplitter:
             features[i] = i
   
         self.n_features = n_features
-  
         safe_realloc(&self.feature_values, n_samples)
         safe_realloc(&self.constant_features, n_features)
-  
+
+#         for i in xrange(n_samples):
+#             for j in xrange(n_features):
+#                 if np.isnan(X[i,j]):
+#                     X[i,j] = func_para.get_feature()
         # Initialize X, y, sample_weight
         self.X = <DTYPE_t*> X.data
         self.X_sample_stride = <SIZE_t> X.strides[0] / <SIZE_t> X.itemsize
@@ -1904,8 +1905,8 @@ cdef class OnDemandBestSplitter:
         self.y = <DOUBLE_t*> y.data
         self.y_stride = <SIZE_t> y.strides[0] / <SIZE_t> y.itemsize
         self.sample_weight = sample_weight
-          
-        self.func_para = <DTYPE_t*> func_para.data
+
+        self.func_para = func_para
         
 
     cdef void node_split(self, double impurity, SplitRecord* split,
@@ -1929,9 +1930,6 @@ cdef class OnDemandBestSplitter:
         cdef double min_weight_leaf = self.min_weight_leaf
         cdef double weighted_n_samples = self.weighted_n_samples
         cdef UINT32_t* random_state = &self.rand_r_state
-        
-        
-        cdef DTYPE_t* func_para = self.func_para
 
         cdef SplitRecord best, current
 
@@ -1981,7 +1979,7 @@ cdef class OnDemandBestSplitter:
             # Draw a feature at random
             f_j = rand_int(n_drawn_constants, f_i - n_found_constants,
                            random_state)
-
+            self.func_para.get_feature()
             if f_j < n_known_constants:
                 # f_j in the interval [n_drawn_constants, n_known_constants[
                 tmp = features[f_j]
@@ -2106,7 +2104,7 @@ cdef class TreeBuilder:
 cdef class OnDemandTreeBuilder:
     """Interface for different tree building strategies. """
 
-    cpdef build(self, OnDemandTree tree, np.ndarray X, np.ndarray func_para, np.ndarray y,
+    cpdef build(self, OnDemandTree tree, np.ndarray X, OnDemandFeature func_para, np.ndarray y,
                 np.ndarray sample_weight=None):
         """Build a decision tree from the training set (X, y)."""
         pass    
@@ -2492,18 +2490,14 @@ cdef class DepthFirstOnDemandTreeBuilder(OnDemandTreeBuilder):
         self.min_weight_leaf = min_weight_leaf
         self.max_depth = max_depth
 
-    cpdef build(self, OnDemandTree tree, np.ndarray X, np.ndarray func_para, np.ndarray y,
+    cpdef build(self, OnDemandTree tree, np.ndarray X, OnDemandFeature func_para, np.ndarray y,
                 np.ndarray sample_weight=None):
         """Build a decision tree from the training set (X, y)."""
         # check if dtype is correct
         if X.dtype != DTYPE:
             # since we have to copy we will make it fortran for efficiency
             X = np.asfortranarray(X, dtype=DTYPE)
- 
-        if func_para.dtype != DTYPE:
-            # since we have to copy we will make it fortran for efficiency
-            func_para = np.asfortranarray(func_para, dtype=DTYPE)
-             
+              
         if y.dtype != DOUBLE or not y.flags.contiguous:
             y = np.ascontiguousarray(y, dtype=DOUBLE)
  
@@ -2650,7 +2644,7 @@ cdef class BestFirstOnDemandTreeBuilder(OnDemandTreeBuilder):
         self.max_depth = max_depth
         self.max_leaf_nodes = max_leaf_nodes
 
-    cpdef build(self, OnDemandTree tree, np.ndarray X, np.ndarray func_para, np.ndarray y,
+    cpdef build(self, OnDemandTree tree, np.ndarray X, OnDemandFeature func_para, np.ndarray y,
                 np.ndarray sample_weight=None):
         """Build a decision tree from the training set (X, y)."""
 
@@ -3452,7 +3446,7 @@ cdef class OnDemandTree:
 
         return node_id
 
-    cpdef np.ndarray predict(self, np.ndarray[DTYPE_t, ndim=2] X, np.ndarray[DTYPE_t, ndim=2] func_para):
+    cpdef np.ndarray predict(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para):
         """Predict target for X."""
         out = self._get_value_ndarray().take(self.apply(X,func_para), axis=0,
                                              mode='clip')
@@ -3460,7 +3454,7 @@ cdef class OnDemandTree:
             out = out.reshape(X.shape[0], self.max_n_classes)
         return out
 
-    cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X, np.ndarray[DTYPE_t, ndim=2] func_para):
+    cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para):
         """Finds the terminal region (=leaf node) for each sample in X."""
         cdef SIZE_t n_samples = X.shape[0]
         cdef Node* node = NULL
@@ -3468,7 +3462,6 @@ cdef class OnDemandTree:
     
         cdef np.ndarray[SIZE_t] out = np.zeros((n_samples,), dtype=np.intp)
         cdef SIZE_t* out_data = <SIZE_t*> out.data
-        
         with nogil:
             for i in range(n_samples):
                 node = self.nodes
@@ -3481,7 +3474,6 @@ cdef class OnDemandTree:
                         node = &self.nodes[node.right_child]
     
                 out_data[i] = <SIZE_t>(node - self.nodes)  # node offset
-    
         return out
     
     cpdef compute_feature_importances(self, normalize=True):
@@ -3626,16 +3618,46 @@ cdef inline double log(double x) nogil:
 
 
 ###################################################################
-# cdef class testat:
-#     """ test class to find out how Cython is working """ 
-#     def __cinit__(self, int input):
-#         self.a = input
-#         return
-#     cpdef int addition(self, int other):
-#         return self.a + other
+cdef class OnDemandFeature:
+    """ test class to find out how Cython is working """ 
+    cdef double get_feature(self) nogil:
+        return self._feature
+    
+    cdef SIZE_t get_n_features(self) nogil:
+        return self.n_new_features
 
-cpdef int fpara(int id) nogil:
-    if(id > 4):
-        return 4
-    else:
-        return 1
+cdef class OnDemandTestClass(OnDemandFeature):
+    def __cinit__(self, SIZE_t n_new_features = 10):
+        self._feature = 0.0
+        self.n_new_features = n_new_features
+
+    cdef void set_n_featrues(self, SIZE_t n_new_features) nogil:
+        self.n_new_features = n_new_features
+    
+    cdef double calc_feature(self) nogil:
+        self._feature += 1.0
+        return self._feature
+     
+    cdef SIZE_t get_n_features(self) nogil:
+        return self.n_new_features
+    
+    cdef double get_feature(self) nogil:
+        return self.calc_feature()
+ 
+# class C(OnDemandFeature):
+#     def __init__(self, first_integer):
+#         self._feature = int(first_integer)
+#         
+#     def fun2(self, a, b):
+#         return a>=b
+#     
+#     def get_feature(self, arg1, arg2):
+#         return self.fun2(arg1, arg2)
+    
+
+
+cpdef double run(OnDemandFeature cls):
+    print cls
+    print cls.get_feature()
+    return cls._feature
+
