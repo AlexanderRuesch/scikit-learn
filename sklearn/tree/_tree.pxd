@@ -17,7 +17,6 @@ ctypedef np.npy_intp SIZE_t              # Type for indices and counters
 ctypedef np.npy_int32 INT32_t            # Signed 32 bit integer
 ctypedef np.npy_uint32 UINT32_t          # Unsigned 32 bit integer
 
-
 # =============================================================================
 # Criterion
 # =============================================================================
@@ -74,6 +73,22 @@ cdef struct SplitRecord:
     double improvement     # Impurity improvement given parent node.
     double impurity_left   # Impurity of the left split.
     double impurity_right  # Impurity of the right split.
+
+cdef struct SplitRecordOnDemand:
+    # Data to track sample split
+    SIZE_t feature         # Which feature to split on.
+    SIZE_t pos             # Split samples array at the given position,
+                           # i.e. count of samples below threshold for feature.
+                           # pos is >= end if the node is a leaf.
+    double threshold       # Threshold to split at.
+    double improvement     # Impurity improvement given parent node.
+    double impurity_left   # Impurity of the left split.
+    double impurity_right  # Impurity of the right split.
+    FeatureConfig* feature_config #pointer to on demand feature configurations
+
+cdef struct FeatureConfig:
+    # Data to rebuild on demand features
+    UINT32_t seed          #seed for rand_int function
 
 
 cdef class Splitter:
@@ -202,7 +217,7 @@ cdef class OnDemandBestSplitter:
 
     cdef void node_split(self,
                          double impurity,   # Impurity of the node
-                         SplitRecord* split,
+                         SplitRecordOnDemand* split,
                          SIZE_t* n_constant_features) nogil
 
     cdef void node_value(self, double* dest) nogil
@@ -224,6 +239,19 @@ cdef struct Node:
     DOUBLE_t impurity                    # Impurity of the node (i.e., the value of the criterion)
     SIZE_t n_node_samples                # Number of samples at the node
     DOUBLE_t weighted_n_node_samples     # Weighted number of samples at the node
+
+cdef struct NodeOnDemand:
+    # Base storage structure for the nodes in a Tree object
+
+    SIZE_t left_child                    # id of the left child of the node
+    SIZE_t right_child                   # id of the right child of the node
+    SIZE_t feature                       # Feature used for splitting the node
+    DOUBLE_t threshold                   # Threshold value at the node
+    DOUBLE_t impurity                    # Impurity of the node (i.e., the value of the criterion)
+    SIZE_t n_node_samples                # Number of samples at the node
+    DOUBLE_t weighted_n_node_samples     # Weighted number of samples at the node
+    FeatureConfig* feature_config		 # Pointer to on demand feature configuration
+
 
 cdef class Tree:
     # The Tree object is a binary tree structure constructed by the
@@ -279,13 +307,14 @@ cdef class OnDemandTree:
     cdef public SIZE_t max_depth         # Max depth of the tree
     cdef public SIZE_t node_count        # Counter for node IDs
     cdef public SIZE_t capacity          # Capacity of tree, in terms of nodes
-    cdef Node* nodes                     # Array of nodes
+    cdef NodeOnDemand* nodes             # Array of nodes
     cdef double* value                   # (capacity, n_outputs, max_n_classes) array of values
     cdef SIZE_t value_stride             # = n_outputs * max_n_classes
-
+    cdef FeatureConfig* feature_configs  # Array of FeatureConfig
+	
     # Methods
     cdef SIZE_t _add_node(self, SIZE_t parent, bint is_left, bint is_leaf,
-                          SIZE_t feature, double threshold, double impurity,
+                          SIZE_t feature, FeatureConfig* feature_config, double threshold, double impurity,
                           SIZE_t n_node_samples,
                           double weighted_n_samples) nogil
     cdef void _resize(self, SIZE_t capacity) except *
@@ -293,11 +322,12 @@ cdef class OnDemandTree:
 
     cdef np.ndarray _get_value_ndarray(self)
     cdef np.ndarray _get_node_ndarray(self)
+    cdef np.ndarray _get_feat_config_ndarray(self) #sure?
 
     cpdef np.ndarray predict(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para)
     cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para)
     cpdef compute_feature_importances(self, normalize=*)
-
+    cdef public SIZE_t get_feature_configs_and_nodes(self) nogil
 
 # =============================================================================
 # Tree builder
@@ -347,9 +377,12 @@ cdef class OnDemandTreeBuilder:
 # =============================================================================
 
 cdef class OnDemandFeature:
-    cdef public double get_feature(self) nogil
+    cdef public double compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *) nogil
     cdef public SIZE_t get_n_features(self) nogil
+    cpdef SIZE_t get_n_features_gil(self)
     cdef double _feature
     cdef SIZE_t n_new_features
+    cdef public SIZE_t init_feature_config(self, FeatureConfig* feat_con = *) nogil
+    cdef UINT32_t _counter
 
 cpdef double run(OnDemandFeature cls)

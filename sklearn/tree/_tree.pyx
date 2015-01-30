@@ -23,6 +23,7 @@ from sklearn.tree._utils cimport PriorityHeap, PriorityHeapRecord
 
 import numpy as np
 cimport numpy as np
+
 np.import_array()
 
 
@@ -57,6 +58,7 @@ cdef int IS_NOT_FIRST = 0
 cdef int IS_LEFT = 1
 cdef int IS_NOT_LEFT = 0
 
+
 cdef enum:
     # Max value for our rand_r replacement (near the bottom).
     # We don't use RAND_MAX because it's different across platforms and
@@ -64,6 +66,29 @@ cdef enum:
     RAND_R_MAX = 0x7FFFFFFF
 
 # Repeat struct definition for numpy
+FEATURE_CONFIG_TYPE = np.dtype({ #sure?
+    'names': ['seed'],
+    'formats': [np.intp],
+    'offsets': [<Py_ssize_t> &(<FeatureConfig*> NULL).seed]
+})
+
+NODE_DTYPE_OD = np.dtype({
+    'names': ['left_child', 'right_child', 'feature', 'threshold', 'impurity',
+              'n_node_samples', 'weighted_n_node_samples', 'feature_config'],
+    'formats': [np.intp, np.intp, np.intp, np.float64, np.float64, np.intp,
+                np.float64, FEATURE_CONFIG_TYPE],
+    'offsets': [
+        <Py_ssize_t> &(<NodeOnDemand*> NULL).left_child,
+        <Py_ssize_t> &(<NodeOnDemand*> NULL).right_child,
+        <Py_ssize_t> &(<NodeOnDemand*> NULL).feature,
+        <Py_ssize_t> &(<NodeOnDemand*> NULL).threshold,
+        <Py_ssize_t> &(<NodeOnDemand*> NULL).impurity,
+        <Py_ssize_t> &(<NodeOnDemand*> NULL).n_node_samples,
+        <Py_ssize_t> &(<NodeOnDemand*> NULL).weighted_n_node_samples,
+        <Py_ssize_t> &(<NodeOnDemand*> NULL).feature_config
+    ]
+})
+
 NODE_DTYPE = np.dtype({
     'names': ['left_child', 'right_child', 'feature', 'threshold', 'impurity',
               'n_node_samples', 'weighted_n_node_samples'],
@@ -910,6 +935,14 @@ cdef inline void _init_split(SplitRecord* self, SIZE_t start_pos) nogil:
     self.threshold = 0.
     self.improvement = -INFINITY
 
+cdef inline void _init_split_on_demand(SplitRecordOnDemand* self, SIZE_t start_pos) nogil:
+    self.impurity_left = INFINITY
+    self.impurity_right = INFINITY
+    self.pos = start_pos
+    self.feature = 0
+    self.threshold = 0.
+    self.improvement = -INFINITY
+    self.feature_config = NULL
 
 cdef class Splitter:
     def __cinit__(self, Criterion criterion, SIZE_t max_features,
@@ -1800,8 +1833,7 @@ cdef class OnDemandBestSplitter:
         self.y = NULL
         self.y_stride = 0
         self.sample_weight = NULL
-
-
+        
         self.max_features = max_features
         self.min_samples_leaf = min_samples_leaf
         self.min_weight_leaf = min_weight_leaf
@@ -1884,7 +1916,7 @@ cdef class OnDemandBestSplitter:
         self.n_samples = j
         self.weighted_n_samples = weighted_n_samples
     
-        cdef SIZE_t n_features = X.shape[1]
+        cdef SIZE_t n_features = X.shape[1] + func_para.get_n_features()
         cdef SIZE_t* features = safe_realloc(&self.features, n_features)
   
         for i in range(n_features):
@@ -1897,7 +1929,7 @@ cdef class OnDemandBestSplitter:
 #         for i in xrange(n_samples):
 #             for j in xrange(n_features):
 #                 if np.isnan(X[i,j]):
-#                     X[i,j] = func_para.get_feature()
+#                     X[i,j] = func_para.compute_sample()
         # Initialize X, y, sample_weight
         self.X = <DTYPE_t*> X.data
         self.X_sample_stride = <SIZE_t> X.strides[0] / <SIZE_t> X.itemsize
@@ -1909,7 +1941,7 @@ cdef class OnDemandBestSplitter:
         self.func_para = func_para
         
 
-    cdef void node_split(self, double impurity, SplitRecord* split,
+    cdef void node_split(self, double impurity, SplitRecordOnDemand* split,
                          SIZE_t* n_constant_features) nogil:
         """Find the best split on node samples[start:end]."""
         # Find the best split
@@ -1931,8 +1963,8 @@ cdef class OnDemandBestSplitter:
         cdef double weighted_n_samples = self.weighted_n_samples
         cdef UINT32_t* random_state = &self.rand_r_state
 
-        cdef SplitRecord best, current
-
+        cdef SplitRecordOnDemand best, current
+                
         cdef SIZE_t f_i = n_features
         cdef SIZE_t f_j, p, tmp
         cdef SIZE_t n_visited_features = 0
@@ -1945,9 +1977,13 @@ cdef class OnDemandBestSplitter:
         cdef SIZE_t n_total_constants = n_known_constants
         cdef DTYPE_t current_feature_value
         cdef SIZE_t partition_end
+        cdef SIZE_t n_on_demand_features = self.func_para.get_n_features()
+        
+        cdef FeatureConfig feature_config #sure?
+        cdef UINT32_t seed
+        _init_split_on_demand(&best, end)
 
-        _init_split(&best, end)
-
+        cdef UINT32_t bla = 0
         # Sample up to max_features without replacement using a
         # Fisher-Yates-based algorithm (using the local variables `f_i` and
         # `f_j` to compute a permutation of the `features` array).
@@ -1957,6 +1993,7 @@ cdef class OnDemandBestSplitter:
         # for good splitting) by ancestor nodes and save the information on
         # newly discovered constant features to spare computation on descendant
         # nodes.
+        
         while (f_i > n_total_constants and  # Stop early if remaining features
                                             # are constant
                 (n_visited_features < max_features or
@@ -1979,7 +2016,12 @@ cdef class OnDemandBestSplitter:
             # Draw a feature at random
             f_j = rand_int(n_drawn_constants, f_i - n_found_constants,
                            random_state)
-            self.func_para.get_feature()
+            with gil:
+                print "f_j: " +str(f_j)
+                print "features[f_j]: " + str(features[f_j])
+                print "range: " +str(n_drawn_constants) + "  to  " +str(f_i - n_found_constants)
+                print "normal feature when features[f_j] < f_i - n_found_constants - n_on_demand_features: " +str(features[f_j]) + " < " +str(f_i - n_found_constants - n_on_demand_features)
+                print "n_on_demand_features: " +str(n_on_demand_features)
             if f_j < n_known_constants:
                 # f_j in the interval [n_drawn_constants, n_known_constants[
                 tmp = features[f_j]
@@ -1989,28 +2031,48 @@ cdef class OnDemandBestSplitter:
                 n_drawn_constants += 1
 
             else:
-                # f_j in the interval [n_known_constants, f_i - n_found_constants[
+                # f_j in the interval [n_known_constants, f_i - n_found_constants - n_on_demand_features[
                 f_j += n_found_constants
-                # f_j in the interval [n_total_constants, f_i[
-
+                # f_j in the interval [n_total_constants, f_i - n_on_demand_features[
                 current.feature = features[f_j]
+                
+                if features[f_j] < f_i - n_found_constants - n_on_demand_features:
+                    # Sort samples along that feature; first copy the feature
+                    # values for the active samples into Xf, s.t.
+                    # Xf[i] == X[samples[i], j], so the sort uses the cache more
+                    # effectively.
+                    for p in range(start, end):
+                        Xf[p] = X[X_sample_stride * samples[p] +
+                                  X_fx_stride * current.feature]
+    
+                    sort(Xf + start, samples + start, end - start)
 
-                # Sort samples along that feature; first copy the feature
-                # values for the active samples into Xf, s.t.
-                # Xf[i] == X[samples[i], j], so the sort uses the cache more
-                # effectively.
-                for p in range(start, end):
-                    Xf[p] = X[X_sample_stride * samples[p] +
-                              X_fx_stride * current.feature]
-
-                sort(Xf + start, samples + start, end - start)
-
+                    with gil:
+                        print "normal feature"
+                        print "start: " + str(start) + "  end: " + str(end) + "  range: " + str(end-start)
+                        print "Xf: "
+                        for p in range(start, end):
+                            print Xf[p]
+                else:
+                    self.func_para.init_feature_config(&feature_config)
+                    
+                    for p in range(start, end):
+                        Xf[p] = self.func_para.compute_sample(&feature_config, samples[p])
+                    sort(Xf + start, samples + start, end - start)
+                    
+                    with gil:
+                        print "on-demand feature"
+                        print "start: " + str(start) + "  end: " + str(end) + "  range: " + str(end-start)
+                        print "Xf: "
+                        for p in range(start, end):
+                            print Xf[p]
                 if Xf[end - 1] <= Xf[start] + FEATURE_THRESHOLD:
                     features[f_j] = features[n_total_constants]
                     features[n_total_constants] = current.feature
 
                     n_found_constants += 1
                     n_total_constants += 1
+                    
 
                 else:
                     f_i -= 1
@@ -2019,7 +2081,6 @@ cdef class OnDemandBestSplitter:
                     # Evaluate all splits
                     self.criterion.reset()
                     p = start
-
                     while p < end:
                         while (p + 1 < end and
                                Xf[p + 1] <= Xf[p] + FEATURE_THRESHOLD):
@@ -2052,7 +2113,7 @@ cdef class OnDemandBestSplitter:
                                 self.criterion.children_impurity(&current.impurity_left,
                                                                  &current.impurity_right)
                                 current.threshold = (Xf[p - 1] + Xf[p]) / 2.0
-
+                                
                                 if current.threshold == Xf[p]:
                                     current.threshold = Xf[p - 1]
 
@@ -2086,9 +2147,12 @@ cdef class OnDemandBestSplitter:
                sizeof(SIZE_t) * n_found_constants)
 
         # Return values
+        best.feature_config = split.feature_config
+        with gil:
+            print "best feature: " + str(best.feature)
         split[0] = best
+        split.feature_config[0] = feature_config
         n_constant_features[0] = n_total_constants
-
 
 # =============================================================================
 # Tree builders
@@ -2537,7 +2601,8 @@ cdef class DepthFirstOnDemandTreeBuilder(OnDemandTreeBuilder):
         cdef SIZE_t n_node_samples = splitter.n_samples
         cdef double weighted_n_samples = splitter.weighted_n_samples
         cdef double weighted_n_node_samples
-        cdef SplitRecord split
+        cdef SplitRecordOnDemand split
+        cdef FeatureConfig feature_config
         cdef SIZE_t node_id
 
         cdef double threshold
@@ -2557,6 +2622,8 @@ cdef class DepthFirstOnDemandTreeBuilder(OnDemandTreeBuilder):
             # got return code -1 - out-of-memory
             raise MemoryError()
 
+        print "----new tree----"
+        split.feature_config = &feature_config
         with nogil:
             while not stack.is_empty():
                 stack.pop(&stack_record)
@@ -2586,8 +2653,8 @@ cdef class DepthFirstOnDemandTreeBuilder(OnDemandTreeBuilder):
                 if not is_leaf:
                     splitter.node_split(impurity, &split, &n_constant_features)
                     is_leaf = is_leaf or (split.pos >= end)
-
-                node_id = tree._add_node(parent, is_left, is_leaf, split.feature,
+                
+                node_id = tree._add_node(parent, is_left, is_leaf, split.feature, split.feature_config,
                                          split.threshold, impurity, n_node_samples,
                                          weighted_n_node_samples)
 
@@ -2684,12 +2751,13 @@ cdef class BestFirstOnDemandTreeBuilder(OnDemandTreeBuilder):
         cdef bint is_leaf
         cdef SIZE_t max_depth_seen = -1
         cdef int rc = 0
-        cdef Node* node
+        cdef NodeOnDemand* node
 
         # Initial capacity
         cdef SIZE_t init_capacity = max_split_nodes + max_leaf_nodes
         tree._resize(init_capacity)
 
+        print "----new tree----"
         with nogil:
             # add root to frontier
             rc = self._add_split_node(splitter, tree, 0, n_node_samples,
@@ -2766,11 +2834,12 @@ cdef class BestFirstOnDemandTreeBuilder(OnDemandTreeBuilder):
 
     cdef inline int _add_split_node(self, OnDemandBestSplitter splitter, OnDemandTree tree,
                                     SIZE_t start, SIZE_t end, double impurity,
-                                    bint is_first, bint is_left, Node* parent,
+                                    bint is_first, bint is_left, NodeOnDemand* parent,
                                     SIZE_t depth,
                                     PriorityHeapRecord* res) nogil:
         """Adds node w/ partition ``[start, end)`` to the frontier. """
-        cdef SplitRecord split
+        cdef SplitRecordOnDemand split
+        cdef FeatureConfig feature_config
         cdef SIZE_t node_id
         cdef SIZE_t n_node_samples
         cdef SIZE_t n_constant_features = 0
@@ -2780,6 +2849,7 @@ cdef class BestFirstOnDemandTreeBuilder(OnDemandTreeBuilder):
         cdef SIZE_t n_left, n_right
         cdef double imp_diff
 
+        split.feature_config = &feature_config
         splitter.node_reset(start, end, &weighted_n_node_samples)
 
         if is_first:
@@ -2795,12 +2865,13 @@ cdef class BestFirstOnDemandTreeBuilder(OnDemandTreeBuilder):
         if not is_leaf:
             splitter.node_split(impurity, &split, &n_constant_features)
             is_leaf = is_leaf or (split.pos >= end)
-
+            
         node_id = tree._add_node(parent - tree.nodes
                                  if parent != NULL
                                  else _TREE_UNDEFINED,
                                  is_left, is_leaf,
-                                 split.feature, split.threshold, impurity, n_node_samples,
+                                 split.feature, split.feature_config, 
+                                 split.threshold, impurity, n_node_samples,
                                  weighted_n_node_samples)
         if node_id == <SIZE_t>(-1):
             return -1
@@ -3268,6 +3339,10 @@ cdef class OnDemandTree:
     property feature:
         def __get__(self):
             return self._get_node_ndarray()['feature'][:self.node_count]
+    
+    property feature_configs:
+        def __get__(self):
+            return self._get_feat_config_ndarray()[:][:self.node_count]
 
     property threshold:
         def __get__(self):
@@ -3311,6 +3386,7 @@ cdef class OnDemandTree:
         self.capacity = 0
         self.value = NULL
         self.nodes = NULL
+        self.feature_configs = NULL
 
     def __dealloc__(self):
         """Destructor."""
@@ -3318,6 +3394,7 @@ cdef class OnDemandTree:
         free(self.n_classes)
         free(self.value)
         free(self.nodes)
+        free(self.feature_configs)
 
     def __reduce__(self):
         """Reduce re-implementation, for pickling."""
@@ -3331,6 +3408,7 @@ cdef class OnDemandTree:
         d["node_count"] = self.node_count
         d["nodes"] = self._get_node_ndarray()
         d["values"] = self._get_value_ndarray()
+        d["feature_configs"] = self._get_feat_config_ndarray()
         return d
 
     def __setstate__(self, d):
@@ -3343,24 +3421,32 @@ cdef class OnDemandTree:
 
         node_ndarray = d['nodes']
         value_ndarray = d['values']
+        feature_config_ndarray = d['feature_configs']
 
         value_shape = (node_ndarray.shape[0], self.n_outputs,
                        self.max_n_classes)
         if (node_ndarray.ndim != 1 or
-                node_ndarray.dtype != NODE_DTYPE or
+                node_ndarray.dtype != NODE_DTYPE_OD or
                 not node_ndarray.flags.c_contiguous or
                 value_ndarray.shape != value_shape or
                 not value_ndarray.flags.c_contiguous or
-                value_ndarray.dtype != np.float64):
+                value_ndarray.dtype != np.float64 or
+                feature_config_ndarray.ndim != 1 or #sure?
+                feature_config_ndarray.dtype != NODE_DTYPE_OD or
+                not feature_config_ndarray.flags.c_contiguous):
             raise ValueError('Did not recognise loaded array layout')
 
+    
         self.capacity = node_ndarray.shape[0]
         if self._resize_c(self.capacity) != 0:
             raise MemoryError("resizing tree to %d" % self.capacity)
         nodes = memcpy(self.nodes, (<np.ndarray> node_ndarray).data,
-                       self.capacity * sizeof(Node))
+                       self.capacity * sizeof(NodeOnDemand))
         value = memcpy(self.value, (<np.ndarray> value_ndarray).data,
                        self.capacity * self.value_stride * sizeof(double))
+        feature_configs = memcpy(self.feature_configs, (<np.ndarray> feature_config_ndarray).data, #sure?
+                       self.capacity * sizeof(FeatureConfig))
+
 
     cdef void _resize(self, SIZE_t capacity) except *:
         """Resize all inner arrays to `capacity`, if `capacity` == -1, then
@@ -3382,15 +3468,21 @@ cdef class OnDemandTree:
                 capacity = 2 * self.capacity
 
         # XXX no safe_realloc here because we need to grab the GIL
-        cdef void* ptr = realloc(self.nodes, capacity * sizeof(Node))
+        cdef void* ptr = realloc(self.nodes, capacity * sizeof(NodeOnDemand))
         if ptr == NULL:
             return -1
-        self.nodes = <Node*> ptr
+        self.nodes = <NodeOnDemand*> ptr
+        
         ptr = realloc(self.value,
                       capacity * self.value_stride * sizeof(double))
         if ptr == NULL:
             return -1
         self.value = <double*> ptr
+        
+        ptr = realloc(self.feature_configs, capacity * sizeof(FeatureConfig))#sure?
+        if ptr == NULL:
+            return -1
+        self.feature_configs = <FeatureConfig*> ptr
 
         # value memory is initialised to 0 to enable classifier argmax
         if capacity > self.capacity:
@@ -3406,7 +3498,7 @@ cdef class OnDemandTree:
         return 0
 
     cdef SIZE_t _add_node(self, SIZE_t parent, bint is_left, bint is_leaf,
-                          SIZE_t feature, double threshold, double impurity,
+                          SIZE_t feature, FeatureConfig* new_config, double threshold, double impurity,
                           SIZE_t n_node_samples, double weighted_n_node_samples) nogil:
         """Add a node to the tree.
 
@@ -3420,7 +3512,11 @@ cdef class OnDemandTree:
             if self._resize_c() != 0:
                 return <SIZE_t>(-1)
 
-        cdef Node* node = &self.nodes[node_id]
+        cdef NodeOnDemand* node = &self.nodes[node_id]
+        cdef FeatureConfig* feature_config = &self.feature_configs[node_id] #sure?
+        
+        node.feature_config = feature_config #sure?
+        feature_config[0] = new_config[0] #sure?
         node.impurity = impurity
         node.n_node_samples = n_node_samples
         node.weighted_n_node_samples = weighted_n_node_samples
@@ -3441,48 +3537,76 @@ cdef class OnDemandTree:
             # left_child and right_child will be set later
             node.feature = feature
             node.threshold = threshold
-
+            
+            
         self.node_count += 1
-
         return node_id
 
     cpdef np.ndarray predict(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para):
         """Predict target for X."""
         out = self._get_value_ndarray().take(self.apply(X,func_para), axis=0,
                                              mode='clip')
+        print "out again: " +str(out)
         if self.n_outputs == 1:
             out = out.reshape(X.shape[0], self.max_n_classes)
+        #self.get_feature_configs_and_nodes()
+        print "and again: " +str(out)
         return out
 
     cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para):
         """Finds the terminal region (=leaf node) for each sample in X."""
         cdef SIZE_t n_samples = X.shape[0]
-        cdef Node* node = NULL
+        cdef SIZE_t n_features_normal = X.shape[1]
+        cdef SIZE_t n_features_on_demand = func_para.get_n_features()
+        cdef SIZE_t n_features_all = n_features_normal + n_features_on_demand
+        cdef NodeOnDemand* node = NULL
+        cdef FeatureConfig* feature_config = NULL
         cdef SIZE_t i = 0
     
+        cdef double x = 0
         cdef np.ndarray[SIZE_t] out = np.zeros((n_samples,), dtype=np.intp)
         cdef SIZE_t* out_data = <SIZE_t*> out.data
         with nogil:
             for i in range(n_samples):
                 node = self.nodes
+                feature_config = self.feature_configs
                 # While node not a leaf
                 while node.left_child != _TREE_LEAF:
                     # ... and node.right_child != _TREE_LEAF:
-                    if X[i, node.feature] <= node.threshold:
+                    with gil:
+                        print "n_features_normal: " + str(n_features_normal)
+                        print "node.feature: " + str(node.feature)
+                    if n_features_normal <= node.feature:
+                        x = func_para.compute_sample(feature_config,i)
+                        
+                    else:
+                        x = X[i, node.feature]
+                    
+                    with gil:
+                        print "x: " +str(x)
+                        print "threshold: " +str(node.threshold)
+                    
+                    if x <= node.threshold:
                         node = &self.nodes[node.left_child]
+                        feature_config = &self.feature_configs[node.left_child]
                     else:
                         node = &self.nodes[node.right_child]
-    
-                out_data[i] = <SIZE_t>(node - self.nodes)  # node offset
+                        feature_config = &self.feature_configs[node.right_child]
+
+                           
+                    out_data[i] = <SIZE_t>(node - self.nodes)  # node offset
+                    with gil:
+                        print "out_data: " +str(out_data[i])
+        print "out: " + str(out)
         return out
     
     cpdef compute_feature_importances(self, normalize=True):
         """Computes the importance of each feature (aka variable)."""
-        cdef Node* left
-        cdef Node* right
-        cdef Node* nodes = self.nodes
-        cdef Node* node = nodes
-        cdef Node* end_node = node + self.node_count
+        cdef NodeOnDemand* left
+        cdef NodeOnDemand* right
+        cdef NodeOnDemand* nodes = self.nodes
+        cdef NodeOnDemand* node = nodes
+        cdef NodeOnDemand* end_node = node + self.node_count
 
         cdef np.ndarray[np.float64_t, ndim=1] importances
         importances = np.zeros((self.n_features,))
@@ -3537,15 +3661,57 @@ cdef class OnDemandTree:
         cdef np.npy_intp shape[1]
         shape[0] = <np.npy_intp> self.node_count
         cdef np.npy_intp strides[1]
-        strides[0] = sizeof(Node)
+        strides[0] = sizeof(NodeOnDemand)
         cdef np.ndarray arr
-        Py_INCREF(NODE_DTYPE)
-        arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> NODE_DTYPE, 1, shape,
+        Py_INCREF(NODE_DTYPE_OD)#sure?
+        arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> NODE_DTYPE_OD, 1, shape,#sure?
                                    strides, <void*> self.nodes,
                                    np.NPY_DEFAULT, None)
         Py_INCREF(self)
         arr.base = <PyObject*> self
         return arr
+    
+    cdef np.ndarray _get_feat_config_ndarray(self): #sure?
+        """Wraps feature configurations as a NumPy struct array
+
+        The array keeps a reference to this Tree, which manages the underlying
+        memory. Individual fields are publicly accessible as properties of the
+        Tree.
+        """
+        cdef np.npy_intp shape[1]
+        shape[0] = <np.npy_intp> self.node_count
+        cdef np.npy_intp strides[1]
+        strides[0] = sizeof(FeatureConfig)
+        cdef np.ndarray arr
+        Py_INCREF(FEATURE_CONFIG_TYPE)
+        arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> FEATURE_CONFIG_TYPE, 1, shape,
+                                   strides, <void*> self.feature_configs,
+                                   np.NPY_DEFAULT, None)
+        Py_INCREF(self)
+        arr.base = <PyObject*> self
+        
+        #self.get_feature_configs_and_nodes()
+        return arr
+    
+    cdef SIZE_t get_feature_configs_and_nodes(self) nogil:
+        """ get self.feature_configs and self.node for development """
+        cdef SIZE_t i = self.n_features
+        while i >1:
+            with gil:
+                print self.feature_configs[i]
+            i-=1
+        with gil:
+            print "#############"
+        return 1
+    
+    def get_feature_configs_and_nodes_gil(self):
+        """ get self.feature_configs and self.node for development """
+        cdef SIZE_t i = self.n_features
+        while i >1:
+            print self.feature_configs[i]
+            i-=1
+        print "#############"
+        return 1
 # =============================================================================
 # Utils
 # =============================================================================
@@ -3620,29 +3786,62 @@ cdef inline double log(double x) nogil:
 ###################################################################
 cdef class OnDemandFeature:
     """ test class to find out how Cython is working """ 
-    cdef double get_feature(self) nogil:
+    cdef double compute_sample(self, FeatureConfig* feat_con = NULL , SIZE_t sample_idx = -1) nogil:
         return self._feature
+    
+    cdef SIZE_t init_feature_config(self, FeatureConfig* feat_con = NULL) nogil:
+        return 0
     
     cdef SIZE_t get_n_features(self) nogil:
         return self.n_new_features
-
+    
+    cpdef SIZE_t get_n_features_gil(self):
+        return self.n_new_features
+    
 cdef class OnDemandTestClass(OnDemandFeature):
     def __cinit__(self, SIZE_t n_new_features = 10):
-        self._feature = 0.0
+        self._feature = 1.0
+        self._counter = 0
         self.n_new_features = n_new_features
-
+        
+    
     cdef void set_n_featrues(self, SIZE_t n_new_features) nogil:
         self.n_new_features = n_new_features
     
-    cdef double calc_feature(self) nogil:
-        self._feature += 1.0
+    
+    cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx) nogil:
+        #self._feature = rand_int(0,10,&feat_con.seed)
+        if sample_idx < 2:
+            self._feature = 1.0
+        else:
+            self._feature = 0.0 
         return self._feature
+     
      
     cdef SIZE_t get_n_features(self) nogil:
         return self.n_new_features
     
-    cdef double get_feature(self) nogil:
-        return self.calc_feature()
+    
+    cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1) nogil:
+        if feat_con == NULL:
+            return -1
+        elif sample_idx < 0:
+            return -1
+        else:
+            self._counter += 1
+            return self.calc_feature(feat_con, sample_idx)
+    
+    
+    cdef SIZE_t init_feature_config(self, FeatureConfig* feat_con = NULL) nogil:
+        if feat_con == NULL:
+            return -1
+        else:
+            feat_con.seed = <UINT32_t> (self._feature) + self._counter
+            return 0
+    
+    
+    def get_number_of_calls(self):
+        return self._counter
  
 # class C(OnDemandFeature):
 #     def __init__(self, first_integer):
@@ -3651,13 +3850,13 @@ cdef class OnDemandTestClass(OnDemandFeature):
 #     def fun2(self, a, b):
 #         return a>=b
 #     
-#     def get_feature(self, arg1, arg2):
+#     def compute_sample(self, arg1, arg2):
 #         return self.fun2(arg1, arg2)
     
 
 
 cpdef double run(OnDemandFeature cls):
     print cls
-    print cls.get_feature()
+    print cls.compute_sample()
     return cls._feature
 

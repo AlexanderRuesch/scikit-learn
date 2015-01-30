@@ -294,6 +294,38 @@ class ClassifierMixin(object):
         from .metrics import accuracy_score
         return accuracy_score(y, self.predict(X), sample_weight=sample_weight)
 
+class ClassifierMixinOnDemand(object):
+    """Mixin class for all classifiers in scikit-learn."""
+    
+    def score(self, X, func_para, y, sample_weight=None):
+        """Returns the mean accuracy on the given test data and labels.
+
+        In multi-label classification, this is the subset accuracy
+        which is a harsh metric since you require for each sample that
+        each label set be correctly predicted.
+
+        Parameters
+        ----------
+        X : array-like, shape = (n_samples, n_features)
+            Test samples.
+
+        func_para : object, OnDemandFeature class
+        
+        y : array-like, shape = (n_samples) or (n_samples, n_outputs)
+            True labels for X.
+
+        sample_weight : array-like, shape = [n_samples], optional
+            Sample weights.
+
+        Returns
+        -------
+        score : float
+            Mean accuracy of self.predict(X) wrt. y.
+
+        """
+        from .metrics import accuracy_score
+        return accuracy_score(y, self.predict(X, func_para), sample_weight=sample_weight)
+
 
 ###############################################################################
 class RegressorMixin(object):
@@ -438,6 +470,38 @@ class TransformerMixin(object):
             return self.fit(X, y, **fit_params).transform(X)
 
 
+class TransformerMixinOnDemand(object):
+    """Mixin class for all transformers in scikit-learn."""
+
+    def fit_transform(self, X, func_para, y=None, **fit_params):
+        """Fit to data, then transform it.
+
+        Fits transformer to X and y with optional parameters fit_params
+        and returns a transformed version of X.
+
+        Parameters
+        ----------
+        X : numpy array of shape [n_samples, n_features]
+            Training set.
+
+        y : numpy array of shape [n_samples]
+            Target values.
+
+        Returns
+        -------
+        X_new : numpy array of shape [n_samples, n_features_new]
+            Transformed array.
+
+        """
+        # non-optimized default implementation; override when a better
+        # method is possible for a given clustering algorithm
+        print "TransformerMixin"
+        if y is None:
+            # fit method of arity 1 (unsupervised transformation)
+            return self.fit(X, func_para, **fit_params).transform(X)
+        else:
+            # fit method of arity 2 (supervised transformation)
+            return self.fit(X, func_para, y, **fit_params).transform(X)
 ###############################################################################
 class MetaEstimatorMixin(object):
     """Mixin class for all meta estimators in scikit-learn."""

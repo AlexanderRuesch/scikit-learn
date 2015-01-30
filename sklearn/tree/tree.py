@@ -17,10 +17,10 @@ import numbers
 import numpy as np
 from abc import ABCMeta, abstractmethod
 
-from ..base import BaseEstimator, ClassifierMixin, RegressorMixin
+from ..base import BaseEstimator, ClassifierMixin, ClassifierMixinOnDemand, RegressorMixin
 from ..externals import six
 from ..externals.six.moves import xrange
-from ..feature_selection.from_model import _LearntSelectorMixin
+from ..feature_selection.from_model import _LearntSelectorMixin, _LearntSelectorMixinOnDemand
 from ..utils import check_array, check_random_state
 
 from ._tree import Criterion
@@ -337,6 +337,61 @@ class BaseDecisionTree(six.with_metaclass(ABCMeta, BaseEstimator,
                 return proba[:, :, 0]
 
     @property
+    def feature_importances_(self):
+        """Return the feature importances.
+
+        The importance of a feature is computed as the (normalized) total
+        reduction of the criterion brought by that feature.
+        It is also known as the Gini importance.
+
+        Returns
+        -------
+        feature_importances_ : array, shape = [n_features]
+        """
+        if self.tree_ is None:
+            raise ValueError("Estimator not fitted, "
+                             "call `fit` before `feature_importances_`.")
+
+        return self.tree_.compute_feature_importances()
+
+class BaseDecisionTreeOnDemand(six.with_metaclass(ABCMeta, BaseEstimator,
+                                          _LearntSelectorMixinOnDemand)):
+    """Base class for decision trees.
+
+    Warning: This class should not be used directly.
+    Use derived classes instead.
+    """
+
+    @abstractmethod
+    def __init__(self,
+                 criterion,
+                 splitter,
+                 max_depth,
+                 min_samples_split,
+                 min_samples_leaf,
+                 min_weight_fraction_leaf,
+                 max_features,
+                 max_leaf_nodes,
+                 random_state):
+        self.criterion = criterion
+        self.splitter = splitter
+        self.max_depth = max_depth
+        self.min_samples_split = min_samples_split
+        self.min_samples_leaf = min_samples_leaf
+        self.min_weight_fraction_leaf = min_weight_fraction_leaf
+        self.max_features = max_features
+        self.random_state = random_state
+        self.max_leaf_nodes = max_leaf_nodes
+
+        self.n_features_ = None
+        self.n_outputs_ = None
+        self.classes_ = None
+        self.n_classes_ = None
+
+        self.tree_ = None
+        self.max_features_ = None
+
+
     def feature_importances_(self):
         """Return the feature importances.
 
@@ -782,7 +837,7 @@ class ExtraTreeRegressor(DecisionTreeRegressor):
             random_state=random_state)
         
 
-class OnDemandDecisionTreeClassifier(BaseDecisionTree, ClassifierMixin):
+class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOnDemand):
     """A decision tree classifier.
 
     Parameters
@@ -933,6 +988,7 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTree, ClassifierMixin):
         if getattr(X, "dtype", None) != DTYPE or X.ndim != 2:
             X = check_array(X, dtype=DTYPE)
         n_samples, n_features = X.shape
+        n_features += func_para.get_n_features_gil()
 
         if self.tree_ is None:
             raise Exception("Tree not initialized. Perform a fit first.")
@@ -943,12 +999,14 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTree, ClassifierMixin):
                              " input n_features is %s "
                              % (self.n_features_, n_features))
         proba = self.tree_.predict(X, func_para)
+        print "proba before: " +str(proba)
+        
         if self.n_outputs_ == 1:
             proba = proba[:, :self.n_classes_]
             normalizer = proba.sum(axis=1)[:, np.newaxis]
             normalizer[normalizer == 0.0] = 1.0
             proba /= normalizer
-            
+            print "proba after: " +str(proba)
             return proba
 
         else:
@@ -960,7 +1018,7 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTree, ClassifierMixin):
                 normalizer[normalizer == 0.0] = 1.0
                 proba_k /= normalizer
                 all_proba.append(proba_k)
-            
+            print "all_proba: " +str(all_proba)
             return all_proba
 
     def predict_log_proba(self, X, func_para):
@@ -1027,8 +1085,9 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTree, ClassifierMixin):
         
         # Determine output settings
         n_samples, self.n_features_ = X.shape
-        is_classification = isinstance(self, ClassifierMixin)
-        # !TODO: OnDemandClassifierMixin
+        self.n_features_ = self.n_features_ + func_para.get_n_features_gil()
+        is_classification = isinstance(self, ClassifierMixinOnDemand)
+
 
         y = np.atleast_1d(y)
 
@@ -1170,7 +1229,7 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTree, ClassifierMixin):
         if self.n_outputs_ == 1:
             self.n_classes_ = self.n_classes_[0]
             self.classes_ = self.classes_[0]
-
+        #self.tree_.get_feature_configs_and_nodes_gil()
         return self
 
     def predict(self, X, func_para):
@@ -1194,6 +1253,7 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTree, ClassifierMixin):
             X = check_array(X, dtype=DTYPE)
 
         n_samples, n_features = X.shape
+        n_features += func_para.get_n_features_gil()
 
         if self.tree_ is None:
             raise Exception("Tree not initialized. Perform a fit first")
@@ -1205,7 +1265,7 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTree, ClassifierMixin):
                              % (self.n_features_, n_features))
 
         proba = self.tree_.predict(X, func_para)
-
+        print "proba: " +str(proba)
         # Classification
         if isinstance(self, ClassifierMixin):
             if self.n_outputs_ == 1:
@@ -1218,7 +1278,7 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTree, ClassifierMixin):
                     predictions[:, k] = self.classes_[k].take(
                         np.argmax(proba[:, k], axis=1),
                         axis=0)
-
+                print "predictions: " + str(predictions)
                 return predictions
 
         # Regression

@@ -43,7 +43,7 @@ import numpy as np
 from warnings import warn
 from abc import ABCMeta, abstractmethod
 
-from ..base import ClassifierMixin, RegressorMixin
+from ..base import ClassifierMixin, RegressorMixin, ClassifierMixinOnDemand
 from ..externals.joblib import Parallel, delayed
 from ..externals import six
 from ..externals.six.moves import xrange
@@ -53,7 +53,7 @@ from ..preprocessing import OneHotEncoder
 from ..tree import (DecisionTreeClassifier, DecisionTreeRegressor,
                     ExtraTreeClassifier, ExtraTreeRegressor, 
                     OnDemandDecisionTreeClassifier)
-from ..tree._tree import DTYPE, DOUBLE
+from ..tree._tree import DTYPE, DOUBLE, OnDemandFeature
 from ..utils import check_random_state, check_array
 from ..utils.validation import DataConversionWarning
 
@@ -92,7 +92,7 @@ def _parallel_build_trees_on_demand(tree, forest, X, func_para, y, sample_weight
 
     else:
         tree.fit(X, func_para, y,
-             sample_weight=curr_sample_weight,
+             sample_weight=sample_weight,
              check_input=False)
     return tree
 
@@ -121,7 +121,7 @@ def _parallel_build_trees(tree, forest, X, y, sample_weight, tree_idx, n_trees,
 
     else:
         tree.fit(X, y,
-             sample_weight=curr_sample_weight,
+             sample_weight=sample_weight,
              check_input=False)
 
     return tree
@@ -523,6 +523,48 @@ class ForestClassifier(six.with_metaclass(ABCMeta, BaseForest,
 
             return proba
 
+class ForestClassifierOnDemandBase(six.with_metaclass(ABCMeta, BaseForest,
+                                          ClassifierMixinOnDemand)):
+    """Base class for forest of trees-based classifiers.
+
+    Warning: This class should not be used directly. Use derived classes
+    instead.
+    """
+    @abstractmethod
+    def __init__(self,
+                 base_estimator,
+                 n_estimators=10,
+                 estimator_params=tuple(),
+                 bootstrap=False,
+                 oob_score=False,
+                 n_jobs=1,
+                 random_state=None,
+                 verbose=0,
+                 warm_start=False):
+
+        super(ForestClassifierOnDemandBase, self).__init__(
+            base_estimator,
+            n_estimators=n_estimators,
+            estimator_params=estimator_params,
+            bootstrap=bootstrap,
+            oob_score=oob_score,
+            n_jobs=n_jobs,
+            random_state=random_state,
+            verbose=verbose,
+            warm_start=warm_start)
+    
+    def _validate_y(self, y):
+        y = np.copy(y)
+
+        self.classes_ = []
+        self.n_classes_ = []
+
+        for k in xrange(self.n_outputs_):
+            classes_k, y[:, k] = np.unique(y[:, k], return_inverse=True)
+            self.classes_.append(classes_k)
+            self.n_classes_.append(classes_k.shape[0])
+
+        return y
 
 class ForestRegressor(six.with_metaclass(ABCMeta, BaseForest, RegressorMixin)):
     """Base class for forest of trees-based regressors.
@@ -1426,7 +1468,7 @@ class RandomTreesEmbedding(BaseForest):
         return self.one_hot_encoder_.transform(self.apply(X))
 
 
-class OnDemandForestClassifier(ForestClassifier):
+class OnDemandForestClassifier(ForestClassifierOnDemandBase):
     """A random forest classifier.
 
     A random forest is a meta estimator that fits a number of decision tree
@@ -1602,7 +1644,7 @@ class OnDemandForestClassifier(ForestClassifier):
         for estimator in self.estimators_:
             mask = np.ones(n_samples, dtype=np.bool)
             mask[estimator.indices_] = False
-            p_estimator = estimator.predict_proba(X[mask, :])
+            p_estimator = estimator.predict_proba(X[mask, :], func_para)
 
             if self.n_outputs_ == 1:
                 p_estimator = [p_estimator]
@@ -1780,7 +1822,8 @@ class OnDemandForestClassifier(ForestClassifier):
         # for 1d. FIXME make this consistent in the future.
 
         X = check_array(X, dtype=DTYPE, ensure_2d=False)
-
+        if isinstance(func_para,OnDemandFeature) == False:
+            raise ValueError("An object of OnDemandFeature class was expected, got '%s' ." %(type(func_para)))
         # Remap output
         n_samples, self.n_features_ = X.shape
 #         n_functions, n_arguments = func_para.shape
