@@ -999,14 +999,14 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
                              " input n_features is %s "
                              % (self.n_features_, n_features))
         proba = self.tree_.predict(X, func_para)
-        print "proba before: " +str(proba)
+        #print "proba before: " +str(proba)
         
         if self.n_outputs_ == 1:
             proba = proba[:, :self.n_classes_]
             normalizer = proba.sum(axis=1)[:, np.newaxis]
             normalizer[normalizer == 0.0] = 1.0
             proba /= normalizer
-            print "proba after: " +str(proba)
+#             print "proba after: " +str(proba)
             return proba
 
         else:
@@ -1018,7 +1018,7 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
                 normalizer[normalizer == 0.0] = 1.0
                 proba_k /= normalizer
                 all_proba.append(proba_k)
-            print "all_proba: " +str(all_proba)
+            #print "all_proba: " +str(all_proba)
             return all_proba
 
     def predict_log_proba(self, X, func_para):
@@ -1162,6 +1162,8 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
         if max_depth <= 0:
             raise ValueError("max_depth must be greater than zero. ")
         if not (0 < max_features <= self.n_features_):
+#             print "max_feature: " +str(max_features)
+#             print "n_features: " +str(self.n_features_)
             raise ValueError("max_features must be in (0, n_features]")
         if not isinstance(max_leaf_nodes, (numbers.Integral, np.integer)):
             raise ValueError("max_leaf_nodes must be integral number but was "
@@ -1265,7 +1267,7 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
                              % (self.n_features_, n_features))
 
         proba = self.tree_.predict(X, func_para)
-        print "proba: " +str(proba)
+#         print "proba: " +str(proba)
         # Classification
         if isinstance(self, ClassifierMixin):
             if self.n_outputs_ == 1:
@@ -1278,7 +1280,7 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
                     predictions[:, k] = self.classes_[k].take(
                         np.argmax(proba[:, k], axis=1),
                         axis=0)
-                print "predictions: " + str(predictions)
+#                 print "predictions: " + str(predictions)
                 return predictions
 
         # Regression

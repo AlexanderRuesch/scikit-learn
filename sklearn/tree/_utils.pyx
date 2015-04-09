@@ -228,3 +228,142 @@ cdef class PriorityHeap:
         self.heap_ptr = heap_ptr - 1
 
         return 0
+    
+#-----------------------------------------------------------------------------#
+#-------------------------- On Demand Work Around ----------------------------#
+#-----------------------------------------------------------------------------# 
+
+# =============================================================================
+# PriorityHeap data structure
+# =============================================================================
+
+cdef void heapify_up_on_demand(PriorityHeapRecordOnDemand* heap, SIZE_t pos) nogil:
+    """Restore heap invariant parent.improvement > child.improvement from
+       ``pos`` upwards. """
+    if pos == 0:
+        return
+
+    cdef SIZE_t parent_pos = (pos - 1) / 2
+
+    if heap[parent_pos].improvement < heap[pos].improvement:
+        heap[parent_pos], heap[pos] = heap[pos], heap[parent_pos]
+        heapify_up_on_demand(heap, parent_pos)
+
+
+cdef void heapify_down_on_demand(PriorityHeapRecordOnDemand* heap, SIZE_t pos,
+                       SIZE_t heap_length) nogil:
+    """Restore heap invariant parent.improvement > children.improvement from
+       ``pos`` downwards. """
+    cdef SIZE_t left_pos = 2 * (pos + 1) - 1
+    cdef SIZE_t right_pos = 2 * (pos + 1)
+    cdef SIZE_t largest = pos
+
+    if (left_pos < heap_length and
+            heap[left_pos].improvement > heap[largest].improvement):
+        largest = left_pos
+
+    if (right_pos < heap_length and
+            heap[right_pos].improvement > heap[largest].improvement):
+        largest = right_pos
+
+    if largest != pos:
+        heap[pos], heap[largest] = heap[largest], heap[pos]
+        heapify_down_on_demand(heap, largest, heap_length)
+
+
+cdef class PriorityHeapOnDemand:
+    """A priority queue implemented as a binary heap.
+
+    The heap invariant is that the impurity improvement of the parent record
+    is larger then the impurity improvement of the children.
+
+    Attributes
+    ----------
+    capacity : SIZE_t
+        The capacity of the heap
+
+    heap_ptr : SIZE_t
+        The water mark of the heap; the heap grows from left to right in the
+        array ``heap_``. The following invariant holds ``heap_ptr < capacity``.
+
+    heap_ : PriorityHeapRecord*
+        The array of heap records. The maximum element is on the left;
+        the heap grows from left to right
+    """
+
+    def __cinit__(self, SIZE_t capacity):
+        self.capacity = capacity
+        self.heap_ptr = 0
+        self.heap_ = <PriorityHeapRecordOnDemand*> malloc(capacity * sizeof(PriorityHeapRecordOnDemand))
+        if self.heap_ == NULL:
+            raise MemoryError()
+
+    def __dealloc__(self):
+        free(self.heap_)
+
+    cdef bint is_empty(self) nogil:
+        return self.heap_ptr <= 0
+
+    cdef int push(self, SIZE_t node_id, SIZE_t start, SIZE_t end, SIZE_t pos,
+                  SIZE_t depth, bint is_leaf, double improvement,
+                  double impurity, double impurity_left,
+                  double impurity_right, FeatureConfig* feature_config) nogil:
+        """Push record on the priority heap.
+
+        Returns 0 if successful; -1 on out of memory error.
+        """
+        cdef SIZE_t heap_ptr = self.heap_ptr
+        cdef PriorityHeapRecordOnDemand* heap = NULL
+
+        # Resize if capacity not sufficient
+        if heap_ptr >= self.capacity:
+            self.capacity *= 2
+            heap = <PriorityHeapRecordOnDemand*> realloc(self.heap_,
+                                                 self.capacity *
+                                                 sizeof(PriorityHeapRecordOnDemand))
+            if heap == NULL:
+                # no free; __dealloc__ handles that
+                return -1
+            self.heap_ = heap
+
+        # Put element as last element of heap
+        heap = self.heap_
+        heap[heap_ptr].node_id = node_id
+        heap[heap_ptr].start = start
+        heap[heap_ptr].end = end
+        heap[heap_ptr].pos = pos
+        heap[heap_ptr].depth = depth
+        heap[heap_ptr].is_leaf = is_leaf
+        heap[heap_ptr].impurity = impurity
+        heap[heap_ptr].impurity_left = impurity_left
+        heap[heap_ptr].impurity_right = impurity_right
+        heap[heap_ptr].improvement = improvement
+        heap[heap_ptr].feature_config = feature_config
+        # Heapify up
+        heapify_up_on_demand(heap, heap_ptr)
+
+        # Increase element count
+        self.heap_ptr = heap_ptr + 1
+        return 0
+
+    cdef int pop(self, PriorityHeapRecordOnDemand* res) nogil:
+        """Remove max element from the heap. """
+        cdef SIZE_t heap_ptr = self.heap_ptr
+        cdef PriorityHeapRecordOnDemand* heap = self.heap_
+
+        if heap_ptr <= 0:
+            return -1
+
+        # Take first element
+        res[0] = heap[0]
+
+        # Put last element to the front
+        heap[0], heap[heap_ptr - 1] = heap[heap_ptr - 1], heap[0]
+
+        # Restore heap invariant
+        if heap_ptr > 1:
+            heapify_down_on_demand(heap, 0, heap_ptr - 1)
+
+        self.heap_ptr = heap_ptr - 1
+
+        return 0

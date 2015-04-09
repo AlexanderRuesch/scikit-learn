@@ -84,11 +84,20 @@ cdef struct SplitRecordOnDemand:
     double improvement     # Impurity improvement given parent node.
     double impurity_left   # Impurity of the left split.
     double impurity_right  # Impurity of the right split.
-    FeatureConfig* feature_config #pointer to on demand feature configurations
+    FeatureConfig* feature_config # pointer to on demand feature configurations
 
 cdef struct FeatureConfig:
     # Data to rebuild on demand features
-    UINT32_t seed          #seed for rand_int function
+    UINT32_t seed          # seed for rand_int function
+    INT32_t threshold
+    INT32_t offset_x1
+    INT32_t offset_y1
+    INT32_t length_x1
+    INT32_t length_y1
+    INT32_t offset_x2
+    INT32_t offset_y2
+    INT32_t length_x2
+    INT32_t length_y2
 
 
 cdef class Splitter:
@@ -181,10 +190,11 @@ cdef class OnDemandBestSplitter:
     cdef SIZE_t* constant_features       # Constant features indices
     cdef SIZE_t n_features               # X.shape[1]
     cdef DTYPE_t* feature_values         # temp. array holding feature values
+    cdef DTYPE_t* x_on_demand            # temp array holding on demand features during node split
     cdef SIZE_t start                    # Start position for the current node
     cdef SIZE_t end                      # End position for the current node
     
-    cdef OnDemandFeature func_para      # Functions and Parameters for on demand features
+    cdef OnDemandFeature func_para       # Functions and Parameters for on demand features
 
     cdef DTYPE_t* X
     cdef SIZE_t X_sample_stride
@@ -240,7 +250,7 @@ cdef struct Node:
     SIZE_t n_node_samples                # Number of samples at the node
     DOUBLE_t weighted_n_node_samples     # Weighted number of samples at the node
 
-cdef struct NodeOnDemand:
+cdef struct Node:
     # Base storage structure for the nodes in a Tree object
 
     SIZE_t left_child                    # id of the left child of the node
@@ -250,7 +260,7 @@ cdef struct NodeOnDemand:
     DOUBLE_t impurity                    # Impurity of the node (i.e., the value of the criterion)
     SIZE_t n_node_samples                # Number of samples at the node
     DOUBLE_t weighted_n_node_samples     # Weighted number of samples at the node
-    FeatureConfig* feature_config		 # Pointer to on demand feature configuration
+    FeatureConfig* feature_config	     # Pointer to on demand feature configuration
 
 
 cdef class Tree:
@@ -307,7 +317,7 @@ cdef class OnDemandTree:
     cdef public SIZE_t max_depth         # Max depth of the tree
     cdef public SIZE_t node_count        # Counter for node IDs
     cdef public SIZE_t capacity          # Capacity of tree, in terms of nodes
-    cdef NodeOnDemand* nodes             # Array of nodes
+    cdef Node* nodes                     # Array of nodes
     cdef double* value                   # (capacity, n_outputs, max_n_classes) array of values
     cdef SIZE_t value_stride             # = n_outputs * max_n_classes
     cdef FeatureConfig* feature_configs  # Array of FeatureConfig
@@ -377,12 +387,21 @@ cdef class OnDemandTreeBuilder:
 # =============================================================================
 
 cdef class OnDemandFeature:
-    cdef public double compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *) nogil
-    cdef public SIZE_t get_n_features(self) nogil
-    cpdef SIZE_t get_n_features_gil(self)
-    cdef double _feature
-    cdef SIZE_t n_new_features
-    cdef public SIZE_t init_feature_config(self, FeatureConfig* feat_con = *) nogil
-    cdef UINT32_t _counter
-
-cpdef double run(OnDemandFeature cls)
+    cdef  public  double     compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
+    cdef  public  SIZE_t     get_n_features(self) nogil
+    cpdef         SIZE_t     get_n_features_gil(self)
+    cdef          double     _feature
+    cdef          SIZE_t     n_new_features
+    cdef  public  SIZE_t     init_split(self, FeatureConfig* feat_con = *) nogil
+    cdef  public  SIZE_t     init_tree(self, FeatureConfig* feat_con = *) nogil
+    cdef          UINT32_t   _counter
+    cdef          SIZE_t*    _shape
+    cdef          DOUBLE_t*  _image_data
+    cdef          SIZE_t     n_samples
+    cdef          SIZE_t     n_dim
+    cdef          SIZE_t     n_features
+    cdef          UINT32_t   new_tree
+    cdef          UINT32_t   new_split
+    cdef		  SIZE_t     _max_box_size
+    cdef          SIZE_t     _min_box_size
+    cdef          UINT32_t   _seed

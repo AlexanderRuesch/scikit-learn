@@ -893,14 +893,15 @@ struct __pyx_t_7sklearn_4tree_5_tree_SplitRecord;
 struct __pyx_t_7sklearn_4tree_5_tree_SplitRecordOnDemand;
 struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig;
 struct __pyx_t_7sklearn_4tree_5_tree_Node;
-struct __pyx_t_7sklearn_4tree_5_tree_NodeOnDemand;
 struct __pyx_opt_args_7sklearn_4tree_5_tree_4Tree__resize_c;
 struct __pyx_opt_args_7sklearn_4tree_5_tree_4Tree_compute_feature_importances;
 struct __pyx_opt_args_7sklearn_4tree_5_tree_12OnDemandTree__resize_c;
 struct __pyx_opt_args_7sklearn_4tree_5_tree_12OnDemandTree_compute_feature_importances;
 struct __pyx_opt_args_7sklearn_4tree_5_tree_11TreeBuilder_build;
 struct __pyx_opt_args_7sklearn_4tree_5_tree_19OnDemandTreeBuilder_build;
-struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_get_feature;
+struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_compute_sample;
+struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_split;
+struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_tree;
 
 /* "sklearn/tree/_tree.pxd":66
  * # =============================================================================
@@ -936,17 +937,26 @@ struct __pyx_t_7sklearn_4tree_5_tree_SplitRecordOnDemand {
 };
 
 /* "sklearn/tree/_tree.pxd":89
- *     FeatureConfig* feature_config #pointer to on demand feature configurations
+ *     FeatureConfig* feature_config # pointer to on demand feature configurations
  * 
  * cdef struct FeatureConfig:             # <<<<<<<<<<<<<<
  *     # Data to rebuild on demand features
- *     UINT32_t seed          #seed for rand_int function
+ *     UINT32_t seed          # seed for rand_int function
  */
 struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig {
   __pyx_t_7sklearn_4tree_5_tree_UINT32_t seed;
+  __pyx_t_7sklearn_4tree_5_tree_INT32_t threshold;
+  __pyx_t_7sklearn_4tree_5_tree_INT32_t offset_x1;
+  __pyx_t_7sklearn_4tree_5_tree_INT32_t offset_y1;
+  __pyx_t_7sklearn_4tree_5_tree_INT32_t length_x1;
+  __pyx_t_7sklearn_4tree_5_tree_INT32_t length_y1;
+  __pyx_t_7sklearn_4tree_5_tree_INT32_t offset_x2;
+  __pyx_t_7sklearn_4tree_5_tree_INT32_t offset_y2;
+  __pyx_t_7sklearn_4tree_5_tree_INT32_t length_x2;
+  __pyx_t_7sklearn_4tree_5_tree_INT32_t length_y2;
 };
 
-/* "sklearn/tree/_tree.pxd":232
+/* "sklearn/tree/_tree.pxd":242
  * # =============================================================================
  * 
  * cdef struct Node:             # <<<<<<<<<<<<<<
@@ -963,25 +973,7 @@ struct __pyx_t_7sklearn_4tree_5_tree_Node {
   __pyx_t_7sklearn_4tree_5_tree_DOUBLE_t weighted_n_node_samples;
 };
 
-/* "sklearn/tree/_tree.pxd":243
- *     DOUBLE_t weighted_n_node_samples     # Weighted number of samples at the node
- * 
- * cdef struct NodeOnDemand:             # <<<<<<<<<<<<<<
- *     # Base storage structure for the nodes in a Tree object
- * 
- */
-struct __pyx_t_7sklearn_4tree_5_tree_NodeOnDemand {
-  __pyx_t_7sklearn_4tree_5_tree_SIZE_t left_child;
-  __pyx_t_7sklearn_4tree_5_tree_SIZE_t right_child;
-  __pyx_t_7sklearn_4tree_5_tree_SIZE_t feature;
-  __pyx_t_7sklearn_4tree_5_tree_DOUBLE_t threshold;
-  __pyx_t_7sklearn_4tree_5_tree_DOUBLE_t impurity;
-  __pyx_t_7sklearn_4tree_5_tree_SIZE_t n_node_samples;
-  __pyx_t_7sklearn_4tree_5_tree_DOUBLE_t weighted_n_node_samples;
-  struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig *feature_config;
-};
-
-/* "sklearn/tree/_tree.pxd":282
+/* "sklearn/tree/_tree.pxd":292
  *                           double weighted_n_samples) nogil
  *     cdef void _resize(self, SIZE_t capacity) except *
  *     cdef int _resize_c(self, SIZE_t capacity=*) nogil             # <<<<<<<<<<<<<<
@@ -993,7 +985,7 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_4Tree__resize_c {
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t capacity;
 };
 
-/* "sklearn/tree/_tree.pxd":289
+/* "sklearn/tree/_tree.pxd":299
  *     cpdef np.ndarray predict(self, np.ndarray[DTYPE_t, ndim=2] X)
  *     cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X)
  *     cpdef compute_feature_importances(self, normalize=*)             # <<<<<<<<<<<<<<
@@ -1005,7 +997,7 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_4Tree_compute_feature_importances {
   PyObject *normalize;
 };
 
-/* "sklearn/tree/_tree.pxd":321
+/* "sklearn/tree/_tree.pxd":331
  *                           double weighted_n_samples) nogil
  *     cdef void _resize(self, SIZE_t capacity) except *
  *     cdef int _resize_c(self, SIZE_t capacity=*) nogil             # <<<<<<<<<<<<<<
@@ -1017,11 +1009,11 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_12OnDemandTree__resize_c {
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t capacity;
 };
 
-/* "sklearn/tree/_tree.pxd":329
+/* "sklearn/tree/_tree.pxd":339
  *     cpdef np.ndarray predict(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para)
  *     cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para)
  *     cpdef compute_feature_importances(self, normalize=*)             # <<<<<<<<<<<<<<
- * 
+ *     cdef public SIZE_t get_feature_configs_and_nodes(self) nogil
  * 
  */
 struct __pyx_opt_args_7sklearn_4tree_5_tree_12OnDemandTree_compute_feature_importances {
@@ -1029,7 +1021,7 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_12OnDemandTree_compute_feature_impor
   PyObject *normalize;
 };
 
-/* "sklearn/tree/_tree.pxd":351
+/* "sklearn/tree/_tree.pxd":361
  *     cdef SIZE_t max_depth           # Maximal tree depth
  * 
  *     cpdef build(self, Tree tree, np.ndarray X, np.ndarray y,             # <<<<<<<<<<<<<<
@@ -1041,7 +1033,7 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_11TreeBuilder_build {
   PyArrayObject *sample_weight;
 };
 
-/* "sklearn/tree/_tree.pxd":372
+/* "sklearn/tree/_tree.pxd":382
  *     cdef SIZE_t max_depth           # Maximal tree depth
  * 
  *     cpdef build(self, OnDemandTree tree, np.ndarray X, OnDemandFeature func_para, np.ndarray y,             # <<<<<<<<<<<<<<
@@ -1053,14 +1045,40 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_19OnDemandTreeBuilder_build {
   PyArrayObject *sample_weight;
 };
 
-/* "sklearn/tree/_tree.pxd":380
+/* "sklearn/tree/_tree.pxd":390
  * 
  * cdef class OnDemandFeature:
- *     cdef public double get_feature(self, FeatureConfig* feat_con = *) nogil             # <<<<<<<<<<<<<<
- *     cdef public SIZE_t get_n_features(self) nogil
- *     cpdef SIZE_t get_n_features_gil(self)
+ *     cdef  public  double     compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil             # <<<<<<<<<<<<<<
+ *     cdef  public  SIZE_t     get_n_features(self) nogil
+ *     cpdef         SIZE_t     get_n_features_gil(self)
  */
-struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_get_feature {
+struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_compute_sample {
+  int __pyx_n;
+  struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig *feat_con;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t sample_idx;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t is_prediction;
+};
+
+/* "sklearn/tree/_tree.pxd":395
+ *     cdef          double     _feature
+ *     cdef          SIZE_t     n_new_features
+ *     cdef  public  SIZE_t     init_split(self, FeatureConfig* feat_con = *) nogil             # <<<<<<<<<<<<<<
+ *     cdef  public  SIZE_t     init_tree(self, FeatureConfig* feat_con = *) nogil
+ *     cdef          UINT32_t   _counter
+ */
+struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_split {
+  int __pyx_n;
+  struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig *feat_con;
+};
+
+/* "sklearn/tree/_tree.pxd":396
+ *     cdef          SIZE_t     n_new_features
+ *     cdef  public  SIZE_t     init_split(self, FeatureConfig* feat_con = *) nogil
+ *     cdef  public  SIZE_t     init_tree(self, FeatureConfig* feat_con = *) nogil             # <<<<<<<<<<<<<<
+ *     cdef          UINT32_t   _counter
+ *     cdef          np.ndarray _image
+ */
+struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_tree {
   int __pyx_n;
   struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig *feat_con;
 };
@@ -1091,7 +1109,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_Criterion {
 };
 
 
-/* "sklearn/tree/_tree.pxd":94
+/* "sklearn/tree/_tree.pxd":103
  * 
  * 
  * cdef class Splitter:             # <<<<<<<<<<<<<<
@@ -1126,7 +1144,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_Splitter {
 };
 
 
-/* "sklearn/tree/_tree.pxd":162
+/* "sklearn/tree/_tree.pxd":171
  * #-------------------------- On Demand Work Around ----------------------------#
  * #-----------------------------------------------------------------------------#
  * cdef class OnDemandBestSplitter:             # <<<<<<<<<<<<<<
@@ -1149,6 +1167,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandBestSplitter {
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t *constant_features;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t n_features;
   __pyx_t_7sklearn_4tree_5_tree_DTYPE_t *feature_values;
+  __pyx_t_7sklearn_4tree_5_tree_DTYPE_t *x_on_demand;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t start;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t end;
   struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *func_para;
@@ -1161,7 +1180,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandBestSplitter {
 };
 
 
-/* "sklearn/tree/_tree.pxd":256
+/* "sklearn/tree/_tree.pxd":266
  * 
  * 
  * cdef class Tree:             # <<<<<<<<<<<<<<
@@ -1184,7 +1203,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_Tree {
 };
 
 
-/* "sklearn/tree/_tree.pxd":294
+/* "sklearn/tree/_tree.pxd":304
  * #-------------------------- On Demand Work Around ----------------------------#
  * #-----------------------------------------------------------------------------#
  * cdef class OnDemandTree:             # <<<<<<<<<<<<<<
@@ -1201,14 +1220,14 @@ struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTree {
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t max_depth;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t node_count;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t capacity;
-  struct __pyx_t_7sklearn_4tree_5_tree_NodeOnDemand *nodes;
+  struct __pyx_t_7sklearn_4tree_5_tree_Node *nodes;
   double *value;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t value_stride;
   struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig *feature_configs;
 };
 
 
-/* "sklearn/tree/_tree.pxd":336
+/* "sklearn/tree/_tree.pxd":346
  * # =============================================================================
  * 
  * cdef class TreeBuilder:             # <<<<<<<<<<<<<<
@@ -1226,7 +1245,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_TreeBuilder {
 };
 
 
-/* "sklearn/tree/_tree.pxd":357
+/* "sklearn/tree/_tree.pxd":367
  * #-------------------------- On Demand Work Around ----------------------------#
  * #-----------------------------------------------------------------------------#
  * cdef class OnDemandTreeBuilder:             # <<<<<<<<<<<<<<
@@ -1244,20 +1263,30 @@ struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTreeBuilder {
 };
 
 
-/* "sklearn/tree/_tree.pxd":379
+/* "sklearn/tree/_tree.pxd":389
  * # =============================================================================
  * 
  * cdef class OnDemandFeature:             # <<<<<<<<<<<<<<
- *     cdef public double get_feature(self, FeatureConfig* feat_con = *) nogil
- *     cdef public SIZE_t get_n_features(self) nogil
+ *     cdef  public  double     compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
+ *     cdef  public  SIZE_t     get_n_features(self) nogil
  */
 struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature {
   PyObject_HEAD
   struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandFeature *__pyx_vtab;
   double _feature;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t n_new_features;
+  __pyx_t_7sklearn_4tree_5_tree_UINT32_t _counter;
+  PyArrayObject *_image;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t *_shape;
+  __pyx_t_7sklearn_4tree_5_tree_DOUBLE_t *_image_data;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t n_samples;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t n_dim;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t n_features;
+  __pyx_t_7sklearn_4tree_5_tree_UINT32_t new_tree;
+  __pyx_t_7sklearn_4tree_5_tree_UINT32_t new_split;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t _max_box_size;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t _min_box_size;
   __pyx_t_7sklearn_4tree_5_tree_UINT32_t _seed;
-  __pyx_t_7sklearn_4tree_5_tree_UINT32_t counter;
 };
 
 
@@ -1358,7 +1387,7 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Criterion {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Criterion *__pyx_vtabptr_7sklearn_4tree_5_tree_Criterion;
 
 
-/* "sklearn/tree/_tree.pxd":94
+/* "sklearn/tree/_tree.pxd":103
  * 
  * 
  * cdef class Splitter:             # <<<<<<<<<<<<<<
@@ -1376,7 +1405,7 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Splitter {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Splitter *__pyx_vtabptr_7sklearn_4tree_5_tree_Splitter;
 
 
-/* "sklearn/tree/_tree.pxd":162
+/* "sklearn/tree/_tree.pxd":171
  * #-------------------------- On Demand Work Around ----------------------------#
  * #-----------------------------------------------------------------------------#
  * cdef class OnDemandBestSplitter:             # <<<<<<<<<<<<<<
@@ -1394,7 +1423,7 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandBestSplitter {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandBestSplitter *__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandBestSplitter;
 
 
-/* "sklearn/tree/_tree.pxd":256
+/* "sklearn/tree/_tree.pxd":266
  * 
  * 
  * cdef class Tree:             # <<<<<<<<<<<<<<
@@ -1415,7 +1444,7 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Tree {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Tree *__pyx_vtabptr_7sklearn_4tree_5_tree_Tree;
 
 
-/* "sklearn/tree/_tree.pxd":294
+/* "sklearn/tree/_tree.pxd":304
  * #-------------------------- On Demand Work Around ----------------------------#
  * #-----------------------------------------------------------------------------#
  * cdef class OnDemandTree:             # <<<<<<<<<<<<<<
@@ -1433,11 +1462,12 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTree {
   PyArrayObject *(*predict)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTree *, PyArrayObject *, struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, int __pyx_skip_dispatch);
   PyArrayObject *(*apply)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTree *, PyArrayObject *, struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, int __pyx_skip_dispatch);
   PyObject *(*compute_feature_importances)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTree *, int __pyx_skip_dispatch, struct __pyx_opt_args_7sklearn_4tree_5_tree_12OnDemandTree_compute_feature_importances *__pyx_optional_args);
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*get_feature_configs_and_nodes)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTree *);
 };
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTree *__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTree;
 
 
-/* "sklearn/tree/_tree.pxd":336
+/* "sklearn/tree/_tree.pxd":346
  * # =============================================================================
  * 
  * cdef class TreeBuilder:             # <<<<<<<<<<<<<<
@@ -1451,7 +1481,7 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_TreeBuilder {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_TreeBuilder *__pyx_vtabptr_7sklearn_4tree_5_tree_TreeBuilder;
 
 
-/* "sklearn/tree/_tree.pxd":357
+/* "sklearn/tree/_tree.pxd":367
  * #-------------------------- On Demand Work Around ----------------------------#
  * #-----------------------------------------------------------------------------#
  * cdef class OnDemandTreeBuilder:             # <<<<<<<<<<<<<<
@@ -1465,19 +1495,20 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTreeBuilder {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTreeBuilder *__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTreeBuilder;
 
 
-/* "sklearn/tree/_tree.pxd":379
+/* "sklearn/tree/_tree.pxd":389
  * # =============================================================================
  * 
  * cdef class OnDemandFeature:             # <<<<<<<<<<<<<<
- *     cdef public double get_feature(self, FeatureConfig* feat_con = *) nogil
- *     cdef public SIZE_t get_n_features(self) nogil
+ *     cdef  public  double     compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
+ *     cdef  public  SIZE_t     get_n_features(self) nogil
  */
 
 struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandFeature {
-  double (*get_feature)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_get_feature *__pyx_optional_args);
+  double (*compute_sample)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_compute_sample *__pyx_optional_args);
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*get_n_features)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *);
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*get_n_features_gil)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, int __pyx_skip_dispatch);
-  __pyx_t_7sklearn_4tree_5_tree_UINT32_t (*get_feature_config)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *);
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*init_split)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_split *__pyx_optional_args);
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*init_tree)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_tree *__pyx_optional_args);
 };
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandFeature *__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandFeature;
 
@@ -18108,20 +18139,20 @@ PyMODINIT_FUNC PyInit__gradient_boosting(void)
   __pyx_ptype_5numpy_ufunc = __Pyx_ImportType("numpy", "ufunc", sizeof(PyUFuncObject), 0); if (unlikely(!__pyx_ptype_5numpy_ufunc)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 861; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_7sklearn_4tree_5_tree_Criterion = __Pyx_ImportType("sklearn.tree._tree", "Criterion", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_Criterion), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_Criterion)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_vtabptr_7sklearn_4tree_5_tree_Criterion = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Criterion*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_Criterion->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_Criterion)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_Splitter = __Pyx_ImportType("sklearn.tree._tree", "Splitter", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_Splitter), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_Splitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 94; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_Splitter = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Splitter*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_Splitter->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_Splitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 94; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter = __Pyx_ImportType("sklearn.tree._tree", "OnDemandBestSplitter", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandBestSplitter), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandBestSplitter = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandBestSplitter*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandBestSplitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_Tree = __Pyx_ImportType("sklearn.tree._tree", "Tree", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_Tree), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_Tree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 256; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_Tree = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Tree*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_Tree->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_Tree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 256; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree = __Pyx_ImportType("sklearn.tree._tree", "OnDemandTree", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTree), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 294; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTree = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTree*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 294; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder = __Pyx_ImportType("sklearn.tree._tree", "TreeBuilder", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_TreeBuilder), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 336; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_TreeBuilder = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_TreeBuilder*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_TreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 336; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder = __Pyx_ImportType("sklearn.tree._tree", "OnDemandTreeBuilder", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTreeBuilder), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 357; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTreeBuilder = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTreeBuilder*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 357; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature = __Pyx_ImportType("sklearn.tree._tree", "OnDemandFeature", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandFeature = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandFeature*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandFeature)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_Splitter = __Pyx_ImportType("sklearn.tree._tree", "Splitter", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_Splitter), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_Splitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_Splitter = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Splitter*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_Splitter->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_Splitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter = __Pyx_ImportType("sklearn.tree._tree", "OnDemandBestSplitter", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandBestSplitter), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 171; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandBestSplitter = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandBestSplitter*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandBestSplitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 171; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_Tree = __Pyx_ImportType("sklearn.tree._tree", "Tree", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_Tree), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_Tree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 266; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_Tree = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Tree*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_Tree->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_Tree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 266; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree = __Pyx_ImportType("sklearn.tree._tree", "OnDemandTree", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTree), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 304; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTree = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTree*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 304; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder = __Pyx_ImportType("sklearn.tree._tree", "TreeBuilder", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_TreeBuilder), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 346; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_TreeBuilder = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_TreeBuilder*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_TreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 346; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder = __Pyx_ImportType("sklearn.tree._tree", "OnDemandTreeBuilder", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTreeBuilder), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 367; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTreeBuilder = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTreeBuilder*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 367; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature = __Pyx_ImportType("sklearn.tree._tree", "OnDemandFeature", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 389; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandFeature = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandFeature*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandFeature)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 389; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   /*--- Variable import code ---*/
   /*--- Function import code ---*/
   /*--- Execution code ---*/

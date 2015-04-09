@@ -8,6 +8,7 @@
 
 import numpy as np
 cimport numpy as np
+from sklearn.tree._tree cimport FeatureConfig
 
 ctypedef np.npy_intp SIZE_t              # Type for indices and counters
 
@@ -66,3 +67,39 @@ cdef class PriorityHeap:
                   double impurity, double impurity_left,
                   double impurity_right) nogil
     cdef int pop(self, PriorityHeapRecord* res) nogil
+
+    
+#-----------------------------------------------------------------------------#
+#-------------------------- On Demand Work Around ----------------------------#
+#-----------------------------------------------------------------------------#
+
+# =============================================================================
+# PriorityHeap data structure
+# =============================================================================
+
+# A record on the frontier for best-first tree growing
+cdef struct PriorityHeapRecordOnDemand:
+    SIZE_t node_id
+    SIZE_t start
+    SIZE_t end
+    SIZE_t pos
+    SIZE_t depth
+    bint is_leaf
+    double impurity
+    double impurity_left
+    double impurity_right
+    double improvement
+    FeatureConfig* feature_config # pointer to on demand feature configurations
+
+cdef class PriorityHeapOnDemand:
+    cdef SIZE_t capacity
+    cdef SIZE_t heap_ptr
+    cdef PriorityHeapRecordOnDemand* heap_
+
+    cdef bint is_empty(self) nogil
+    cdef int push(self, SIZE_t node_id, SIZE_t start, SIZE_t end, SIZE_t pos,
+                  SIZE_t depth, bint is_leaf, double improvement,
+                  double impurity, double impurity_left,
+                  double impurity_right, FeatureConfig* feature_config) nogil
+    cdef int pop(self, PriorityHeapRecordOnDemand* res) nogil
+ 
