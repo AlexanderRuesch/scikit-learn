@@ -16,7 +16,7 @@ ctypedef np.npy_float64 DOUBLE_t         # Type of y, sample_weight
 ctypedef np.npy_intp SIZE_t              # Type for indices and counters
 ctypedef np.npy_int32 INT32_t            # Signed 32 bit integer
 ctypedef np.npy_uint32 UINT32_t          # Unsigned 32 bit integer
-
+ctypedef np.npy_int64 INT64_t			 # Signed 64 bit integer
 # =============================================================================
 # Criterion
 # =============================================================================
@@ -86,19 +86,22 @@ cdef struct SplitRecordOnDemand:
     double impurity_right  # Impurity of the right split.
     FeatureConfig* feature_config # pointer to on demand feature configurations
 
-cdef struct FeatureConfig:
-    # Data to rebuild on demand features
-    UINT32_t seed          # seed for rand_int function
-    INT32_t threshold
-    INT32_t offset_x1
-    INT32_t offset_y1
-    INT32_t length_x1
-    INT32_t length_y1
-    INT32_t offset_x2
-    INT32_t offset_y2
-    INT32_t length_x2
-    INT32_t length_y2
+#cdef struct FeatureConfig:
+#    # Data to rebuild on demand features
+#    UINT32_t seed          # seed for rand_int function
+#    INT32_t threshold
+#    INT32_t offset_x1
+#    INT32_t offset_y1
+#    INT32_t length_x1
+#    INT32_t length_y1
+#    INT32_t offset_x2
+#    INT32_t offset_y2
+#    INT32_t length_x2
+#    INT32_t length_y2
 
+cdef struct FeatureConfig:
+    SIZE_t size
+    INT64_t* integer
 
 cdef class Splitter:
     # The splitter searches in the input space for a feature and a threshold
@@ -168,6 +171,7 @@ cdef class Splitter:
 #-----------------------------------------------------------------------------#
 #-------------------------- On Demand Work Around ----------------------------#
 #-----------------------------------------------------------------------------#
+
 cdef class OnDemandBestSplitter:
     # The splitter searches in the input space for a feature and a threshold
     # to split the samples samples[start:end].
@@ -250,19 +254,6 @@ cdef struct Node:
     SIZE_t n_node_samples                # Number of samples at the node
     DOUBLE_t weighted_n_node_samples     # Weighted number of samples at the node
 
-cdef struct Node:
-    # Base storage structure for the nodes in a Tree object
-
-    SIZE_t left_child                    # id of the left child of the node
-    SIZE_t right_child                   # id of the right child of the node
-    SIZE_t feature                       # Feature used for splitting the node
-    DOUBLE_t threshold                   # Threshold value at the node
-    DOUBLE_t impurity                    # Impurity of the node (i.e., the value of the criterion)
-    SIZE_t n_node_samples                # Number of samples at the node
-    DOUBLE_t weighted_n_node_samples     # Weighted number of samples at the node
-    FeatureConfig* feature_config	     # Pointer to on demand feature configuration
-
-
 cdef class Tree:
     # The Tree object is a binary tree structure constructed by the
     # TreeBuilder. The tree structure is used for predictions and
@@ -301,6 +292,7 @@ cdef class Tree:
 #-----------------------------------------------------------------------------#
 #-------------------------- On Demand Work Around ----------------------------#
 #-----------------------------------------------------------------------------#
+
 cdef class OnDemandTree:
     # The Tree object is a binary tree structure constructed by the
     # TreeBuilder. The tree structure is used for predictions and
@@ -327,9 +319,9 @@ cdef class OnDemandTree:
                           SIZE_t feature, FeatureConfig* feature_config, double threshold, double impurity,
                           SIZE_t n_node_samples,
                           double weighted_n_samples) nogil
-    cdef void _resize(self, SIZE_t capacity) except *
-    cdef int _resize_c(self, SIZE_t capacity=*) nogil
 
+    cdef void _resize(self, SIZE_t capacity, SIZE_t size) except *
+    cdef int _resize_c(self, SIZE_t capacity=*, SIZE_t size=*) nogil
     cdef np.ndarray _get_value_ndarray(self)
     cdef np.ndarray _get_node_ndarray(self)
     cdef np.ndarray _get_feat_config_ndarray(self) #sure?
@@ -337,7 +329,6 @@ cdef class OnDemandTree:
     cpdef np.ndarray predict(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para)
     cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para)
     cpdef compute_feature_importances(self, normalize=*)
-    cdef public SIZE_t get_feature_configs_and_nodes(self) nogil
 
 # =============================================================================
 # Tree builder
@@ -364,6 +355,7 @@ cdef class TreeBuilder:
 #-----------------------------------------------------------------------------#
 #-------------------------- On Demand Work Around ----------------------------#
 #-----------------------------------------------------------------------------#
+
 cdef class OnDemandTreeBuilder:
     # The TreeBuilder recursively builds a Tree object from training samples,
     # using a Splitter object for splitting internal nodes and assigning
@@ -389,12 +381,15 @@ cdef class OnDemandTreeBuilder:
 cdef class OnDemandFeature:
     cdef  public  double     compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
     cdef  public  SIZE_t     get_n_features(self) nogil
-    cpdef         SIZE_t     get_n_features_gil(self)
+    cpdef public  SIZE_t     get_n_features_gil(self)
+    cdef  public  SIZE_t     get_storage_size(self) nogil
+    cpdef public  SIZE_t     get_storage_size_gil(self)
+    cdef          SIZE_t     _storage_size
     cdef          double     _feature
     cdef          SIZE_t     n_new_features
     cdef  public  SIZE_t     init_split(self, FeatureConfig* feat_con = *) nogil
     cdef  public  SIZE_t     init_tree(self, FeatureConfig* feat_con = *) nogil
-    cdef          UINT32_t   _counter
+    cdef          SIZE_t     _counter
     cdef          SIZE_t*    _shape
     cdef          DOUBLE_t*  _image_data
     cdef          SIZE_t     n_samples
