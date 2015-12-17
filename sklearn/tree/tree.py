@@ -15,6 +15,7 @@ from __future__ import division
 
 import numbers
 import numpy as np
+import datetime
 from abc import ABCMeta, abstractmethod
 
 from ..base import BaseEstimator, ClassifierMixin, ClassifierMixinOnDemand, RegressorMixin
@@ -999,14 +1000,12 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
                              " input n_features is %s "
                              % (self.n_features_, n_features))
         proba = self.tree_.predict(X, func_para)
-        #print "proba before: " +str(proba)
         
         if self.n_outputs_ == 1:
             proba = proba[:, :self.n_classes_]
             normalizer = proba.sum(axis=1)[:, np.newaxis]
             normalizer[normalizer == 0.0] = 1.0
             proba /= normalizer
-#             print "proba after: " +str(proba)
             return proba
 
         else:
@@ -1018,7 +1017,6 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
                 normalizer[normalizer == 0.0] = 1.0
                 proba_k /= normalizer
                 all_proba.append(proba_k)
-            #print "all_proba: " +str(all_proba)
             return all_proba
 
     def predict_log_proba(self, X, func_para):
@@ -1077,6 +1075,8 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
         self : object
             Returns self.
         """
+        #print "new tree    "
+        
         random_state = check_random_state(self.random_state)
         # Convert data
         if check_input:
@@ -1127,28 +1127,28 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
         if isinstance(self.max_features, six.string_types):
             if self.max_features == "auto":
                 if is_classification:
-                    max_features = max(1, int(np.sqrt(self.n_features_)))
+                    max_features = max(1, int(np.sqrt(X.shape[1])))
                 else:
                     max_features = self.n_features_
             elif self.max_features == "sqrt":
-                max_features = max(1, int(np.sqrt(self.n_features_)))
+                max_features = max(1, int(np.sqrt(X.shape[1])))
             elif self.max_features == "log2":
-                max_features = max(1, int(np.log2(self.n_features_)))
+                max_features = max(1, int(np.log2(X.shape[1])))
             else:
                 raise ValueError(
                     'Invalid value for max_features. Allowed string '
                     'values are "auto", "sqrt" or "log2".')
         elif self.max_features is None:
-            max_features = self.n_features_
+            max_features = X.shape[1]
         elif isinstance(self.max_features, (numbers.Integral, np.integer)):
             max_features = self.max_features
         else:  # float
             if self.max_features > 0.0:
-                max_features = max(1, int(self.max_features * self.n_features_))
+                max_features = max(1, int(self.max_features * X.shape[1]))
             else:
                 max_features = 0
 
-        self.max_features_ = max_features
+        self.max_features_ = max_features + func_para.get_n_features_gil()
 
         if len(y) != n_samples:
             raise ValueError("Number of labels=%d does not match "
@@ -1162,8 +1162,6 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
         if max_depth <= 0:
             raise ValueError("max_depth must be greater than zero. ")
         if not (0 < max_features <= self.n_features_):
-#             print "max_feature: " +str(max_features)
-#             print "n_features: " +str(self.n_features_)
             raise ValueError("max_features must be in (0, n_features]")
         if not isinstance(max_leaf_nodes, (numbers.Integral, np.integer)):
             raise ValueError("max_leaf_nodes must be integral number but was "
@@ -1214,6 +1212,7 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
                                                 min_weight_leaf,
                                                 random_state)
         
+        print "new tree: " + str(datetime.datetime.now())
         self.tree_ = OnDemandTree(self.n_features_, self.n_classes_, self.n_outputs_)
         # Use BestFirst if max_leaf_nodes given; use DepthFirst otherwise
         if max_leaf_nodes < 0:
@@ -1267,7 +1266,7 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
                              % (self.n_features_, n_features))
 
         proba = self.tree_.predict(X, func_para)
-#         print "proba: " +str(proba)
+
         # Classification
         if isinstance(self, ClassifierMixin):
             if self.n_outputs_ == 1:
@@ -1280,7 +1279,6 @@ class OnDemandDecisionTreeClassifier(BaseDecisionTreeOnDemand, ClassifierMixinOn
                     predictions[:, k] = self.classes_[k].take(
                         np.argmax(proba[:, k], axis=1),
                         axis=0)
-#                 print "predictions: " + str(predictions)
                 return predictions
 
         # Regression

@@ -541,7 +541,7 @@ typedef volatile __pyx_atomic_int_type __pyx_atomic_int;
 #endif
 
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":723
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":723
  * # in Cython to enable them only on the right systems.
  * 
  * ctypedef npy_int8       int8_t             # <<<<<<<<<<<<<<
@@ -550,7 +550,7 @@ typedef volatile __pyx_atomic_int_type __pyx_atomic_int;
  */
 typedef npy_int8 __pyx_t_5numpy_int8_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":724
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":724
  * 
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t             # <<<<<<<<<<<<<<
@@ -559,7 +559,7 @@ typedef npy_int8 __pyx_t_5numpy_int8_t;
  */
 typedef npy_int16 __pyx_t_5numpy_int16_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":725
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":725
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t             # <<<<<<<<<<<<<<
@@ -568,7 +568,7 @@ typedef npy_int16 __pyx_t_5numpy_int16_t;
  */
 typedef npy_int32 __pyx_t_5numpy_int32_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":726
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":726
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t
  * ctypedef npy_int64      int64_t             # <<<<<<<<<<<<<<
@@ -577,7 +577,7 @@ typedef npy_int32 __pyx_t_5numpy_int32_t;
  */
 typedef npy_int64 __pyx_t_5numpy_int64_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":730
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":730
  * #ctypedef npy_int128     int128_t
  * 
  * ctypedef npy_uint8      uint8_t             # <<<<<<<<<<<<<<
@@ -586,7 +586,7 @@ typedef npy_int64 __pyx_t_5numpy_int64_t;
  */
 typedef npy_uint8 __pyx_t_5numpy_uint8_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":731
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":731
  * 
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t             # <<<<<<<<<<<<<<
@@ -595,7 +595,7 @@ typedef npy_uint8 __pyx_t_5numpy_uint8_t;
  */
 typedef npy_uint16 __pyx_t_5numpy_uint16_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":732
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":732
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t             # <<<<<<<<<<<<<<
@@ -604,7 +604,7 @@ typedef npy_uint16 __pyx_t_5numpy_uint16_t;
  */
 typedef npy_uint32 __pyx_t_5numpy_uint32_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":733
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":733
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t
  * ctypedef npy_uint64     uint64_t             # <<<<<<<<<<<<<<
@@ -613,7 +613,7 @@ typedef npy_uint32 __pyx_t_5numpy_uint32_t;
  */
 typedef npy_uint64 __pyx_t_5numpy_uint64_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":737
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":737
  * #ctypedef npy_uint128    uint128_t
  * 
  * ctypedef npy_float32    float32_t             # <<<<<<<<<<<<<<
@@ -622,7 +622,7 @@ typedef npy_uint64 __pyx_t_5numpy_uint64_t;
  */
 typedef npy_float32 __pyx_t_5numpy_float32_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":738
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":738
  * 
  * ctypedef npy_float32    float32_t
  * ctypedef npy_float64    float64_t             # <<<<<<<<<<<<<<
@@ -631,7 +631,7 @@ typedef npy_float32 __pyx_t_5numpy_float32_t;
  */
 typedef npy_float64 __pyx_t_5numpy_float64_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":747
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":747
  * # The int types are mapped a bit surprising --
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t             # <<<<<<<<<<<<<<
@@ -640,7 +640,7 @@ typedef npy_float64 __pyx_t_5numpy_float64_t;
  */
 typedef npy_long __pyx_t_5numpy_int_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":748
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":748
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t             # <<<<<<<<<<<<<<
@@ -649,7 +649,7 @@ typedef npy_long __pyx_t_5numpy_int_t;
  */
 typedef npy_longlong __pyx_t_5numpy_long_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":749
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":749
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t
  * ctypedef npy_longlong   longlong_t             # <<<<<<<<<<<<<<
@@ -658,7 +658,7 @@ typedef npy_longlong __pyx_t_5numpy_long_t;
  */
 typedef npy_longlong __pyx_t_5numpy_longlong_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":751
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":751
  * ctypedef npy_longlong   longlong_t
  * 
  * ctypedef npy_ulong      uint_t             # <<<<<<<<<<<<<<
@@ -667,7 +667,7 @@ typedef npy_longlong __pyx_t_5numpy_longlong_t;
  */
 typedef npy_ulong __pyx_t_5numpy_uint_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":752
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":752
  * 
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t             # <<<<<<<<<<<<<<
@@ -676,7 +676,7 @@ typedef npy_ulong __pyx_t_5numpy_uint_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":753
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":753
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t
  * ctypedef npy_ulonglong  ulonglong_t             # <<<<<<<<<<<<<<
@@ -685,7 +685,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":755
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":755
  * ctypedef npy_ulonglong  ulonglong_t
  * 
  * ctypedef npy_intp       intp_t             # <<<<<<<<<<<<<<
@@ -694,7 +694,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
  */
 typedef npy_intp __pyx_t_5numpy_intp_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":756
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":756
  * 
  * ctypedef npy_intp       intp_t
  * ctypedef npy_uintp      uintp_t             # <<<<<<<<<<<<<<
@@ -703,7 +703,7 @@ typedef npy_intp __pyx_t_5numpy_intp_t;
  */
 typedef npy_uintp __pyx_t_5numpy_uintp_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":758
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":758
  * ctypedef npy_uintp      uintp_t
  * 
  * ctypedef npy_double     float_t             # <<<<<<<<<<<<<<
@@ -712,7 +712,7 @@ typedef npy_uintp __pyx_t_5numpy_uintp_t;
  */
 typedef npy_double __pyx_t_5numpy_float_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":759
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":759
  * 
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t             # <<<<<<<<<<<<<<
@@ -721,7 +721,7 @@ typedef npy_double __pyx_t_5numpy_float_t;
  */
 typedef npy_double __pyx_t_5numpy_double_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":760
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":760
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t
  * ctypedef npy_longdouble longdouble_t             # <<<<<<<<<<<<<<
@@ -730,8 +730,8 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "sklearn/tree/_tree.pxd":14
- * cimport numpy as np
+/* "sklearn/tree/_tree.pxd":15
+ * from libc.stdio cimport * #needs to be deleted!!!
  * 
  * ctypedef np.npy_float32 DTYPE_t          # Type of X             # <<<<<<<<<<<<<<
  * ctypedef np.npy_float64 DOUBLE_t         # Type of y, sample_weight
@@ -739,7 +739,7 @@ typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
  */
 typedef npy_float32 __pyx_t_7sklearn_4tree_5_tree_DTYPE_t;
 
-/* "sklearn/tree/_tree.pxd":15
+/* "sklearn/tree/_tree.pxd":16
  * 
  * ctypedef np.npy_float32 DTYPE_t          # Type of X
  * ctypedef np.npy_float64 DOUBLE_t         # Type of y, sample_weight             # <<<<<<<<<<<<<<
@@ -748,7 +748,7 @@ typedef npy_float32 __pyx_t_7sklearn_4tree_5_tree_DTYPE_t;
  */
 typedef npy_float64 __pyx_t_7sklearn_4tree_5_tree_DOUBLE_t;
 
-/* "sklearn/tree/_tree.pxd":16
+/* "sklearn/tree/_tree.pxd":17
  * ctypedef np.npy_float32 DTYPE_t          # Type of X
  * ctypedef np.npy_float64 DOUBLE_t         # Type of y, sample_weight
  * ctypedef np.npy_intp SIZE_t              # Type for indices and counters             # <<<<<<<<<<<<<<
@@ -757,7 +757,7 @@ typedef npy_float64 __pyx_t_7sklearn_4tree_5_tree_DOUBLE_t;
  */
 typedef npy_intp __pyx_t_7sklearn_4tree_5_tree_SIZE_t;
 
-/* "sklearn/tree/_tree.pxd":17
+/* "sklearn/tree/_tree.pxd":18
  * ctypedef np.npy_float64 DOUBLE_t         # Type of y, sample_weight
  * ctypedef np.npy_intp SIZE_t              # Type for indices and counters
  * ctypedef np.npy_int32 INT32_t            # Signed 32 bit integer             # <<<<<<<<<<<<<<
@@ -766,7 +766,7 @@ typedef npy_intp __pyx_t_7sklearn_4tree_5_tree_SIZE_t;
  */
 typedef npy_int32 __pyx_t_7sklearn_4tree_5_tree_INT32_t;
 
-/* "sklearn/tree/_tree.pxd":18
+/* "sklearn/tree/_tree.pxd":19
  * ctypedef np.npy_intp SIZE_t              # Type for indices and counters
  * ctypedef np.npy_int32 INT32_t            # Signed 32 bit integer
  * ctypedef np.npy_uint32 UINT32_t          # Unsigned 32 bit integer             # <<<<<<<<<<<<<<
@@ -775,7 +775,7 @@ typedef npy_int32 __pyx_t_7sklearn_4tree_5_tree_INT32_t;
  */
 typedef npy_uint32 __pyx_t_7sklearn_4tree_5_tree_UINT32_t;
 
-/* "sklearn/tree/_tree.pxd":19
+/* "sklearn/tree/_tree.pxd":20
  * ctypedef np.npy_int32 INT32_t            # Signed 32 bit integer
  * ctypedef np.npy_uint32 UINT32_t          # Unsigned 32 bit integer
  * ctypedef np.npy_int64 INT64_t			 # Signed 64 bit integer             # <<<<<<<<<<<<<<
@@ -863,7 +863,7 @@ struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":762
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":762
  * ctypedef npy_longdouble longdouble_t
  * 
  * ctypedef npy_cfloat      cfloat_t             # <<<<<<<<<<<<<<
@@ -872,7 +872,7 @@ struct __pyx_memoryviewslice_obj;
  */
 typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":763
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":763
  * 
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t             # <<<<<<<<<<<<<<
@@ -881,7 +881,7 @@ typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":764
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":764
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t
  * ctypedef npy_clongdouble clongdouble_t             # <<<<<<<<<<<<<<
@@ -890,7 +890,7 @@ typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
  */
 typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":766
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":766
  * ctypedef npy_clongdouble clongdouble_t
  * 
  * ctypedef npy_cdouble     complex_t             # <<<<<<<<<<<<<<
@@ -909,10 +909,11 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_12OnDemandTree_compute_feature_impor
 struct __pyx_opt_args_7sklearn_4tree_5_tree_11TreeBuilder_build;
 struct __pyx_opt_args_7sklearn_4tree_5_tree_19OnDemandTreeBuilder_build;
 struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_compute_sample;
+struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_full_image;
 struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_split;
 struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_tree;
 
-/* "sklearn/tree/_tree.pxd":66
+/* "sklearn/tree/_tree.pxd":67
  * # =============================================================================
  * 
  * cdef struct SplitRecord:             # <<<<<<<<<<<<<<
@@ -928,7 +929,7 @@ struct __pyx_t_7sklearn_4tree_5_tree_SplitRecord {
   double impurity_right;
 };
 
-/* "sklearn/tree/_tree.pxd":77
+/* "sklearn/tree/_tree.pxd":78
  *     double impurity_right  # Impurity of the right split.
  * 
  * cdef struct SplitRecordOnDemand:             # <<<<<<<<<<<<<<
@@ -945,8 +946,8 @@ struct __pyx_t_7sklearn_4tree_5_tree_SplitRecordOnDemand {
   struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig *feature_config;
 };
 
-/* "sklearn/tree/_tree.pxd":102
- * #    INT32_t length_y2
+/* "sklearn/tree/_tree.pxd":91
+ * 
  * 
  * cdef struct FeatureConfig:             # <<<<<<<<<<<<<<
  *     SIZE_t size
@@ -957,7 +958,7 @@ struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig {
   __pyx_t_7sklearn_4tree_5_tree_INT64_t *integer;
 };
 
-/* "sklearn/tree/_tree.pxd":246
+/* "sklearn/tree/_tree.pxd":235
  * # =============================================================================
  * 
  * cdef struct Node:             # <<<<<<<<<<<<<<
@@ -974,7 +975,7 @@ struct __pyx_t_7sklearn_4tree_5_tree_Node {
   __pyx_t_7sklearn_4tree_5_tree_DOUBLE_t weighted_n_node_samples;
 };
 
-/* "sklearn/tree/_tree.pxd":283
+/* "sklearn/tree/_tree.pxd":272
  *                           double weighted_n_samples) nogil
  *     cdef void _resize(self, SIZE_t capacity) except *
  *     cdef int _resize_c(self, SIZE_t capacity=*) nogil             # <<<<<<<<<<<<<<
@@ -986,7 +987,7 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_4Tree__resize_c {
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t capacity;
 };
 
-/* "sklearn/tree/_tree.pxd":290
+/* "sklearn/tree/_tree.pxd":279
  *     cpdef np.ndarray predict(self, np.ndarray[DTYPE_t, ndim=2] X)
  *     cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X)
  *     cpdef compute_feature_importances(self, normalize=*)             # <<<<<<<<<<<<<<
@@ -998,7 +999,7 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_4Tree_compute_feature_importances {
   PyObject *normalize;
 };
 
-/* "sklearn/tree/_tree.pxd":324
+/* "sklearn/tree/_tree.pxd":313
  * 
  *     cdef void _resize(self, SIZE_t capacity, SIZE_t size) except *
  *     cdef int _resize_c(self, SIZE_t capacity=*, SIZE_t size=*) nogil             # <<<<<<<<<<<<<<
@@ -1011,7 +1012,7 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_12OnDemandTree__resize_c {
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t size;
 };
 
-/* "sklearn/tree/_tree.pxd":331
+/* "sklearn/tree/_tree.pxd":320
  *     cpdef np.ndarray predict(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para)
  *     cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para)
  *     cpdef compute_feature_importances(self, normalize=*)             # <<<<<<<<<<<<<<
@@ -1023,7 +1024,7 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_12OnDemandTree_compute_feature_impor
   PyObject *normalize;
 };
 
-/* "sklearn/tree/_tree.pxd":352
+/* "sklearn/tree/_tree.pxd":341
  *     cdef SIZE_t max_depth           # Maximal tree depth
  * 
  *     cpdef build(self, Tree tree, np.ndarray X, np.ndarray y,             # <<<<<<<<<<<<<<
@@ -1035,7 +1036,7 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_11TreeBuilder_build {
   PyArrayObject *sample_weight;
 };
 
-/* "sklearn/tree/_tree.pxd":374
+/* "sklearn/tree/_tree.pxd":363
  *     cdef SIZE_t max_depth           # Maximal tree depth
  * 
  *     cpdef build(self, OnDemandTree tree, np.ndarray X, OnDemandFeature func_para, np.ndarray y,             # <<<<<<<<<<<<<<
@@ -1047,12 +1048,12 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_19OnDemandTreeBuilder_build {
   PyArrayObject *sample_weight;
 };
 
-/* "sklearn/tree/_tree.pxd":382
+/* "sklearn/tree/_tree.pxd":371
  * 
  * cdef class OnDemandFeature:
  *     cdef  public  double     compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil             # <<<<<<<<<<<<<<
+ *     cdef  public  double     full_image(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
  *     cdef  public  SIZE_t     get_n_features(self) nogil
- *     cpdef public  SIZE_t     get_n_features_gil(self)
  */
 struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_compute_sample {
   int __pyx_n;
@@ -1061,7 +1062,21 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_compute_sample {
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t is_prediction;
 };
 
-/* "sklearn/tree/_tree.pxd":390
+/* "sklearn/tree/_tree.pxd":372
+ * cdef class OnDemandFeature:
+ *     cdef  public  double     compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
+ *     cdef  public  double     full_image(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil             # <<<<<<<<<<<<<<
+ *     cdef  public  SIZE_t     get_n_features(self) nogil
+ *     cpdef public  SIZE_t     get_n_features_gil(self)
+ */
+struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_full_image {
+  int __pyx_n;
+  struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig *feat_con;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t sample_idx;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t is_prediction;
+};
+
+/* "sklearn/tree/_tree.pxd":380
  *     cdef          double     _feature
  *     cdef          SIZE_t     n_new_features
  *     cdef  public  SIZE_t     init_split(self, FeatureConfig* feat_con = *) nogil             # <<<<<<<<<<<<<<
@@ -1073,7 +1088,7 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_split {
   struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig *feat_con;
 };
 
-/* "sklearn/tree/_tree.pxd":391
+/* "sklearn/tree/_tree.pxd":381
  *     cdef          SIZE_t     n_new_features
  *     cdef  public  SIZE_t     init_split(self, FeatureConfig* feat_con = *) nogil
  *     cdef  public  SIZE_t     init_tree(self, FeatureConfig* feat_con = *) nogil             # <<<<<<<<<<<<<<
@@ -1085,7 +1100,7 @@ struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_tree {
   struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig *feat_con;
 };
 
-/* "sklearn/tree/_tree.pxd":24
+/* "sklearn/tree/_tree.pxd":25
  * # =============================================================================
  * 
  * cdef class Criterion:             # <<<<<<<<<<<<<<
@@ -1111,7 +1126,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_Criterion {
 };
 
 
-/* "sklearn/tree/_tree.pxd":106
+/* "sklearn/tree/_tree.pxd":95
  *     INT64_t* integer
  * 
  * cdef class Splitter:             # <<<<<<<<<<<<<<
@@ -1146,7 +1161,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_Splitter {
 };
 
 
-/* "sklearn/tree/_tree.pxd":175
+/* "sklearn/tree/_tree.pxd":164
  * #-----------------------------------------------------------------------------#
  * 
  * cdef class OnDemandBestSplitter:             # <<<<<<<<<<<<<<
@@ -1182,7 +1197,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandBestSplitter {
 };
 
 
-/* "sklearn/tree/_tree.pxd":257
+/* "sklearn/tree/_tree.pxd":246
  *     DOUBLE_t weighted_n_node_samples     # Weighted number of samples at the node
  * 
  * cdef class Tree:             # <<<<<<<<<<<<<<
@@ -1205,7 +1220,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_Tree {
 };
 
 
-/* "sklearn/tree/_tree.pxd":296
+/* "sklearn/tree/_tree.pxd":285
  * #-----------------------------------------------------------------------------#
  * 
  * cdef class OnDemandTree:             # <<<<<<<<<<<<<<
@@ -1229,7 +1244,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTree {
 };
 
 
-/* "sklearn/tree/_tree.pxd":337
+/* "sklearn/tree/_tree.pxd":326
  * # =============================================================================
  * 
  * cdef class TreeBuilder:             # <<<<<<<<<<<<<<
@@ -1247,7 +1262,7 @@ struct __pyx_obj_7sklearn_4tree_5_tree_TreeBuilder {
 };
 
 
-/* "sklearn/tree/_tree.pxd":359
+/* "sklearn/tree/_tree.pxd":348
  * #-----------------------------------------------------------------------------#
  * 
  * cdef class OnDemandTreeBuilder:             # <<<<<<<<<<<<<<
@@ -1265,12 +1280,12 @@ struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTreeBuilder {
 };
 
 
-/* "sklearn/tree/_tree.pxd":381
+/* "sklearn/tree/_tree.pxd":370
  * # =============================================================================
  * 
  * cdef class OnDemandFeature:             # <<<<<<<<<<<<<<
  *     cdef  public  double     compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
- *     cdef  public  SIZE_t     get_n_features(self) nogil
+ *     cdef  public  double     full_image(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
  */
 struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature {
   PyObject_HEAD
@@ -1280,7 +1295,13 @@ struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature {
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t n_new_features;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t _counter;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t *_shape;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t *_n_background_samples;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t _n_background_samples_total;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t _image_size;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t _sample_per_set;
   __pyx_t_7sklearn_4tree_5_tree_DOUBLE_t *_image_data;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t *_ID_alloc;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t _is_masked;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t n_samples;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t n_dim;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t n_features;
@@ -1289,6 +1310,8 @@ struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature {
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t _max_box_size;
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t _min_box_size;
   __pyx_t_7sklearn_4tree_5_tree_UINT32_t _seed;
+  struct __pyx_t_7sklearn_4tree_5_tree_FeatureConfig *feature_configs;
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t _max_offset_as_part_of_shape;
 };
 
 
@@ -1369,7 +1392,7 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "sklearn/tree/_tree.pxd":24
+/* "sklearn/tree/_tree.pxd":25
  * # =============================================================================
  * 
  * cdef class Criterion:             # <<<<<<<<<<<<<<
@@ -1389,7 +1412,7 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Criterion {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Criterion *__pyx_vtabptr_7sklearn_4tree_5_tree_Criterion;
 
 
-/* "sklearn/tree/_tree.pxd":106
+/* "sklearn/tree/_tree.pxd":95
  *     INT64_t* integer
  * 
  * cdef class Splitter:             # <<<<<<<<<<<<<<
@@ -1407,7 +1430,7 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Splitter {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Splitter *__pyx_vtabptr_7sklearn_4tree_5_tree_Splitter;
 
 
-/* "sklearn/tree/_tree.pxd":175
+/* "sklearn/tree/_tree.pxd":164
  * #-----------------------------------------------------------------------------#
  * 
  * cdef class OnDemandBestSplitter:             # <<<<<<<<<<<<<<
@@ -1425,7 +1448,7 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandBestSplitter {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandBestSplitter *__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandBestSplitter;
 
 
-/* "sklearn/tree/_tree.pxd":257
+/* "sklearn/tree/_tree.pxd":246
  *     DOUBLE_t weighted_n_node_samples     # Weighted number of samples at the node
  * 
  * cdef class Tree:             # <<<<<<<<<<<<<<
@@ -1446,7 +1469,7 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Tree {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Tree *__pyx_vtabptr_7sklearn_4tree_5_tree_Tree;
 
 
-/* "sklearn/tree/_tree.pxd":296
+/* "sklearn/tree/_tree.pxd":285
  * #-----------------------------------------------------------------------------#
  * 
  * cdef class OnDemandTree:             # <<<<<<<<<<<<<<
@@ -1468,7 +1491,7 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTree {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTree *__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTree;
 
 
-/* "sklearn/tree/_tree.pxd":337
+/* "sklearn/tree/_tree.pxd":326
  * # =============================================================================
  * 
  * cdef class TreeBuilder:             # <<<<<<<<<<<<<<
@@ -1482,7 +1505,7 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_TreeBuilder {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_TreeBuilder *__pyx_vtabptr_7sklearn_4tree_5_tree_TreeBuilder;
 
 
-/* "sklearn/tree/_tree.pxd":359
+/* "sklearn/tree/_tree.pxd":348
  * #-----------------------------------------------------------------------------#
  * 
  * cdef class OnDemandTreeBuilder:             # <<<<<<<<<<<<<<
@@ -1496,22 +1519,24 @@ struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTreeBuilder {
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTreeBuilder *__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTreeBuilder;
 
 
-/* "sklearn/tree/_tree.pxd":381
+/* "sklearn/tree/_tree.pxd":370
  * # =============================================================================
  * 
  * cdef class OnDemandFeature:             # <<<<<<<<<<<<<<
  *     cdef  public  double     compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
- *     cdef  public  SIZE_t     get_n_features(self) nogil
+ *     cdef  public  double     full_image(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
  */
 
 struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandFeature {
   double (*compute_sample)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_compute_sample *__pyx_optional_args);
+  double (*full_image)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_full_image *__pyx_optional_args);
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*get_n_features)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *);
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*get_n_features_gil)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, int __pyx_skip_dispatch);
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*get_storage_size)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *);
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*get_storage_size_gil)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, int __pyx_skip_dispatch);
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*init_split)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_split *__pyx_optional_args);
   __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*init_tree)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *, struct __pyx_opt_args_7sklearn_4tree_5_tree_15OnDemandFeature_init_tree *__pyx_optional_args);
+  __pyx_t_7sklearn_4tree_5_tree_SIZE_t (*_generate_feature_config_matrix)(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature *);
 };
 static struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandFeature *__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandFeature;
 
@@ -2300,7 +2325,7 @@ static char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.ar
 static char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
 static char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
-static char __pyx_k_share_data_humbug2_ruesch_pytho[] = "/share/data_humbug2/ruesch/pythonWorkspace/scikit-learn/sklearn/ensemble/_gradient_boosting.pyx";
+static char __pyx_k_data_kermit1_ruesch_pythonWorks[] = "/data_kermit1/ruesch/pythonWorkspace/scikit-learn/sklearn/ensemble/_gradient_boosting.pyx";
 static char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
 static char __pyx_k_All_dimensions_preceding_dimensi[] = "All dimensions preceding dimension %d must be indexed and not sliced";
 static char __pyx_k_Buffer_view_does_not_expose_stri[] = "Buffer view does not expose strides";
@@ -2353,6 +2378,7 @@ static PyObject *__pyx_n_u_c;
 static PyObject *__pyx_n_s_class;
 static PyObject *__pyx_kp_s_contiguous_and_direct;
 static PyObject *__pyx_kp_s_contiguous_and_indirect;
+static PyObject *__pyx_kp_s_data_kermit1_ruesch_pythonWorks;
 static PyObject *__pyx_n_s_dtype;
 static PyObject *__pyx_n_s_dtype_is_object;
 static PyObject *__pyx_n_s_enumerate;
@@ -2408,7 +2434,6 @@ static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_sample_mask;
 static PyObject *__pyx_n_s_scale;
 static PyObject *__pyx_n_s_shape;
-static PyObject *__pyx_kp_s_share_data_humbug2_ruesch_pytho;
 static PyObject *__pyx_n_s_size;
 static PyObject *__pyx_n_s_sklearn_ensemble__gradient_boost;
 static PyObject *__pyx_n_s_stage;
@@ -4274,7 +4299,7 @@ static PyObject *__pyx_pf_7sklearn_8ensemble_18_gradient_boosting_6_random_sampl
   return __pyx_r;
 }
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":194
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":194
  *         # experimental exception made for __getbuffer__ and __releasebuffer__
  *         # -- the details of this may change.
  *         def __getbuffer__(ndarray self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
@@ -4324,7 +4349,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __Pyx_GIVEREF(__pyx_v_info->obj);
   }
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":200
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":200
  *             # of flags
  * 
  *             if info == NULL: return             # <<<<<<<<<<<<<<
@@ -4337,7 +4362,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L0;
   }
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":203
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":203
  * 
  *             cdef int copy_shape, i, ndim
  *             cdef int endian_detector = 1             # <<<<<<<<<<<<<<
@@ -4346,7 +4371,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_endian_detector = 1;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":204
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":204
  *             cdef int copy_shape, i, ndim
  *             cdef int endian_detector = 1
  *             cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)             # <<<<<<<<<<<<<<
@@ -4355,7 +4380,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_little_endian = ((((char *)(&__pyx_v_endian_detector))[0]) != 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":206
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":206
  *             cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)
  * 
  *             ndim = PyArray_NDIM(self)             # <<<<<<<<<<<<<<
@@ -4364,7 +4389,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_ndim = PyArray_NDIM(__pyx_v_self);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":208
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":208
  *             ndim = PyArray_NDIM(self)
  * 
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -4374,7 +4399,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = (((sizeof(npy_intp)) != (sizeof(Py_ssize_t))) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":209
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":209
  * 
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):
  *                 copy_shape = 1             # <<<<<<<<<<<<<<
@@ -4386,7 +4411,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   /*else*/ {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":211
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":211
  *                 copy_shape = 1
  *             else:
  *                 copy_shape = 0             # <<<<<<<<<<<<<<
@@ -4397,7 +4422,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   __pyx_L4:;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":213
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":213
  *                 copy_shape = 0
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -4411,7 +4436,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L6_bool_binop_done;
   }
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":214
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":214
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_C_CONTIGUOUS)):             # <<<<<<<<<<<<<<
@@ -4423,7 +4448,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_L6_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":215
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":215
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_C_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not C contiguous")             # <<<<<<<<<<<<<<
@@ -4437,7 +4462,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     {__pyx_filename = __pyx_f[1]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":217
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":217
  *                 raise ValueError(u"ndarray is not C contiguous")
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -4451,7 +4476,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L9_bool_binop_done;
   }
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":218
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":218
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_F_CONTIGUOUS)):             # <<<<<<<<<<<<<<
@@ -4463,7 +4488,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_L9_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":219
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":219
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_F_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not Fortran contiguous")             # <<<<<<<<<<<<<<
@@ -4477,7 +4502,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     {__pyx_filename = __pyx_f[1]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":221
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":221
  *                 raise ValueError(u"ndarray is not Fortran contiguous")
  * 
  *             info.buf = PyArray_DATA(self)             # <<<<<<<<<<<<<<
@@ -4486,7 +4511,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->buf = PyArray_DATA(__pyx_v_self);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":222
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":222
  * 
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim             # <<<<<<<<<<<<<<
@@ -4495,7 +4520,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->ndim = __pyx_v_ndim;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":223
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":223
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim
  *             if copy_shape:             # <<<<<<<<<<<<<<
@@ -4505,7 +4530,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = (__pyx_v_copy_shape != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":226
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":226
  *                 # Allocate new buffer for strides and shape info.
  *                 # This is allocated as one block, strides first.
  *                 info.strides = <Py_ssize_t*>stdlib.malloc(sizeof(Py_ssize_t) * <size_t>ndim * 2)             # <<<<<<<<<<<<<<
@@ -4514,7 +4539,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->strides = ((Py_ssize_t *)malloc((((sizeof(Py_ssize_t)) * ((size_t)__pyx_v_ndim)) * 2)));
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":227
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":227
  *                 # This is allocated as one block, strides first.
  *                 info.strides = <Py_ssize_t*>stdlib.malloc(sizeof(Py_ssize_t) * <size_t>ndim * 2)
  *                 info.shape = info.strides + ndim             # <<<<<<<<<<<<<<
@@ -4523,7 +4548,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->shape = (__pyx_v_info->strides + __pyx_v_ndim);
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":228
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":228
  *                 info.strides = <Py_ssize_t*>stdlib.malloc(sizeof(Py_ssize_t) * <size_t>ndim * 2)
  *                 info.shape = info.strides + ndim
  *                 for i in range(ndim):             # <<<<<<<<<<<<<<
@@ -4534,7 +4559,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
       __pyx_v_i = __pyx_t_5;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":229
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":229
  *                 info.shape = info.strides + ndim
  *                 for i in range(ndim):
  *                     info.strides[i] = PyArray_STRIDES(self)[i]             # <<<<<<<<<<<<<<
@@ -4543,7 +4568,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
       (__pyx_v_info->strides[__pyx_v_i]) = (PyArray_STRIDES(__pyx_v_self)[__pyx_v_i]);
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":230
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":230
  *                 for i in range(ndim):
  *                     info.strides[i] = PyArray_STRIDES(self)[i]
  *                     info.shape[i] = PyArray_DIMS(self)[i]             # <<<<<<<<<<<<<<
@@ -4556,7 +4581,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   /*else*/ {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":232
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":232
  *                     info.shape[i] = PyArray_DIMS(self)[i]
  *             else:
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)             # <<<<<<<<<<<<<<
@@ -4565,7 +4590,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->strides = ((Py_ssize_t *)PyArray_STRIDES(__pyx_v_self));
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":233
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":233
  *             else:
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)             # <<<<<<<<<<<<<<
@@ -4576,7 +4601,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   __pyx_L11:;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":234
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":234
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)
  *             info.suboffsets = NULL             # <<<<<<<<<<<<<<
@@ -4585,7 +4610,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->suboffsets = NULL;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":235
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":235
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)
  *             info.suboffsets = NULL
  *             info.itemsize = PyArray_ITEMSIZE(self)             # <<<<<<<<<<<<<<
@@ -4594,7 +4619,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->itemsize = PyArray_ITEMSIZE(__pyx_v_self);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":236
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":236
  *             info.suboffsets = NULL
  *             info.itemsize = PyArray_ITEMSIZE(self)
  *             info.readonly = not PyArray_ISWRITEABLE(self)             # <<<<<<<<<<<<<<
@@ -4603,7 +4628,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->readonly = (!(PyArray_ISWRITEABLE(__pyx_v_self) != 0));
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":239
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":239
  * 
  *             cdef int t
  *             cdef char* f = NULL             # <<<<<<<<<<<<<<
@@ -4612,7 +4637,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_f = NULL;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":240
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":240
  *             cdef int t
  *             cdef char* f = NULL
  *             cdef dtype descr = self.descr             # <<<<<<<<<<<<<<
@@ -4624,7 +4649,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_v_descr = ((PyArray_Descr *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":244
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":244
  *             cdef int offset
  * 
  *             cdef bint hasfields = PyDataType_HASFIELDS(descr)             # <<<<<<<<<<<<<<
@@ -4633,7 +4658,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_hasfields = PyDataType_HASFIELDS(__pyx_v_descr);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":246
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":246
  *             cdef bint hasfields = PyDataType_HASFIELDS(descr)
  * 
  *             if not hasfields and not copy_shape:             # <<<<<<<<<<<<<<
@@ -4651,7 +4676,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_L15_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":248
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":248
  *             if not hasfields and not copy_shape:
  *                 # do not call releasebuffer
  *                 info.obj = None             # <<<<<<<<<<<<<<
@@ -4667,7 +4692,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   /*else*/ {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":251
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":251
  *             else:
  *                 # need to call releasebuffer
  *                 info.obj = self             # <<<<<<<<<<<<<<
@@ -4682,7 +4707,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   __pyx_L14:;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":253
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":253
  *                 info.obj = self
  * 
  *             if not hasfields:             # <<<<<<<<<<<<<<
@@ -4692,7 +4717,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = ((!(__pyx_v_hasfields != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":254
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":254
  * 
  *             if not hasfields:
  *                 t = descr.type_num             # <<<<<<<<<<<<<<
@@ -4702,7 +4727,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_4 = __pyx_v_descr->type_num;
     __pyx_v_t = __pyx_t_4;
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":255
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":255
  *             if not hasfields:
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -4722,7 +4747,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     }
     __pyx_L20_next_or:;
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":256
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":256
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):             # <<<<<<<<<<<<<<
@@ -4740,7 +4765,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_L19_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":257
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":257
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -4754,7 +4779,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       {__pyx_filename = __pyx_f[1]; __pyx_lineno = 257; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":274
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":274
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"
  *                 elif t == NPY_OBJECT:      f = "O"             # <<<<<<<<<<<<<<
@@ -4763,7 +4788,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     switch (__pyx_v_t) {
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":258
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":258
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")
  *                 if   t == NPY_BYTE:        f = "b"             # <<<<<<<<<<<<<<
@@ -4774,7 +4799,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_b;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":259
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":259
  *                     raise ValueError(u"Non-native byte order not supported")
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"             # <<<<<<<<<<<<<<
@@ -4785,7 +4810,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_B;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":260
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":260
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  *                 elif t == NPY_SHORT:       f = "h"             # <<<<<<<<<<<<<<
@@ -4796,7 +4821,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_h;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":261
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":261
  *                 elif t == NPY_UBYTE:       f = "B"
  *                 elif t == NPY_SHORT:       f = "h"
  *                 elif t == NPY_USHORT:      f = "H"             # <<<<<<<<<<<<<<
@@ -4807,7 +4832,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_H;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":262
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":262
  *                 elif t == NPY_SHORT:       f = "h"
  *                 elif t == NPY_USHORT:      f = "H"
  *                 elif t == NPY_INT:         f = "i"             # <<<<<<<<<<<<<<
@@ -4818,7 +4843,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_i;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":263
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":263
  *                 elif t == NPY_USHORT:      f = "H"
  *                 elif t == NPY_INT:         f = "i"
  *                 elif t == NPY_UINT:        f = "I"             # <<<<<<<<<<<<<<
@@ -4829,7 +4854,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_I;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":264
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":264
  *                 elif t == NPY_INT:         f = "i"
  *                 elif t == NPY_UINT:        f = "I"
  *                 elif t == NPY_LONG:        f = "l"             # <<<<<<<<<<<<<<
@@ -4840,7 +4865,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_l;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":265
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":265
  *                 elif t == NPY_UINT:        f = "I"
  *                 elif t == NPY_LONG:        f = "l"
  *                 elif t == NPY_ULONG:       f = "L"             # <<<<<<<<<<<<<<
@@ -4851,7 +4876,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_L;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":266
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":266
  *                 elif t == NPY_LONG:        f = "l"
  *                 elif t == NPY_ULONG:       f = "L"
  *                 elif t == NPY_LONGLONG:    f = "q"             # <<<<<<<<<<<<<<
@@ -4862,7 +4887,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_q;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":267
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":267
  *                 elif t == NPY_ULONG:       f = "L"
  *                 elif t == NPY_LONGLONG:    f = "q"
  *                 elif t == NPY_ULONGLONG:   f = "Q"             # <<<<<<<<<<<<<<
@@ -4873,7 +4898,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Q;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":268
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":268
  *                 elif t == NPY_LONGLONG:    f = "q"
  *                 elif t == NPY_ULONGLONG:   f = "Q"
  *                 elif t == NPY_FLOAT:       f = "f"             # <<<<<<<<<<<<<<
@@ -4884,7 +4909,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_f;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":269
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":269
  *                 elif t == NPY_ULONGLONG:   f = "Q"
  *                 elif t == NPY_FLOAT:       f = "f"
  *                 elif t == NPY_DOUBLE:      f = "d"             # <<<<<<<<<<<<<<
@@ -4895,7 +4920,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_d;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":270
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":270
  *                 elif t == NPY_FLOAT:       f = "f"
  *                 elif t == NPY_DOUBLE:      f = "d"
  *                 elif t == NPY_LONGDOUBLE:  f = "g"             # <<<<<<<<<<<<<<
@@ -4906,7 +4931,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_g;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":271
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":271
  *                 elif t == NPY_DOUBLE:      f = "d"
  *                 elif t == NPY_LONGDOUBLE:  f = "g"
  *                 elif t == NPY_CFLOAT:      f = "Zf"             # <<<<<<<<<<<<<<
@@ -4917,7 +4942,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Zf;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":272
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":272
  *                 elif t == NPY_LONGDOUBLE:  f = "g"
  *                 elif t == NPY_CFLOAT:      f = "Zf"
  *                 elif t == NPY_CDOUBLE:     f = "Zd"             # <<<<<<<<<<<<<<
@@ -4928,7 +4953,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Zd;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":273
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":273
  *                 elif t == NPY_CFLOAT:      f = "Zf"
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"             # <<<<<<<<<<<<<<
@@ -4939,7 +4964,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Zg;
       break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":274
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":274
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"
  *                 elif t == NPY_OBJECT:      f = "O"             # <<<<<<<<<<<<<<
@@ -4951,7 +4976,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       default:
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":276
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":276
  *                 elif t == NPY_OBJECT:      f = "O"
  *                 else:
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)             # <<<<<<<<<<<<<<
@@ -4977,7 +5002,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
     }
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":277
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":277
  *                 else:
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *                 info.format = f             # <<<<<<<<<<<<<<
@@ -4986,7 +5011,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->format = __pyx_v_f;
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":278
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":278
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *                 info.format = f
  *                 return             # <<<<<<<<<<<<<<
@@ -4998,7 +5023,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   /*else*/ {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":280
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":280
  *                 return
  *             else:
  *                 info.format = <char*>stdlib.malloc(_buffer_format_string_len)             # <<<<<<<<<<<<<<
@@ -5007,7 +5032,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->format = ((char *)malloc(255));
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":281
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":281
  *             else:
  *                 info.format = <char*>stdlib.malloc(_buffer_format_string_len)
  *                 info.format[0] = c'^' # Native data types, manual alignment             # <<<<<<<<<<<<<<
@@ -5016,7 +5041,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     (__pyx_v_info->format[0]) = '^';
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":282
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":282
  *                 info.format = <char*>stdlib.malloc(_buffer_format_string_len)
  *                 info.format[0] = c'^' # Native data types, manual alignment
  *                 offset = 0             # <<<<<<<<<<<<<<
@@ -5025,7 +5050,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_offset = 0;
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":283
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":283
  *                 info.format[0] = c'^' # Native data types, manual alignment
  *                 offset = 0
  *                 f = _util_dtypestring(descr, info.format + 1,             # <<<<<<<<<<<<<<
@@ -5035,7 +5060,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_7 = __pyx_f_5numpy__util_dtypestring(__pyx_v_descr, (__pyx_v_info->format + 1), (__pyx_v_info->format + 255), (&__pyx_v_offset)); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 283; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_f = __pyx_t_7;
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":286
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":286
  *                                       info.format + _buffer_format_string_len,
  *                                       &offset)
  *                 f[0] = c'\0' # Terminate format string             # <<<<<<<<<<<<<<
@@ -5045,7 +5070,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     (__pyx_v_f[0]) = '\x00';
   }
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":194
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":194
  *         # experimental exception made for __getbuffer__ and __releasebuffer__
  *         # -- the details of this may change.
  *         def __getbuffer__(ndarray self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
@@ -5077,7 +5102,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   return __pyx_r;
 }
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":288
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":288
  *                 f[0] = c'\0' # Terminate format string
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):             # <<<<<<<<<<<<<<
@@ -5101,7 +5126,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__releasebuffer__", 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":289
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":289
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):             # <<<<<<<<<<<<<<
@@ -5111,7 +5136,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __pyx_t_1 = (PyArray_HASFIELDS(__pyx_v_self) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":290
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":290
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):
  *                 stdlib.free(info.format)             # <<<<<<<<<<<<<<
@@ -5123,7 +5148,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   }
   __pyx_L3:;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":291
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":291
  *             if PyArray_HASFIELDS(self):
  *                 stdlib.free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -5133,7 +5158,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __pyx_t_1 = (((sizeof(npy_intp)) != (sizeof(Py_ssize_t))) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":292
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":292
  *                 stdlib.free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):
  *                 stdlib.free(info.strides)             # <<<<<<<<<<<<<<
@@ -5145,7 +5170,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   }
   __pyx_L4:;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":288
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":288
  *                 f[0] = c'\0' # Terminate format string
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):             # <<<<<<<<<<<<<<
@@ -5157,7 +5182,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":768
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":768
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -5174,7 +5199,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew1", 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":769
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":769
  * 
  * cdef inline object PyArray_MultiIterNew1(a):
  *     return PyArray_MultiIterNew(1, <void*>a)             # <<<<<<<<<<<<<<
@@ -5188,7 +5213,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":768
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":768
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -5207,7 +5232,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":771
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":771
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -5224,7 +5249,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew2", 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":772
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":772
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)             # <<<<<<<<<<<<<<
@@ -5238,7 +5263,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":771
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":771
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -5257,7 +5282,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":774
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":774
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -5274,7 +5299,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew3", 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":775
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":775
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)             # <<<<<<<<<<<<<<
@@ -5288,7 +5313,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":774
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":774
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -5307,7 +5332,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":777
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":777
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -5324,7 +5349,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew4", 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":778
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":778
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)             # <<<<<<<<<<<<<<
@@ -5338,7 +5363,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":777
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":777
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -5357,7 +5382,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":780
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":780
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -5374,7 +5399,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew5", 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":781
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":781
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)             # <<<<<<<<<<<<<<
@@ -5388,7 +5413,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":780
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":780
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -5407,7 +5432,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":783
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":783
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline char* _util_dtypestring(dtype descr, char* f, char* end, int* offset) except NULL:             # <<<<<<<<<<<<<<
@@ -5439,7 +5464,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_util_dtypestring", 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":790
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":790
  *     cdef int delta_offset
  *     cdef tuple i
  *     cdef int endian_detector = 1             # <<<<<<<<<<<<<<
@@ -5448,7 +5473,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
   __pyx_v_endian_detector = 1;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":791
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":791
  *     cdef tuple i
  *     cdef int endian_detector = 1
  *     cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)             # <<<<<<<<<<<<<<
@@ -5457,7 +5482,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
   __pyx_v_little_endian = ((((char *)(&__pyx_v_endian_detector))[0]) != 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":794
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":794
  *     cdef tuple fields
  * 
  *     for childname in descr.names:             # <<<<<<<<<<<<<<
@@ -5479,7 +5504,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_childname, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":795
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":795
  * 
  *     for childname in descr.names:
  *         fields = descr.fields[childname]             # <<<<<<<<<<<<<<
@@ -5492,7 +5517,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_fields, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":796
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":796
  *     for childname in descr.names:
  *         fields = descr.fields[childname]
  *         child, new_offset = fields             # <<<<<<<<<<<<<<
@@ -5531,7 +5556,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_new_offset, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":798
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":798
  *         child, new_offset = fields
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:             # <<<<<<<<<<<<<<
@@ -5548,7 +5573,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = ((((__pyx_v_end - __pyx_v_f) - ((int)__pyx_t_5)) < 15) != 0);
     if (__pyx_t_6) {
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":799
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":799
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")             # <<<<<<<<<<<<<<
@@ -5562,7 +5587,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       {__pyx_filename = __pyx_f[1]; __pyx_lineno = 799; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":801
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":801
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")
  * 
  *         if ((child.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -5582,7 +5607,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     __pyx_L8_next_or:;
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":802
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":802
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):             # <<<<<<<<<<<<<<
@@ -5600,7 +5625,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_L7_bool_binop_done:;
     if (__pyx_t_6) {
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":803
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":803
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):
  *             raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -5614,7 +5639,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       {__pyx_filename = __pyx_f[1]; __pyx_lineno = 803; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":813
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":813
  * 
  *         # Output padding bytes
  *         while offset[0] < new_offset:             # <<<<<<<<<<<<<<
@@ -5630,7 +5655,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       if (!__pyx_t_6) break;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":814
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":814
  *         # Output padding bytes
  *         while offset[0] < new_offset:
  *             f[0] = 120 # "x"; pad byte             # <<<<<<<<<<<<<<
@@ -5639,7 +5664,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       (__pyx_v_f[0]) = 120;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":815
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":815
  *         while offset[0] < new_offset:
  *             f[0] = 120 # "x"; pad byte
  *             f += 1             # <<<<<<<<<<<<<<
@@ -5648,7 +5673,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       __pyx_v_f = (__pyx_v_f + 1);
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":816
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":816
  *             f[0] = 120 # "x"; pad byte
  *             f += 1
  *             offset[0] += 1             # <<<<<<<<<<<<<<
@@ -5659,7 +5684,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       (__pyx_v_offset[__pyx_t_8]) = ((__pyx_v_offset[__pyx_t_8]) + 1);
     }
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":818
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":818
  *             offset[0] += 1
  * 
  *         offset[0] += child.itemsize             # <<<<<<<<<<<<<<
@@ -5669,7 +5694,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_8 = 0;
     (__pyx_v_offset[__pyx_t_8]) = ((__pyx_v_offset[__pyx_t_8]) + __pyx_v_child->elsize);
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":820
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":820
  *         offset[0] += child.itemsize
  * 
  *         if not PyDataType_HASFIELDS(child):             # <<<<<<<<<<<<<<
@@ -5679,7 +5704,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = ((!(PyDataType_HASFIELDS(__pyx_v_child) != 0)) != 0);
     if (__pyx_t_6) {
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":821
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":821
  * 
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num             # <<<<<<<<<<<<<<
@@ -5691,7 +5716,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_XDECREF_SET(__pyx_v_t, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":822
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":822
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num
  *             if end - f < 5:             # <<<<<<<<<<<<<<
@@ -5701,7 +5726,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __pyx_t_6 = (((__pyx_v_end - __pyx_v_f) < 5) != 0);
       if (__pyx_t_6) {
 
-        /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":823
+        /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":823
  *             t = child.type_num
  *             if end - f < 5:
  *                 raise RuntimeError(u"Format string allocated too short.")             # <<<<<<<<<<<<<<
@@ -5715,7 +5740,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         {__pyx_filename = __pyx_f[1]; __pyx_lineno = 823; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":826
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":826
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"             # <<<<<<<<<<<<<<
@@ -5733,7 +5758,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":827
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":827
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"             # <<<<<<<<<<<<<<
@@ -5751,7 +5776,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":828
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":828
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"             # <<<<<<<<<<<<<<
@@ -5769,7 +5794,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":829
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":829
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"             # <<<<<<<<<<<<<<
@@ -5787,7 +5812,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":830
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":830
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"
  *             elif t == NPY_INT:         f[0] = 105 #"i"             # <<<<<<<<<<<<<<
@@ -5805,7 +5830,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":831
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":831
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"
  *             elif t == NPY_INT:         f[0] = 105 #"i"
  *             elif t == NPY_UINT:        f[0] =  73 #"I"             # <<<<<<<<<<<<<<
@@ -5823,7 +5848,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":832
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":832
  *             elif t == NPY_INT:         f[0] = 105 #"i"
  *             elif t == NPY_UINT:        f[0] =  73 #"I"
  *             elif t == NPY_LONG:        f[0] = 108 #"l"             # <<<<<<<<<<<<<<
@@ -5841,7 +5866,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":833
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":833
  *             elif t == NPY_UINT:        f[0] =  73 #"I"
  *             elif t == NPY_LONG:        f[0] = 108 #"l"
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"             # <<<<<<<<<<<<<<
@@ -5859,7 +5884,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":834
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":834
  *             elif t == NPY_LONG:        f[0] = 108 #"l"
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"             # <<<<<<<<<<<<<<
@@ -5877,7 +5902,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":835
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":835
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"             # <<<<<<<<<<<<<<
@@ -5895,7 +5920,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":836
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":836
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"             # <<<<<<<<<<<<<<
@@ -5913,7 +5938,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":837
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":837
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"             # <<<<<<<<<<<<<<
@@ -5931,7 +5956,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":838
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":838
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"             # <<<<<<<<<<<<<<
@@ -5949,7 +5974,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":839
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":839
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf             # <<<<<<<<<<<<<<
@@ -5969,7 +5994,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":840
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":840
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd             # <<<<<<<<<<<<<<
@@ -5989,7 +6014,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":841
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":841
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd
  *             elif t == NPY_CLONGDOUBLE: f[0] = 90; f[1] = 103; f += 1 # Zg             # <<<<<<<<<<<<<<
@@ -6009,7 +6034,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":842
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":842
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd
  *             elif t == NPY_CLONGDOUBLE: f[0] = 90; f[1] = 103; f += 1 # Zg
  *             elif t == NPY_OBJECT:      f[0] = 79 #"O"             # <<<<<<<<<<<<<<
@@ -6028,7 +6053,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       }
       /*else*/ {
 
-        /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":844
+        /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":844
  *             elif t == NPY_OBJECT:      f[0] = 79 #"O"
  *             else:
  *                 raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)             # <<<<<<<<<<<<<<
@@ -6051,7 +6076,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       }
       __pyx_L15:;
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":845
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":845
  *             else:
  *                 raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *             f += 1             # <<<<<<<<<<<<<<
@@ -6063,7 +6088,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     /*else*/ {
 
-      /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":849
+      /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":849
  *             # Cython ignores struct boundary information ("T{...}"),
  *             # so don't output it
  *             f = _util_dtypestring(child, f, end, offset)             # <<<<<<<<<<<<<<
@@ -6075,7 +6100,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     __pyx_L13:;
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":794
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":794
  *     cdef tuple fields
  * 
  *     for childname in descr.names:             # <<<<<<<<<<<<<<
@@ -6085,7 +6110,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":850
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":850
  *             # so don't output it
  *             f = _util_dtypestring(child, f, end, offset)
  *     return f             # <<<<<<<<<<<<<<
@@ -6095,7 +6120,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   __pyx_r = __pyx_v_f;
   goto __pyx_L0;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":783
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":783
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline char* _util_dtypestring(dtype descr, char* f, char* end, int* offset) except NULL:             # <<<<<<<<<<<<<<
@@ -6120,7 +6145,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   return __pyx_r;
 }
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":966
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":966
  * 
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -6135,7 +6160,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("set_array_base", 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":968
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":968
  * cdef inline void set_array_base(ndarray arr, object base):
  *      cdef PyObject* baseptr
  *      if base is None:             # <<<<<<<<<<<<<<
@@ -6146,7 +6171,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":969
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":969
  *      cdef PyObject* baseptr
  *      if base is None:
  *          baseptr = NULL             # <<<<<<<<<<<<<<
@@ -6158,7 +6183,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   }
   /*else*/ {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":971
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":971
  *          baseptr = NULL
  *      else:
  *          Py_INCREF(base) # important to do this before decref below!             # <<<<<<<<<<<<<<
@@ -6167,7 +6192,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
     Py_INCREF(__pyx_v_base);
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":972
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":972
  *      else:
  *          Py_INCREF(base) # important to do this before decref below!
  *          baseptr = <PyObject*>base             # <<<<<<<<<<<<<<
@@ -6178,7 +6203,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   }
   __pyx_L3:;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":973
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":973
  *          Py_INCREF(base) # important to do this before decref below!
  *          baseptr = <PyObject*>base
  *      Py_XDECREF(arr.base)             # <<<<<<<<<<<<<<
@@ -6187,7 +6212,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   Py_XDECREF(__pyx_v_arr->base);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":974
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":974
  *          baseptr = <PyObject*>base
  *      Py_XDECREF(arr.base)
  *      arr.base = baseptr             # <<<<<<<<<<<<<<
@@ -6196,7 +6221,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   __pyx_v_arr->base = __pyx_v_baseptr;
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":966
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":966
  * 
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -6208,7 +6233,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":976
+/* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":976
  *      arr.base = baseptr
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -6222,7 +6247,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("get_array_base", 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":977
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":977
  * 
  * cdef inline object get_array_base(ndarray arr):
  *     if arr.base is NULL:             # <<<<<<<<<<<<<<
@@ -6232,7 +6257,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __pyx_t_1 = ((__pyx_v_arr->base == NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":978
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":978
  * cdef inline object get_array_base(ndarray arr):
  *     if arr.base is NULL:
  *         return None             # <<<<<<<<<<<<<<
@@ -6246,7 +6271,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   }
   /*else*/ {
 
-    /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":980
+    /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":980
  *         return None
  *     else:
  *         return <object>arr.base             # <<<<<<<<<<<<<<
@@ -6257,7 +6282,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
     goto __pyx_L0;
   }
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":976
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":976
  *      arr.base = baseptr
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -17618,6 +17643,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_class, __pyx_k_class, sizeof(__pyx_k_class), 0, 0, 1, 1},
   {&__pyx_kp_s_contiguous_and_direct, __pyx_k_contiguous_and_direct, sizeof(__pyx_k_contiguous_and_direct), 0, 0, 1, 0},
   {&__pyx_kp_s_contiguous_and_indirect, __pyx_k_contiguous_and_indirect, sizeof(__pyx_k_contiguous_and_indirect), 0, 0, 1, 0},
+  {&__pyx_kp_s_data_kermit1_ruesch_pythonWorks, __pyx_k_data_kermit1_ruesch_pythonWorks, sizeof(__pyx_k_data_kermit1_ruesch_pythonWorks), 0, 0, 1, 0},
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
   {&__pyx_n_s_dtype_is_object, __pyx_k_dtype_is_object, sizeof(__pyx_k_dtype_is_object), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
@@ -17673,7 +17699,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_sample_mask, __pyx_k_sample_mask, sizeof(__pyx_k_sample_mask), 0, 0, 1, 1},
   {&__pyx_n_s_scale, __pyx_k_scale, sizeof(__pyx_k_scale), 0, 0, 1, 1},
   {&__pyx_n_s_shape, __pyx_k_shape, sizeof(__pyx_k_shape), 0, 0, 1, 1},
-  {&__pyx_kp_s_share_data_humbug2_ruesch_pytho, __pyx_k_share_data_humbug2_ruesch_pytho, sizeof(__pyx_k_share_data_humbug2_ruesch_pytho), 0, 0, 1, 0},
   {&__pyx_n_s_size, __pyx_k_size, sizeof(__pyx_k_size), 0, 0, 1, 1},
   {&__pyx_n_s_sklearn_ensemble__gradient_boost, __pyx_k_sklearn_ensemble__gradient_boost, sizeof(__pyx_k_sklearn_ensemble__gradient_boost), 0, 0, 1, 1},
   {&__pyx_n_s_stage, __pyx_k_stage, sizeof(__pyx_k_stage), 0, 0, 1, 1},
@@ -17720,7 +17745,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":215
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":215
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_C_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not C contiguous")             # <<<<<<<<<<<<<<
@@ -17731,7 +17756,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":219
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":219
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_F_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not Fortran contiguous")             # <<<<<<<<<<<<<<
@@ -17742,7 +17767,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":257
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":257
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -17753,7 +17778,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":799
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":799
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")             # <<<<<<<<<<<<<<
@@ -17764,7 +17789,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":803
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":803
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):
  *             raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -17775,7 +17800,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "../../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":823
+  /* "../../../../../../home/ruesch/.local/lib/python2.7/site-packages/Cython-0.21.1-py2.7-linux-x86_64.egg/Cython/Includes/numpy/__init__.pxd":823
  *             t = child.type_num
  *             if end - f < 5:
  *                 raise RuntimeError(u"Format string allocated too short.")             # <<<<<<<<<<<<<<
@@ -17917,7 +17942,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__18 = PyTuple_Pack(9, __pyx_n_s_estimators, __pyx_n_s_X, __pyx_n_s_scale, __pyx_n_s_out, __pyx_n_s_i, __pyx_n_s_k, __pyx_n_s_n_estimators, __pyx_n_s_K, __pyx_n_s_tree_2); if (unlikely(!__pyx_tuple__18)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 99; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__18);
   __Pyx_GIVEREF(__pyx_tuple__18);
-  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(4, 0, 9, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_share_data_humbug2_ruesch_pytho, __pyx_n_s_predict_stages, 99, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 99; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(4, 0, 9, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_data_kermit1_ruesch_pythonWorks, __pyx_n_s_predict_stages, 99, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 99; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "sklearn/ensemble/_gradient_boosting.pyx":129
  * 
@@ -17929,7 +17954,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__20 = PyTuple_Pack(5, __pyx_n_s_estimators, __pyx_n_s_stage, __pyx_n_s_X, __pyx_n_s_scale, __pyx_n_s_out); if (unlikely(!__pyx_tuple__20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__20);
   __Pyx_GIVEREF(__pyx_tuple__20);
-  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(5, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_share_data_humbug2_ruesch_pytho, __pyx_n_s_predict_stage, 129, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(5, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_data_kermit1_ruesch_pythonWorks, __pyx_n_s_predict_stage, 129, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "sklearn/ensemble/_gradient_boosting.pyx":266
  * 
@@ -17941,7 +17966,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__22 = PyTuple_Pack(7, __pyx_n_s_n_total_samples, __pyx_n_s_n_total_in_bag, __pyx_n_s_random_state, __pyx_n_s_rand, __pyx_n_s_sample_mask, __pyx_n_s_n_bagged, __pyx_n_s_i); if (unlikely(!__pyx_tuple__22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 266; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__22);
   __Pyx_GIVEREF(__pyx_tuple__22);
-  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(3, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_share_data_humbug2_ruesch_pytho, __pyx_n_s_random_sample_mask, 266, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 266; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(3, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_data_kermit1_ruesch_pythonWorks, __pyx_n_s_random_sample_mask, 266, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 266; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "View.MemoryView":276
  *         return self.name
@@ -18140,22 +18165,22 @@ PyMODINIT_FUNC PyInit__gradient_boosting(void)
   __pyx_ptype_5numpy_broadcast = __Pyx_ImportType("numpy", "broadcast", sizeof(PyArrayMultiIterObject), 0); if (unlikely(!__pyx_ptype_5numpy_broadcast)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 169; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_5numpy_ndarray = __Pyx_ImportType("numpy", "ndarray", sizeof(PyArrayObject), 0); if (unlikely(!__pyx_ptype_5numpy_ndarray)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_5numpy_ufunc = __Pyx_ImportType("numpy", "ufunc", sizeof(PyUFuncObject), 0); if (unlikely(!__pyx_ptype_5numpy_ufunc)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 861; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_Criterion = __Pyx_ImportType("sklearn.tree._tree", "Criterion", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_Criterion), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_Criterion)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_Criterion = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Criterion*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_Criterion->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_Criterion)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_Splitter = __Pyx_ImportType("sklearn.tree._tree", "Splitter", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_Splitter), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_Splitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_Splitter = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Splitter*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_Splitter->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_Splitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter = __Pyx_ImportType("sklearn.tree._tree", "OnDemandBestSplitter", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandBestSplitter), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandBestSplitter = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandBestSplitter*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandBestSplitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_Tree = __Pyx_ImportType("sklearn.tree._tree", "Tree", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_Tree), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_Tree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 257; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_Tree = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Tree*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_Tree->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_Tree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 257; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree = __Pyx_ImportType("sklearn.tree._tree", "OnDemandTree", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTree), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTree = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTree*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder = __Pyx_ImportType("sklearn.tree._tree", "TreeBuilder", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_TreeBuilder), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 337; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_TreeBuilder = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_TreeBuilder*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_TreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 337; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder = __Pyx_ImportType("sklearn.tree._tree", "OnDemandTreeBuilder", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTreeBuilder), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 359; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTreeBuilder = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTreeBuilder*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 359; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature = __Pyx_ImportType("sklearn.tree._tree", "OnDemandFeature", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 381; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandFeature = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandFeature*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandFeature)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 381; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_Criterion = __Pyx_ImportType("sklearn.tree._tree", "Criterion", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_Criterion), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_Criterion)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 25; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_Criterion = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Criterion*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_Criterion->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_Criterion)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 25; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_Splitter = __Pyx_ImportType("sklearn.tree._tree", "Splitter", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_Splitter), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_Splitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 95; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_Splitter = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Splitter*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_Splitter->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_Splitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 95; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter = __Pyx_ImportType("sklearn.tree._tree", "OnDemandBestSplitter", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandBestSplitter), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandBestSplitter = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandBestSplitter*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandBestSplitter->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandBestSplitter)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_Tree = __Pyx_ImportType("sklearn.tree._tree", "Tree", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_Tree), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_Tree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 246; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_Tree = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_Tree*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_Tree->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_Tree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 246; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree = __Pyx_ImportType("sklearn.tree._tree", "OnDemandTree", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTree), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTree = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTree*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTree->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTree)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder = __Pyx_ImportType("sklearn.tree._tree", "TreeBuilder", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_TreeBuilder), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 326; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_TreeBuilder = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_TreeBuilder*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_TreeBuilder->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_TreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 326; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder = __Pyx_ImportType("sklearn.tree._tree", "OnDemandTreeBuilder", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandTreeBuilder), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 348; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTreeBuilder = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandTreeBuilder*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandTreeBuilder->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandTreeBuilder)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 348; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature = __Pyx_ImportType("sklearn.tree._tree", "OnDemandFeature", sizeof(struct __pyx_obj_7sklearn_4tree_5_tree_OnDemandFeature), 1); if (unlikely(!__pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 370; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandFeature = (struct __pyx_vtabstruct_7sklearn_4tree_5_tree_OnDemandFeature*)__Pyx_GetVtable(__pyx_ptype_7sklearn_4tree_5_tree_OnDemandFeature->tp_dict); if (unlikely(!__pyx_vtabptr_7sklearn_4tree_5_tree_OnDemandFeature)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 370; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   /*--- Variable import code ---*/
   /*--- Function import code ---*/
   /*--- Execution code ---*/

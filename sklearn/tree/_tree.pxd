@@ -10,6 +10,7 @@
 
 import numpy as np
 cimport numpy as np
+from libc.stdio cimport * #needs to be deleted!!!
 
 ctypedef np.npy_float32 DTYPE_t          # Type of X
 ctypedef np.npy_float64 DOUBLE_t         # Type of y, sample_weight
@@ -86,18 +87,6 @@ cdef struct SplitRecordOnDemand:
     double impurity_right  # Impurity of the right split.
     FeatureConfig* feature_config # pointer to on demand feature configurations
 
-#cdef struct FeatureConfig:
-#    # Data to rebuild on demand features
-#    UINT32_t seed          # seed for rand_int function
-#    INT32_t threshold
-#    INT32_t offset_x1
-#    INT32_t offset_y1
-#    INT32_t length_x1
-#    INT32_t length_y1
-#    INT32_t offset_x2
-#    INT32_t offset_y2
-#    INT32_t length_x2
-#    INT32_t length_y2
 
 cdef struct FeatureConfig:
     SIZE_t size
@@ -377,9 +366,10 @@ cdef class OnDemandTreeBuilder:
 # =============================================================================
 # Test classes
 # =============================================================================
-
+    
 cdef class OnDemandFeature:
     cdef  public  double     compute_sample(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
+    cdef  public  double     full_image(self, FeatureConfig* feat_con = *, SIZE_t sample_idx = *, SIZE_t is_prediction = *) nogil
     cdef  public  SIZE_t     get_n_features(self) nogil
     cpdef public  SIZE_t     get_n_features_gil(self)
     cdef  public  SIZE_t     get_storage_size(self) nogil
@@ -391,7 +381,13 @@ cdef class OnDemandFeature:
     cdef  public  SIZE_t     init_tree(self, FeatureConfig* feat_con = *) nogil
     cdef          SIZE_t     _counter
     cdef          SIZE_t*    _shape
+    cdef          SIZE_t*    _n_background_samples
+    cdef          SIZE_t     _n_background_samples_total
+    cdef  public  SIZE_t	 _image_size
+    cdef		  SIZE_t	 _sample_per_set
     cdef          DOUBLE_t*  _image_data
+    cdef		  SIZE_t*	 _ID_alloc
+    cdef		  SIZE_t	 _is_masked
     cdef          SIZE_t     n_samples
     cdef          SIZE_t     n_dim
     cdef          SIZE_t     n_features
@@ -400,3 +396,6 @@ cdef class OnDemandFeature:
     cdef		  SIZE_t     _max_box_size
     cdef          SIZE_t     _min_box_size
     cdef          UINT32_t   _seed
+    cdef          FeatureConfig* feature_configs
+    cdef          SIZE_t     _generate_feature_config_matrix(self) nogil
+    cdef          SIZE_t     _max_offset_as_part_of_shape

@@ -51,7 +51,7 @@ cdef SIZE_t _TREE_LEAF = TREE_LEAF
 cdef SIZE_t _TREE_UNDEFINED = TREE_UNDEFINED
 cdef SIZE_t INITIAL_STACK_SIZE = 10
 
-cdef DTYPE_t MIN_IMPURITY_SPLIT = 1e-7
+cdef DTYPE_t MIN_IMPURITY_SPLIT = 1e-5
 
 # Mitigate precision differences between 32 bit and 64 bit
 cdef DTYPE_t FEATURE_THRESHOLD = 1e-7
@@ -87,7 +87,7 @@ cdef enum:
 #                 <Py_ssize_t> &(<FeatureConfig*> NULL).length_y2]
 # })
 
-FEATURE_CONFIG_TYPE = np.dtype({ #sure?
+FEATURE_CONFIG_TYPE = np.dtype({
     'names': ['size','integer'],
     'formats': [np.intp, np.ndarray],
     'offsets': [<Py_ssize_t> &(<FeatureConfig*> NULL).size,
@@ -1911,7 +1911,7 @@ cdef class OnDemandBestSplitter:
         cdef SIZE_t i, j
         cdef double weighted_n_samples = 0.0
         j = 0
-  
+        
         for i in range(n_samples):
             # Only work with positively weighted samples
             if sample_weight == NULL or sample_weight[i] != 0.0:
@@ -1922,7 +1922,7 @@ cdef class OnDemandBestSplitter:
                 weighted_n_samples += sample_weight[i]
             else:
                 weighted_n_samples += 1.0
-    
+        
         self.n_samples = j
         self.weighted_n_samples = weighted_n_samples
     
@@ -1937,10 +1937,7 @@ cdef class OnDemandBestSplitter:
         safe_realloc(&self.constant_features, n_features)
         safe_realloc(&self.x_on_demand, n_samples)
 
-#         for i in xrange(n_samples):
-#             for j in xrange(n_features):
-#                 if np.isnan(X[i,j]):
-#                     X[i,j] = func_para.compute_sample()
+
         # Initialize X, y, sample_weight
         self.X = <DTYPE_t*> X.data
         self.X_sample_stride = <SIZE_t> X.strides[0] / <SIZE_t> X.itemsize
@@ -1992,6 +1989,7 @@ cdef class OnDemandBestSplitter:
         cdef DTYPE_t current_feature_value
         cdef SIZE_t partition_end
         cdef SIZE_t n_on_demand_features = self.func_para.get_n_features()
+        cdef SIZE_t n_normal_features = n_features - self.func_para.get_n_features()
         cdef SIZE_t feature_config_size = self.func_para.get_storage_size()
         #cdef FeatureConfig feature_config
         cdef FeatureConfig feature_config
@@ -2001,11 +1999,15 @@ cdef class OnDemandBestSplitter:
         cdef FeatureConfig best_feature_config 
         best_feature_config.integer = <INT64_t*> malloc(feature_config_size  * sizeof(INT64_t))
         best_feature_config.size = feature_config_size;
-        
+        for itr in range(best_feature_config.size):
+            best_feature_config.integer[itr] = -1
+
         cdef UINT32_t seed
         _init_split_on_demand(&best, end)
         
         cdef SIZE_t is_on_demand = 0
+        cdef SIZE_t f_od = n_normal_features -1
+
         
         # Sample up to max_features without replacement using a
         # Fisher-Yates-based algorithm (using the local variables `f_i` and
@@ -2016,7 +2018,13 @@ cdef class OnDemandBestSplitter:
         # for good splitting) by ancestor nodes and save the information on
         # newly discovered constant features to spare computation on descendant
         # nodes.
-        
+        #cdef FILE* cfile1
+        #cdef FILE* cfile2
+        #cfile1 = fopen("selected_feature.txt","a")
+        #cfile2 = fopen("feature_improvement.txt","a")
+        #fprintf(cfile1,"\n[")
+        #fprintf(cfile2,"\n[")
+        # fclose(cfile)
         while (f_i > n_total_constants and  # Stop early if remaining features
                                             # are constant
                 (n_visited_features < max_features or
@@ -2037,54 +2045,70 @@ cdef class OnDemandBestSplitter:
             #   and aren't constant.
 
             # Draw a feature at random
-            f_j = rand_int(n_drawn_constants, f_i - n_found_constants,
+            if f_i > n_features-(max_features-n_on_demand_features):
+                f_j = rand_int(n_drawn_constants, f_i - n_found_constants - n_on_demand_features,
                            random_state)
-
-            if f_j < n_known_constants:
-                # f_j in the interval [n_drawn_constants, n_known_constants[
-                tmp = features[f_j]
-                features[f_j] = features[n_drawn_constants]
-                features[n_drawn_constants] = tmp
-
-                n_drawn_constants += 1
-
+                is_on_demand = 0  
             else:
-                # f_j in the interval [n_known_constants, f_i - n_found_constants - n_on_demand_features[
-                f_j += n_found_constants
-                # f_j in the interval [n_total_constants, f_i - n_on_demand_features[
-                current.feature = features[f_j]
-
-                if features[f_j] < f_i - n_found_constants - n_on_demand_features:
+                f_od = f_od + 1
+                f_j = rand_int(n_drawn_constants, f_i - n_found_constants,
+                           random_state)
+                
+                is_on_demand = 1
+            
+            if f_j < n_known_constants:
+                if(is_on_demand == 0):
+                    # f_j in the interval [n_drawn_constants, n_known_constants[
+                    tmp = features[f_j]
+                    features[f_j] = features[n_drawn_constants]
+                    features[n_drawn_constants] = tmp
+                    n_drawn_constants += 1
+                    is_on_demand = 0
+                    for itr in range(feature_config.size):
+                        feature_config.integer[itr] = -1
+            
+            else:
+                if(is_on_demand == 0):
+                    # f_j in the interval [n_known_constants, f_i - n_found_constants - n_on_demand_features[
+                    f_j += n_found_constants
+                    # f_j in the interval [n_total_constants, f_i - n_on_demand_features[
+                    current.feature = features[f_j]
+                else:
+                    current.feature = f_od
+                
+                if current.feature < (n_features - n_on_demand_features): #f_i - n_found_constants -
                     # Sort samples along that feature; first copy the feature
                     # values for the active samples into Xf, s.t.
                     # Xf[i] == X[samples[i], j], so the sort uses the cache more
                     # effectively.
-                    for p in range(start, end): 
+                    for p in range(start, end):
                         Xf[p] = X[X_sample_stride * samples[p] +
                                   X_fx_stride * current.feature]
-    
+
                     sort(Xf + start, samples + start, end - start)
+                    for itr in range(feature_config.size):
+                        feature_config.integer[itr] = -1
                     is_on_demand = 0
 
                 else:
                     self.func_para.init_split(&feature_config)
-
                     for p in range(start, end):
                         Xf[p] = self.func_para.compute_sample(&feature_config, samples[p],0)
                     sort(Xf + start, samples + start, end - start)
                     is_on_demand = 1
 
                 if Xf[end - 1] <= Xf[start] + FEATURE_THRESHOLD:
-                    features[f_j] = features[n_total_constants]
-                    features[n_total_constants] = current.feature
+                    if(is_on_demand == 0):
+                        features[f_j] = features[n_total_constants]
+                        features[n_total_constants] = current.feature
 
-                    n_found_constants += 1
-                    n_total_constants += 1
+                        n_found_constants += 1
+                        n_total_constants += 1
                     
-
                 else:
                     f_i -= 1
-                    features[f_i], features[f_j] = features[f_j], features[f_i]
+                    if(is_on_demand == 0):
+                        features[f_i], features[f_j] = features[f_j], features[f_i]
 
                     # Evaluate all splits
                     self.criterion.reset()
@@ -2116,7 +2140,7 @@ cdef class OnDemandBestSplitter:
                             
                             
                             current.improvement = self.criterion.impurity_improvement(impurity)
-                                                        
+                            
                             if current.improvement > best.improvement:
                                 self.criterion.children_impurity(&current.impurity_left,
                                                                  &current.impurity_right)
@@ -2126,17 +2150,18 @@ cdef class OnDemandBestSplitter:
                                     current.threshold = Xf[p - 1]
 
                                 best = current  # copy
+                                memcpy(best_feature_config.integer, feature_config.integer, feature_config_size * sizeof(INT64_t))
                                 if is_on_demand == 1:
-                                    best_feature_config.size = feature_config.size
-                                    memcpy(best_feature_config.integer,feature_config.integer,feature_config.size * sizeof(SIZE_t))
+                                    is_on_demand = 0
                                     for i in range(end-start):
                                         x_on_demand[i] = Xf[i]
+
 
         # Reorganize into samples[start:best.pos] + samples[best.pos:end]
         if best.pos < end:
             partition_end = end
             p = start
-            if best.feature < f_i - n_found_constants - n_on_demand_features:
+            if best.feature < (n_features - n_on_demand_features): #f_i - n_found_constants - n_on_demand_features:
                 while p < partition_end:
                     if X[X_sample_stride * samples[p] +
                          X_fx_stride * best.feature] <= best.threshold:
@@ -2169,14 +2194,19 @@ cdef class OnDemandBestSplitter:
                sizeof(SIZE_t) * n_found_constants)
 
         # Return values
+        if best.feature < (n_features - n_on_demand_features):
+            for itr in range(feature_config_size):
+                best_feature_config.integer[itr] = -1
+        
         best.feature_config = split.feature_config
         split[0] = best
         memcpy(split.feature_config.integer, best_feature_config.integer, feature_config_size * sizeof(INT64_t))
         split.feature_config.size = best_feature_config.size
-        #memcpy(split.feature_config, &best_feature_config, sizeof(FeatureConfig) + ((feature_config_size - 1) * sizeof(INT64_t)))
         n_constant_features[0] = n_total_constants
+        
         free(feature_config.integer)
         free(best_feature_config.integer)
+        return
 # =============================================================================
 # Tree builders
 # =============================================================================
@@ -2783,10 +2813,12 @@ cdef class BestFirstOnDemandTreeBuilder(OnDemandTreeBuilder):
         cdef int rc = 0
         cdef Node* node
         cdef SIZE_t feature_config_size = func_para.get_storage_size_gil()
+        
         #cdef FeatureConfig feature_config
         cdef FeatureConfig feature_config
         feature_config.size = feature_config_size
         feature_config.integer = <INT64_t*> malloc(feature_config_size  * sizeof(INT64_t))
+        
         # Initial capacity
         cdef SIZE_t init_capacity = max_split_nodes + max_leaf_nodes
         tree._resize(init_capacity,feature_config_size)
@@ -2862,6 +2894,7 @@ cdef class BestFirstOnDemandTreeBuilder(OnDemandTreeBuilder):
 
             if rc >= 0:
                 tree.max_depth = max_depth_seen
+                
         free(feature_config.integer)
         if rc == -1:
             raise MemoryError()
@@ -3374,7 +3407,7 @@ cdef class OnDemandTree:
         def __get__(self):
             return self._get_node_ndarray()['feature'][:self.node_count]
     
-    property feature_configs:
+    property feature_config:
         def __get__(self):
             return self._get_feat_config_ndarray()#[:][:self.node_count]
 
@@ -3458,7 +3491,7 @@ cdef class OnDemandTree:
         node_ndarray = d['nodes']
         value_ndarray = d['values']
         feature_config_ndarray = d['feature_configs']
-        cdef SIZE_t feature_config_size = feature_config_ndarray['size'].all()
+        cdef SIZE_t feature_config_size = 14 #feature_config_ndarray['size'].all()
         value_shape = (node_ndarray.shape[0], self.n_outputs,
                        self.max_n_classes)
         if (node_ndarray.ndim != 1 or
@@ -3476,11 +3509,6 @@ cdef class OnDemandTree:
         self.capacity = node_ndarray.shape[0]
         if self._resize_c(self.capacity,feature_config_size) != 0:
             raise MemoryError("resizing tree to %d" % self.capacity)
-#        cdef FILE* cfile
-#         cfile = fopen("example2.txt","a")
-#         fprintf(cfile,"value: %p   ",self.value)
-#         fprintf(cfile,"stuff: %p\n",(<np.ndarray> value_ndarray).data)
-#         fclose(cfile)
 
         
         nodes = memcpy(self.nodes, (<np.ndarray> node_ndarray).data,
@@ -3491,7 +3519,7 @@ cdef class OnDemandTree:
         #realloc(self.feature_configs, self.capacity * (sizeof(FeatureConfig) + feature_config_size * sizeof(INT64_t)))
         realloc(self.feature_configs, self.capacity * sizeof(FeatureConfig))
         #cdef FeatureConfig feat_con
-        #feat_con.size = feature_config_size
+        ##feat_con.size = feature_config_size
         #feat_con.integer = <INT64_t*> malloc(feature_config_size  * sizeof(INT64_t))
 
         for i in range(self.capacity):
@@ -3532,7 +3560,7 @@ cdef class OnDemandTree:
             return -1
         self.value = <double*> ptr
         
-        cdef SIZE_t feature_config_size = size
+        #cdef SIZE_t feature_config_size = size # currently useless
         ptr = realloc(self.feature_configs, capacity * sizeof(FeatureConfig))#(sizeof(FeatureConfig) + ((feature_config_size - 1) * sizeof(SIZE_t))))
         if ptr == NULL:
             return -1
@@ -3565,17 +3593,18 @@ cdef class OnDemandTree:
         if node_id >= self.capacity:
             if self._resize_c() != 0:
                 return <SIZE_t>(-1)
-
-        cdef Node* node = &self.nodes[node_id]
-        cdef FeatureConfig* feature_config = &self.feature_configs[node_id]
         
-        #node.feature_config = feature_config #sure?
-        #feature_config[0] = new_config[0] #sure?
+        cdef Node* node = &self.nodes[node_id]
+#         if is_leaf:
+#             for i in range(feature_config_size):
+#                 new_config.integer[i] = -1
+            
+        cdef FeatureConfig* feature_config = &self.feature_configs[node_id]
         cdef SIZE_t feature_config_size = new_config.size
         feature_config.integer = <INT64_t*>malloc(feature_config_size * sizeof(INT64_t))
         feature_config.size = new_config.size
-
-        memcpy(<void*>feature_config.integer, <void*>new_config.integer, feature_config_size * sizeof(INT64_t))
+        
+        memcpy(feature_config.integer, new_config.integer, feature_config_size * sizeof(INT64_t)) #<void*>feature_config.integer
         node.impurity = impurity
         node.n_node_samples = n_node_samples
         node.weighted_n_node_samples = weighted_n_node_samples
@@ -3612,42 +3641,72 @@ cdef class OnDemandTree:
     cpdef np.ndarray apply(self, np.ndarray[DTYPE_t, ndim=2] X, OnDemandFeature func_para):
         """Finds the terminal region (=leaf node) for each sample in X."""
         cdef SIZE_t n_samples = X.shape[0]
-        cdef SIZE_t n_features_normal = X.shape[1]
+        cdef SIZE_t n_normal_features = X.shape[1]
         cdef SIZE_t n_features_on_demand = func_para.get_n_features()
-        cdef SIZE_t n_features_all = n_features_normal + n_features_on_demand
+        cdef SIZE_t n_features_all = n_normal_features + n_features_on_demand
         cdef Node* node = NULL
         cdef FeatureConfig* feature_config = NULL
         cdef SIZE_t i = 0
-        #cdef FILE* cfile
-        #cfile = fopen("example.txt","a")
+        
         cdef double x = 0
         cdef np.ndarray[SIZE_t] out = np.zeros((n_samples,), dtype = np.intp)
         cdef SIZE_t* out_data = <SIZE_t*> out.data
+#         cdef FILE* cfile
+#         cdef double feati
+#         cdef SIZE_t one_time = 0
+#         cdef SIZE_t idex = 500000
+#         cdef SIZE_t bdex = 0
+#         cdef SIZE_t last_ID = 0
+        
         with nogil:
+            
             for i in range(n_samples):
                 node = self.nodes
                 feature_config = self.feature_configs
-                
                 
                 # While node not a leaf
                 while node.left_child != _TREE_LEAF:
                     # ... and node.right_child != _TREE_LEAF:
 
-                    if node.feature >= n_features_normal:
+#                     if node.feature > 0 and one_time == 0:
+#                         cfile = fopen("predict.txt", "a")
+#                         one_time = 1
+#                         fprintf(cfile,"[")
+#                         while bdex < 13:
+#                             fprintf(cfile,"%d,",feature_config.integer[bdex])
+#                             bdex = bdex + 1
+#                         fprintf(cfile,"]\n")
+#                         fprintf(cfile,"[")
+#                         while idex < 510000: #func_para._image_size:
+#                             feati = func_para.compute_sample(feature_config, idex, 1)
+#                             fprintf(cfile," %f,", feati)
+#                             idex = idex + 1
+#                         fprintf(cfile,"]\n")
+#                         fclose(cfile)
+
+                    if node.feature >= n_normal_features:
+#                         if feature_config.integer[0] < 0:
+#                             cfile = fopen("error.log","a")
+#                             fprintf(cfile, "\n\n\n\n\n---------------------------------------------------\n")
+#                             fprintf(cfile, "node.feature: %d \n", node.feature)
+#                             for i in range(feature_config.size):
+#                                 fprintf(cfile,"feature_config.integer[%d]: %d \n",i, feature_config.integer[i])
+#                             fprintf(cfile, "self.feature_configs[%d]: %d\n", node.left_child, self.feature_configs[node.left_child].integer[0])
+#                             fprintf(cfile, "\n---------------------------------------------------\n")
+#                             fclose(cfile)
                         x = func_para.compute_sample(feature_config,i,1)
-                        #fprintf(cfile,"feature_config.offset_x1: %d\n",feature_config.offset_x1)
                     else:
                         x = X[i, node.feature]
                     
                     if x <= node.threshold:
-                        node = &self.nodes[node.left_child]
                         feature_config = &self.feature_configs[node.left_child]
+                        node = &self.nodes[node.left_child]
                     else:
-                        node = &self.nodes[node.right_child]
                         feature_config = &self.feature_configs[node.right_child]
+                        node = &self.nodes[node.right_child]
 
                     out_data[i] = <SIZE_t>(node - self.nodes)  # node offset
-        #fclose(cfile)
+            
         return out
     
     cpdef compute_feature_importances(self, normalize=True):
@@ -3730,29 +3789,14 @@ cdef class OnDemandTree:
         Tree.
         """
 
-#         cdef np.npy_intp shape[1]
-#         shape[0] = <np.npy_intp> self.node_count
-#         cdef np.npy_intp strides[1]
-#         cdef SIZE_t feature_config_size = self.feature_configs[0].size
-#         strides[0] = sizeof((sizeof(FeatureConfig) + ((feature_config_size - 1) * sizeof(SIZE_t))))
-#         cdef np.ndarray arr
-#         Py_INCREF(FEATURE_CONFIG_TYPE)
-#         arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> FEATURE_CONFIG_TYPE, 1, shape,
-#                                    strides, <void*> self.feature_configs,
-#                                    np.NPY_DEFAULT, None)
-#         Py_INCREF(self)
-#         arr.base = <PyObject*> self
-
-
         cdef SIZE_t feature_config_size = self.feature_configs[0].size
         cdef np.ndarray integer
         cdef np.npy_intp shape[1]
         shape[0] = <np.npy_intp> feature_config_size
         list = np.zeros([self.capacity,feature_config_size],dtype=np.int64)
-
         for i in range(self.capacity):
             list[i] = np.PyArray_SimpleNewFromData(1, shape, np.NPY_INT64, self.feature_configs[i].integer)
-        
+
         integer = np.array(((feature_config_size), list), dtype=FEATURE_CONFIG_TYPE)
         return integer
 
@@ -3849,11 +3893,14 @@ cdef class OnDemandFeature:
 
     Until now, this is a test class. It should not be used until every bugg is fixed. 
     """ 
-    def __cinit__(self, SIZE_t n_new_features = 10, SIZE_t max_box_size = 50, SIZE_t min_box_size = 1):
+    def __cinit__(self, SIZE_t n_new_features = 10, SIZE_t max_box_size = 50, SIZE_t min_box_size = 1, SIZE_t offset_part = 3):
         self._feature = 1.0
         self._counter = 0
         self.n_new_features = n_new_features
-        self._storage_size = 1
+        self._storage_size = 14
+        self._max_box_size = max_box_size
+        self._min_box_size = min_box_size
+        self._max_offset_as_part_of_shape = offset_part
         
     def __dealloc__(self):
         """Destructor."""
@@ -3873,6 +3920,7 @@ cdef class OnDemandFeature:
         d["n_new_features"] = self.n_new_features
         d["_min_box_size"] = self._min_box_size
         d["_max_box_size"] = self._max_box_size
+        d["_max_offset_as_part_of_shape"] = self._max_offset_as_part_of_shape
         return d
     
     def __setstate__(self, d):
@@ -3882,9 +3930,13 @@ cdef class OnDemandFeature:
         self.n_new_features = d["n_new_features"]
         self._min_box_size = d["_min_box_size"]
         self._max_box_size = d["_max_box_size"]
+        self._max_offset_as_part_of_shape = d["_max_offset_as_part_of_shape"]
         return
     
     cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
+        return self._feature
+    
+    cdef double full_image(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
         return self._feature
     
     cdef SIZE_t init_split(self, FeatureConfig* feat_con = NULL) nogil:
@@ -3898,8 +3950,8 @@ cdef class OnDemandFeature:
         return self.n_new_features
     
     cpdef SIZE_t get_n_features_gil(self):
-        
         return self.n_new_features
+    
     cdef SIZE_t get_storage_size(self) nogil:
         """Get the number of Integer Values to be stored in FeatrueConfig Struct."""
         return self._storage_size
@@ -3907,714 +3959,1098 @@ cdef class OnDemandFeature:
     cpdef SIZE_t get_storage_size_gil(self):
         """Get the number of Integer Values to be stored in FeatrueConfig Struct."""
         return self._storage_size
+    
+    cdef SIZE_t _generate_feature_config_matrix(self) nogil:
+        return 1
 
-
-cdef class OnDemandTestClass(OnDemandFeature):
-    def __cinit__(self, SIZE_t n_new_features = 10):
-        self._feature = 1.0
-        self._counter = 0
-        self.n_new_features = n_new_features
-        self._storage_size = 1
-        
-    cdef void set_n_features(self, SIZE_t n_new_features) nogil:
-        self.n_new_features = n_new_features
-    
-    
-    cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx, SIZE_t is_prediction) nogil:
-        #self._feature = rand_int(0,10,&feat_con.seed)
-        if sample_idx < 2:
-            self._feature = 1.0
-        else:
-            self._feature = 0.0 
-        return self._feature
-     
-     
-    cdef SIZE_t get_n_features(self) nogil:
-        return self.n_new_features
-    
-    
-    cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
-        if feat_con == NULL:
-            return -1
-        elif sample_idx < 0:
-            return -1
-        else:
-            self._counter += 1
-            return self.calc_feature(feat_con, sample_idx, is_prediction)
-    
-    
-    cdef SIZE_t init_split(self, FeatureConfig* feat_con = NULL) nogil:
-        if feat_con == NULL:
-            return -1
-        else:
-            feat_con.integer[0] = <UINT32_t> (self._feature) + self._counter
-            return 0
-    
-    cdef SIZE_t init_tree(self, FeatureConfig* feat_con = NULL) nogil:
-        feat_con.integer[0] = 0
-        return 0
-    
-    def get_number_of_calls(self):
-        return self._counter
- 
-cdef class OnDemandTestClass2(OnDemandFeature):
-    """ Takes index and compares it to image given by self.import_image()
-    
-    """
-    def __cinit__(self, SIZE_t n_new_features = 10):
-        self._feature = 1.0
-        self._counter = 0
-        self.n_new_features = n_new_features
-        self.n_samples = 0
-        self.n_features = 0
-        self._image_data = NULL
-        self._shape = NULL
-        self._storage_size = 1
-        
-    def __dealloc__(self):
-        free(self._image_data)
-        free(self._shape)
-    
-    cpdef import_image(self, np.ndarray Xf):
-        """ Import Image that are used in on-demand feature process.
-            np.ndarray Xf
-            
-        """
-        cdef SIZE_t image_size = 1
-        self.n_dim = <SIZE_t> Xf.ndim
-        cdef void* ptr = realloc(self._shape, self.n_dim * sizeof(np.int64))
-        if ptr == NULL:
-            raise ValueError("Can not grap shape of given numpy.ndarray. Return.")
-        self._shape = <SIZE_t*> ptr
-        
-        memcpy(self._shape, Xf.shape, self.n_dim * sizeof(SIZE_t))
-        
-        Xf = np.asarray([Xf,Xf])
-
-        #self._image[0,...] original input image
-        #self._image[1,...] summed area table
-        for i in range(self.n_dim):
-            image_size = image_size * self._shape[i]
-            Xf[1,...] = Xf[1,...].cumsum(i)
-        
-
-        Xf = np.asfortranarray(Xf.reshape([2 * image_size]), dtype=np.float64)
-        ptr = realloc(self._image_data, 2 * image_size * sizeof(np.float64))
-        if ptr == NULL:
-            raise ValueError("Can not grap values of given numpy.ndarray. Return.")
-        self._image_data = <DOUBLE_t*> ptr
-        memcpy(self._image_data, (<np.ndarray> Xf).data, image_size * 2 * sizeof(DOUBLE_t))
-        
-        return
-        
-        
-    cdef void set_n_features(self, SIZE_t n_new_features) nogil:
-        self.n_new_features = n_new_features
-    
-    
-    cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx, SIZE_t is_prediction) nogil:
-        if self._image_data[sample_idx] < 1:
-            self._feature = 1.0
-        else:
-            self._feature = 0.0 
-        return self._feature
-     
-
-    cdef SIZE_t get_n_features(self) nogil:
-        return self.n_new_features
-    
-    
-    cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
-        if feat_con == NULL:
-            return -1
-        elif sample_idx < 0:
-            return -1
-        else:
-            self._counter += 1
-            return self.calc_feature(feat_con, sample_idx, is_prediction)
-    
-    
-    cdef SIZE_t init_split(self, FeatureConfig* feat_con = NULL) nogil:
-        if feat_con == NULL:
-            return -1
-        else:
-            feat_con.integer[0] = 0
-            return 0
-    
-    cdef SIZE_t init_tree(self, FeatureConfig* feat_con = NULL) nogil:
-        feat_con.integer[0] = 0
-        return 0
-    
-    def get_number_of_calls(self):
-        return self._counter
-    
-cdef class OnDemandTestClass3(OnDemandFeature):
-    """ Gets its index threshold from a FeatureConfig struct
-
-    """
-    def __cinit__(self, SIZE_t n_new_features = 10):
-        self._feature = 1.0
-        self._counter = 0
-        self.n_new_features = n_new_features
-        self.new_tree = 0
-        self._storage_size = 2
-        
-        seed = 0
-        
-    cdef void set_n_features(self, SIZE_t n_new_features) nogil:
-        self.n_new_features = n_new_features
-    
-    
-    cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx, SIZE_t is_prediction) nogil:
-        if sample_idx < feat_con.integer[1]:
-            self._feature = 1
-        else:
-            self._feature = 0
-        return self._feature
-     
-     
-    cdef SIZE_t get_n_features(self) nogil:
-        return self.n_new_features
-    
-    
-    cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
-        if feat_con == NULL:
-            return -1
-        elif sample_idx < 0:
-            return -1
-        else:
-            return self.calc_feature(feat_con, sample_idx, is_prediction)
-    
-    
-    cdef SIZE_t init_split(self, FeatureConfig* feat_con = NULL) nogil:
-        cdef UINT32_t seed
-        if feat_con == NULL:
-            return -1
-        else:
-            if self.new_tree == 1:
-                self.new_tree = 0
-                feat_con.integer[0] = 0 #counter = 0
-            else:
-                feat_con.integer[0] = self._counter
-            seed = <UINT32_t> self._counter
-            feat_con.integer[1] = rand_int(0, 10, &seed)
-            self._counter += 1
-            #feat_con.seed = abs(feat_con.seed + ((feat_con.counter * 2) * (-1)**(feat_con.counter)))
-            return 1
-    
-#     cdef UINT32_t get_seed(self, UINT32_t counter):
-#         if self.new_tree == 1:
-#             self.new_tree = 0
-#             self.seed = 5
-#         return abs(self.seed + ((counter * 2) * (-1)**(counter)))
-        
-    cdef SIZE_t init_tree(self, FeatureConfig* feat_con = NULL) nogil:
-        self.new_tree = 1
-        # Add variables to be changed right before a tree is build
-        feat_con.integer[0] = 0
-        feat_con.integer[1] = 1
-        return 0
-    
-    def get_number_of_calls(self):
-        return self._counter
-# class C(OnDemandFeature):
-#     def __init__(self, first_integer):
-#         self._feature = int(first_integer)
-#         
-#     def fun2(self, a, b):
-#         return a>=b
-#     
-#     def compute_sample(self, arg1, arg2):
-#         return self.fun2(arg1, arg2)
-
-# class OnDemandTestClass2(OnDemandFeature):
 # 
-#     def __init__(self,n_new_features = 10):
-#         super(OnDemandTestClass2,self).__init__(n_new_features)
-# 
-#     def set_n_featrues(self, n_new_features):
+# cdef class OnDemandTestClass(OnDemandFeature):
+#     def __cinit__(self, SIZE_t n_new_features = 10):
+#         self._feature = 1.0
+#         self._counter = 0
 #         self.n_new_features = n_new_features
-# 
-#     def calc_feature(self, feat_con, sample_idx):
+#         self._storage_size = 1
+#         
+#     cdef void set_n_features(self, SIZE_t n_new_features) nogil:
+#         self.n_new_features = n_new_features
+#     
+#     
+#     cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx, SIZE_t is_prediction) nogil:
+#         #self._feature = rand_int(0,10,&feat_con.seed)
 #         if sample_idx < 2:
 #             self._feature = 1.0
 #         else:
 #             self._feature = 0.0 
 #         return self._feature
-# 
-#     def get_n_features(self):
+#      
+#      
+#     cdef SIZE_t get_n_features(self) nogil:
 #         return self.n_new_features
-# 
-#     def compute_sample(self, feat_con, sample_idx = -1):
-#         if feat_con == None:
+#     
+#     
+#     cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
+#         if feat_con == NULL:
 #             return -1
 #         elif sample_idx < 0:
 #             return -1
 #         else:
 #             self._counter += 1
-#             return self.calc_feature(feat_con, sample_idx)
-# 
-#     def init_split(self, feat_con):
-#         if feat_con == None:
+#             return self.calc_feature(feat_con, sample_idx, is_prediction)
+#     
+#     
+#     cdef SIZE_t init_split(self, FeatureConfig* feat_con = NULL) nogil:
+#         if feat_con == NULL:
 #             return -1
 #         else:
-#             feat_con.seed = int(self._feature + self._counter)
+#             feat_con.integer[0] = <UINT32_t> (self._feature) + self._counter
 #             return 0
-# 
+#     
+#     cdef SIZE_t init_tree(self, FeatureConfig* feat_con = NULL) nogil:
+#         feat_con.integer[0] = 0
+#         return 0
+#     
 #     def get_number_of_calls(self):
 #         return self._counter
+#  
+# cdef class OnDemandTestClass2(OnDemandFeature):
+#     """ Takes index and compares it to image given by self.import_image()
+#     
+#     """
+#     def __cinit__(self, SIZE_t n_new_features = 10):
+#         self._feature = 1.0
+#         self._counter = 0
+#         self.n_new_features = n_new_features
+#         self.n_samples = 0
+#         self.n_features = 0
+#         self._image_data = NULL
+#         self._shape = NULL
+#         self._storage_size = 1
+#         
+#     def __dealloc__(self):
+#         free(self._image_data)
+#         free(self._shape)
+#     
+#     cpdef import_image(self, np.ndarray Xf):
+#         """ Import Image that are used in on-demand feature process.
+#             np.ndarray Xf
+#             
+#         """
+#         cdef SIZE_t image_size = 1
+#         self.n_dim = <SIZE_t> Xf.ndim
+#         cdef void* ptr = realloc(self._shape, self.n_dim * sizeof(np.int64))
+#         if ptr == NULL:
+#             raise ValueError("Can not grap shape of given numpy.ndarray. Return.")
+#         self._shape = <SIZE_t*> ptr
+#         
+#         memcpy(self._shape, Xf.shape, self.n_dim * sizeof(SIZE_t))
+#         
+#         Xf = np.asarray([Xf,Xf])
+# 
+#         #self._image[0,...] original input image
+#         #self._image[1,...] summed area table
+#         for i in range(self.n_dim):
+#             image_size = image_size * self._shape[i]
+#             Xf[1,...] = Xf[1,...].cumsum(i)
+#         
+# 
+#         Xf = np.asfortranarray(Xf.reshape([2 * image_size]), dtype=np.float64)
+#         ptr = realloc(self._image_data, 2 * image_size * sizeof(np.float64))
+#         if ptr == NULL:
+#             raise ValueError("Can not grap values of given numpy.ndarray. Return.")
+#         self._image_data = <DOUBLE_t*> ptr
+#         memcpy(self._image_data, (<np.ndarray> Xf).data, image_size * 2 * sizeof(DOUBLE_t))
+#         
+#         return
+#         
+#         
+#     cdef void set_n_features(self, SIZE_t n_new_features) nogil:
+#         self.n_new_features = n_new_features
+#     
+#     
+#     cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx, SIZE_t is_prediction) nogil:
+#         if self._image_data[sample_idx] < 1:
+#             self._feature = 1.0
+#         else:
+#             self._feature = 0.0 
+#         return self._feature
+#      
+# 
+#     cdef SIZE_t get_n_features(self) nogil:
+#         return self.n_new_features
+#     
+#     
+#     cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
+#         if feat_con == NULL:
+#             return -1
+#         elif sample_idx < 0:
+#             return -1
+#         else:
+#             self._counter += 1
+#             return self.calc_feature(feat_con, sample_idx, is_prediction)
+#     
+#     
+#     cdef SIZE_t init_split(self, FeatureConfig* feat_con = NULL) nogil:
+#         if feat_con == NULL:
+#             return -1
+#         else:
+#             feat_con.integer[0] = 0
+#             return 0
+#     
+#     cdef SIZE_t init_tree(self, FeatureConfig* feat_con = NULL) nogil:
+#         feat_con.integer[0] = 0
+#         return 0
+#     
+#     def get_number_of_calls(self):
+#         return self._counter
+#     
+# cdef class OnDemandTestClass3(OnDemandFeature):
+#     """ Gets its index threshold from a FeatureConfig struct
+# 
+#     """
+#     def __cinit__(self, SIZE_t n_new_features = 10):
+#         self._feature = 1.0
+#         self._counter = 0
+#         self.n_new_features = n_new_features
+#         self.new_tree = 0
+#         self._storage_size = 2
+#         
+#         seed = 0
+#         
+#     cdef void set_n_features(self, SIZE_t n_new_features) nogil:
+#         self.n_new_features = n_new_features
+#     
+#     
+#     cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx, SIZE_t is_prediction) nogil:
+#         if sample_idx < feat_con.integer[1]:
+#             self._feature = 1
+#         else:
+#             self._feature = 0
+#         return self._feature
+#      
+#      
+#     cdef SIZE_t get_n_features(self) nogil:
+#         return self.n_new_features
+#     
+#     
+#     cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
+#         if feat_con == NULL:
+#             return -1
+#         elif sample_idx < 0:
+#             return -1
+#         else:
+#             return self.calc_feature(feat_con, sample_idx, is_prediction)
+#     
+#     
+#     cdef SIZE_t init_split(self, FeatureConfig* feat_con = NULL) nogil:
+#         cdef UINT32_t seed
+#         if feat_con == NULL:
+#             return -1
+#         else:
+#             if self.new_tree == 1:
+#                 self.new_tree = 0
+#                 feat_con.integer[0] = 0 #counter = 0
+#             else:
+#                 feat_con.integer[0] = self._counter
+#             seed = <UINT32_t> self._counter
+#             feat_con.integer[1] = rand_int(0, 10, &seed)
+#             self._counter += 1
+#             #feat_con.seed = abs(feat_con.seed + ((feat_con.counter * 2) * (-1)**(feat_con.counter)))
+#             return 1
+#     
+# #     cdef UINT32_t get_seed(self, UINT32_t counter):
+# #         if self.new_tree == 1:
+# #             self.new_tree = 0
+# #             self.seed = 5
+# #         return abs(self.seed + ((counter * 2) * (-1)**(counter)))
+#         
+#     cdef SIZE_t init_tree(self, FeatureConfig* feat_con = NULL) nogil:
+#         self.new_tree = 1
+#         # Add variables to be changed right before a tree is build
+#         feat_con.integer[0] = 0
+#         feat_con.integer[1] = 1
+#         return 0
+#     
+#     def get_number_of_calls(self):
+#         return self._counter
+#     
 cdef extern from "stdio.h":
     #FILE * fopen ( const char * filename, const char * mode )
-    FILE *fopen(const char *, const char *) nogil
+    FILE * fopen(const char *, const char *) nogil
     #int fclose ( FILE * stream )
     int fclose(FILE *) nogil
     int fprintf ( FILE * stream, const char * format, ... ) nogil
-# How To Do Stuff:
-#     cdef FILE* cfile
-#     cfile = fopen("example.txt","a")
-#     fprintf(cfile,"Hello No.%d",int)
-#     fclose(cfile)
-cdef class OnDemandTestClass4(OnDemandFeature):
-    """This class uses the means of two randomly generated boxes which are 
-    compared to the intensity of the given sample.
-    
-    OnDemandTestClass4(self, SIZE_t n_new_features = 10, SIZE_t max_box_size = 50, SIZE_t min_box_size = 1)
-    
-    SIZE_t n_new_features 
-    SIZE_t max_box_size 
-    SIZE_t min_box_size
-    
-    This is a sub-class of OnDemandFeature. It is used to generate on-demand features. you need to call
-    the method "import_image" to use it.
-    
-    The image must be given as a numpy.ndarray:  cpdef import_image(self, np.ndarray Xf)
-    
-    To generate the mean value, a summed are table is used. Thus, the image must be given in original shape.
-    Summed sub area is calculated from a summed area table with D-B-C+A, when # area is wanted:
-             _____________     |
-             |   |   |   |  ----------> x
-             | A |   | B |     |     |
-             |   |###|###|     |_____|
-             | C |###|#D#|     V 
-             -------------     y
-        
-    """
-    
-    def __cinit__(self, SIZE_t n_new_features = 10, SIZE_t max_box_size = 50, SIZE_t min_box_size = 1):
-        self._feature = 1.0
-        self._counter = 0
-        self.n_new_features = n_new_features
-        self.n_samples = 0
-        self.n_features = 0
-        #self._image = np.zeros(0)
-        self._image_data = NULL
-        self._shape = NULL
-        self.n_dim = 0
-        self.new_tree = 0
-        self.new_split = 0
-        self._max_box_size = max_box_size
-        self._min_box_size = min_box_size
-        self._seed = 0
-        self._storage_size = 8
-        
-        # feat_con.offset_x1: integer[0]
-        # feat_con.offset_y1: integer[1]
-        # feat_con.length_x1: integer[2]
-        # feat_con.length_y1: integer[3]
-        # feat_con.offset_x2: integer[4]
-        # feat_con.offset_y2: integer[5]
-        # feat_con.length_x2: integer[6]
-        # feat_con.length_y2: integer[7]
-        
-    property shape:
-        def __get__(self):
-            return self._get_shape_ndarray()
  
-    property image:
-        def __get__(self):
-            size = 1
-            shape = np.zeros([self.n_dim])
-            for i in range(self.n_dim):
-                shape[i] = self.shape[i]
-                size = size * self.shape[i]
-            return self._get_image_ndarray()[:size].reshape(shape)
- 
-    property SAT:
-        def __get__(self):
-            size = 1
-            shape = np.zeros([self.n_dim])
-            for i in range(self.n_dim):
-                shape[i] = self.shape[i]
-                size = size * self.shape[i]
-            return self._get_image_ndarray()[size:].reshape(shape)
-
-    def __dealloc__(self):
-        """Destructor."""
-        # Free all inner structures
-        free(self._image_data)
-        free(self._shape)
-        
-    def __reduce__(self):
-        """Reduce re-implementation, for pickling."""
-        return (OnDemandTestClass4, (self.n_new_features, 
-                       self._max_box_size, self._min_box_size), self.__getstate__())
-
-    def __getstate__(self):
-        """Getstate re-implementation, for pickling."""
-        d = {}
-        d["_feature"] = self._feature
-        d["_counter"] = self._counter
-        d["n_new_features"] = self.n_new_features
-        d["n_samples"] =self.n_samples
-        d["n_features"] = self.n_features
-        #d["_image"] = self._image
-#        d["_image_data"] = self._get_image_ndarray()
-#        d["_shape"] = self._get_shape_ndarray()
-        d["n_dim"] = self.n_dim
-        d["_seed"] = self._seed
-        d["_min_box_size"] = self._min_box_size 
-        d["_max_box_size"] = self._max_box_size
-        return d
-
-    def __setstate__(self, d):
-        """Setstate re-implementation, for unpickling."""
-        self._feature = d["_feature"]
-        self._counter = d["_counter"]
-        self.n_new_features = d["n_new_features"]
-        self.n_samples = d["n_samples"]
-        self.n_features = d["n_features"]
-        #_image = d["_image"]
-#         image_ndarray = d["_image_data"]
-#         shape_ndarray = d["_shape"]
-        self.n_dim = d["n_dim"]
-        self._seed = d["_seed"]
-        self._min_box_size = d["_min_box_size"]
-        self._max_box_size = d["_max_box_size"]
-        cdef SIZE_t capacity = 1
-        
-#         if (image_ndarray.dtype != np.float64 or
-#                  not image_ndarray.flags.c_contiguous or
-#                  shape_ndarray.dtype != np.int64 or
-#                  not shape_ndarray.flags.c_contiguous):
-#              raise ValueError('Did not recognise loaded array layout')
-#                  
-#          cdef void* ptr = realloc(self._shape, self.n_dim * sizeof(SIZE_t))
-#          if ptr != NULL:
-#              self._shape = <SIZE_t*> ptr
-#          _shape = memcpy(self._shape, (<np.ndarray> shape_ndarray).data, 
-#                          sizeof(SIZE_t) * self.n_dim)
+# 
+# cdef class OnDemandTestClass4(OnDemandFeature):
+#     """This class uses the means of two randomly generated boxes which are 
+#     compared to the intensity of the given sample.
+#     
+#     OnDemandTestClass4(self, SIZE_t n_new_features = 10, SIZE_t max_box_size = 50, SIZE_t min_box_size = 1)
+#     
+#     SIZE_t n_new_features 
+#     SIZE_t max_box_size 
+#     SIZE_t min_box_size
+#     
+#     This is a sub-class of OnDemandFeature. It is used to generate on-demand features. you need to call
+#     the method "import_image" to use it.
+#     
+#     The image must be given as a numpy.ndarray:  cpdef import_image(self, np.ndarray Xf)
+#     
+#     To generate the mean value, a summed are table is used. Thus, the image must be given in original shape.
+#     Summed sub area is calculated from a summed area table with D-B-C+A, when # area is wanted:
+#              _____________     |
+#              |   |   |   |  ----------> x
+#              | A |   | B |     |     |
+#              |   |###|###|     |_____|
+#              | C |###|#D#|     V 
+#              -------------     y
+#         
+#     """
+#     
+#     def __cinit__(self, SIZE_t n_new_features = 10, SIZE_t max_box_size = 50, SIZE_t min_box_size = 1):
+#         self._feature = 1.0
+#         self._counter = 0
+#         self.n_new_features = n_new_features
+#         self.n_samples = 0
+#         self.n_features = 0
+#         #self._image = np.zeros(0)
+#         self._image_data = NULL
+#         self._shape = NULL
+#         self.n_dim = 0
+#         self.new_tree = 0
+#         self.new_split = 0
+#         self._max_box_size = max_box_size
+#         self._min_box_size = min_box_size
+#         self._seed = 0
+#         self._storage_size = 8
+#         
+#         # feat_con.offset_x1: integer[0]
+#         # feat_con.offset_y1: integer[1]
+#         # feat_con.length_x1: integer[2]
+#         # feat_con.length_y1: integer[3]
+#         # feat_con.offset_x2: integer[4]
+#         # feat_con.offset_y2: integer[5]
+#         # feat_con.length_x2: integer[6]
+#         # feat_con.length_y2: integer[7]
+#         
+#     property shape:
+#         def __get__(self):
+#             return self._get_shape_ndarray()
+#  
+#     property image:
+#         def __get__(self):
+#             size = 1
+#             shape = np.zeros([self.n_dim])
+#             for i in range(self.n_dim):
+#                 shape[i] = self.shape[i]
+#                 size = size * self.shape[i]
+#             return self._get_image_ndarray()[:size].reshape(shape)
+#  
+#     property SAT:
+#         def __get__(self):
+#             size = 1
+#             shape = np.zeros([self.n_dim])
+#             for i in range(self.n_dim):
+#                 shape[i] = self.shape[i]
+#                 size = size * self.shape[i]
+#             return self._get_image_ndarray()[size:].reshape(shape)
+# 
+#     def __dealloc__(self):
+#         """Destructor."""
+#         # Free all inner structures
+#         free(self._image_data)
+#         free(self._shape)
+#         
+#     def __reduce__(self):
+#         """Reduce re-implementation, for pickling."""
+#         return (OnDemandTestClass4, (self.n_new_features, 
+#                        self._max_box_size, self._min_box_size), self.__getstate__())
+# 
+#     def __getstate__(self):
+#         """Getstate re-implementation, for pickling."""
+#         d = {}
+#         d["_feature"] = self._feature
+#         d["_counter"] = self._counter
+#         d["n_new_features"] = self.n_new_features
+#         d["n_samples"] =self.n_samples
+#         d["n_features"] = self.n_features
+#         #d["_image"] = self._image
+# #        d["_image_data"] = self._get_image_ndarray()
+# #        d["_shape"] = self._get_shape_ndarray()
+#         d["n_dim"] = self.n_dim
+#         d["_seed"] = self._seed
+#         d["_min_box_size"] = self._min_box_size 
+#         d["_max_box_size"] = self._max_box_size
+#         return d
+# 
+#     def __setstate__(self, d):
+#         """Setstate re-implementation, for unpickling."""
+#         self._feature = d["_feature"]
+#         self._counter = d["_counter"]
+#         self.n_new_features = d["n_new_features"]
+#         self.n_samples = d["n_samples"]
+#         self.n_features = d["n_features"]
+#         #_image = d["_image"]
+# #         image_ndarray = d["_image_data"]
+# #         shape_ndarray = d["_shape"]
+#         self.n_dim = d["n_dim"]
+#         self._seed = d["_seed"]
+#         self._min_box_size = d["_min_box_size"]
+#         self._max_box_size = d["_max_box_size"]
+#         cdef SIZE_t capacity = 1
+#         
+# #         if (image_ndarray.dtype != np.float64 or
+# #                  not image_ndarray.flags.c_contiguous or
+# #                  shape_ndarray.dtype != np.int64 or
+# #                  not shape_ndarray.flags.c_contiguous):
+# #              raise ValueError('Did not recognise loaded array layout')
+# #                  
+# #          cdef void* ptr = realloc(self._shape, self.n_dim * sizeof(SIZE_t))
+# #          if ptr != NULL:
+# #              self._shape = <SIZE_t*> ptr
+# #          _shape = memcpy(self._shape, (<np.ndarray> shape_ndarray).data, 
+# #                          sizeof(SIZE_t) * self.n_dim)
+# #          
+# #          for i in range(self.n_dim):
+# #              capacity = capacity * self._shape[i]
+# #          
+# #          ptr = realloc(self._image_data,capacity * 2 * sizeof(DOUBLE_t))
+# #          if ptr != NULL:
+# #              self._image_data = <double*> ptr
+# #          _image_data = memcpy(self._image_data, (<np.ndarray> image_ndarray).data,
+# #                               capacity * 2 * sizeof(DOUBLE_t))
+#         return
+#  
+#     cpdef import_image(self, np.ndarray Xf):
+#         """ Import Image that are used in on-demand feature process.
+#             np.ndarray Xf
+#             Xf.ndim >= 2
+#         """
+#         if Xf.ndim <= 1:
+#             raise ValueError('The image dimensionality must be above 1. Aborting.')
+#             return
+#         
+#         cdef SIZE_t image_size = 1
+#         self.n_dim = <SIZE_t> Xf.ndim
+#         cdef void* ptr = realloc(self._shape, self.n_dim * sizeof(np.int64))
+#         if ptr == NULL:
+#             raise ValueError("Can not grap shape of given numpy.ndarray. Return.")
+#         self._shape = <SIZE_t*> ptr
+#         
+#         memcpy(self._shape, Xf.shape, self.n_dim * sizeof(SIZE_t))
+#         
+#         Xf = np.asarray([Xf,Xf])
+# 
+#         #self._image[0,...] original input image
+#         #self._image[1,...] summed area table
+#         for i in range(self.n_dim):
+#             image_size = image_size * self._shape[i]
+#             Xf[1,...] = Xf[1,...].cumsum(i)
+#         
+# 
+#         Xf = np.asfortranarray(Xf.reshape([2 * image_size]), dtype=np.float64)
+#         ptr = realloc(self._image_data, 2 * image_size * sizeof(np.float64))
+#         if ptr == NULL:
+#             raise ValueError("Can not grap values of given numpy.ndarray. Return.")
+#         self._image_data = <DOUBLE_t*> ptr
+#         memcpy(self._image_data, (<np.ndarray> Xf).data, image_size * 2 * sizeof(DOUBLE_t))
+#         return
+#     
+#     cdef void set_n_features(self, SIZE_t n_new_features) nogil:
+#         self.n_new_features = n_new_features
+#     
+#     
+#     cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx, SIZE_t is_prediction ) nogil:
+#         cdef INT32_t x = sample_idx % self._shape[1]
+#         cdef INT32_t y = sample_idx / self._shape[1]
+#         cdef double R0 = self._image_data[sample_idx]
+#         cdef INT64_t* pos = <INT64_t*> malloc(sizeof(INT64_t) * self.n_dim)
+#         cdef SIZE_t* length = <SIZE_t*> malloc(sizeof(SIZE_t) * self.n_dim)
+#         cdef SIZE_t i = 0
+#         cdef SIZE_t image_size = 1
+#         
+#         while i < self.n_dim:
+#             image_size = image_size * self._shape[i]
+#             i = i + 1
+#             
+#         cdef double R1 = 0.0
+#         pos[0] = x + feat_con.integer[0]
+#         pos[1] = y + feat_con.integer[1]
+#         length[0] = feat_con.integer[2]
+#         length[1] = feat_con.integer[3]
+# 
+#         R1 = self.nd_box_from_sat(self.n_dim, pos, length, self._shape, &(self._image_data[image_size]))
+#         
+#         cdef double R2 = 0.0
+#         pos[0] = x + feat_con.integer[4]
+#         pos[1] = y + feat_con.integer[5]
+#         length[0] = feat_con.integer[6]
+#         length[1] = feat_con.integer[7]
+#         
+#         R2 = self.nd_box_from_sat(self.n_dim, pos, length, self._shape, &(self._image_data[image_size]))
+#         #R1 = self.summed_area_table_subbox(x + feat_con.offset_x1, y + feat_con.offset_y1, feat_con.length_x1, feat_con.length_y1)
+#         #R2 = self.summed_area_table_subbox(x + feat_con.offset_x2, y + feat_con.offset_y2, feat_con.length_x2, feat_con.length_y2)
+#         self._feature = R0 - ((R1 + R2) / 2.0)
+#         free(pos)
+#         free(length)
+#         return self._feature
+# 
+#     cdef DOUBLE_t nd_box_from_sat(self, SIZE_t ndim, INT64_t* pos, SIZE_t* length, SIZE_t* shape, DOUBLE_t* sat) nogil:
+#         """ claculate the integral of a subregion of the inputimage using a summed area table.
+#            
+#            Inputs neccessary:
+#            SIZE_t ndim            Number of dimensions.
+#            INT64_t* pos:          Pointer to an array with the startposition of the subarea.
+#            SIZE_t* length:        Pointer to an array with the length of the subarea in every dimension.
+#            SIZE_t shape:          Pointer to shape of data structure in *sat with length ndim.
+#            DOUBLE_t* sat:         Pointer to the summed area table.
+#            
+#            Functionallity in an 2D example:
+#                    #     _____________     |
+#                    #     |   |   |   |  ----------> x
+#                    #     | A |   | B |     |     |
+#                    #     |   |###|###|     |_____|
+#                    #     | C |###|#D#|     V 
+#                    #     -------------     y
+#                    #  sum = D-B-C+A
+#         """
+#        
+#         # define the number of values and the edges positions
+#         cdef INT64_t* edges = <INT64_t*> malloc(ndim * 2 * sizeof(INT64_t))
+#         cdef INT64_t* local_length = <INT64_t*> malloc(ndim * sizeof(INT64_t))
+#         memcpy(local_length, length, ndim*sizeof(INT64_t))
+#         cdef SIZE_t image_size = 1
+#         cdef SIZE_t n_edges = 2 ** ndim
+#         cdef DOUBLE_t sum = 0
+#         cdef SIZE_t n_ones = 0
+#         #cdef SIZE_t* counter = &ones
+#         cdef INT64_t idx = 0
+#         cdef INT64_t* coordinates = <INT64_t*> malloc(ndim * sizeof(INT64_t))
+#         cdef SIZE_t* binary_code = <SIZE_t*> malloc(ndim * sizeof(SIZE_t))
+#         cdef SIZE_t structure = 1
+#         cdef SIZE_t i = 0
+#         cdef SIZE_t j = 0
+#        
+#         while i < ndim:
+#             image_size = image_size * shape[i]
+#             edges[i] = pos[i]
+#             edges[i+ndim] =  pos[i] - length[i]
+#             i = i + 1
+#       
+#         # get value of subregion
+#         i = 0
+#         while i < n_edges:
+#             # reset parameters
+#             n_ones = 0
+#             j = 0
+#             idx = 0
+#             structure = 1
+# 
+#             # reset coordinates
+#             while j < ndim: 
+#                 coordinates[j] = 0
+#                 binary_code[j] = 0
+#                 j = j + 1
+# 
+#             # convert edge id from dec to binary
+#             self.ConvertToBinary(i, ndim, binary_code)
+# 
+#             # calculate coordinates to get the right point in SAT
+#             j = 0
+#             while j < ndim:
+#                 n_ones = n_ones + binary_code[j] # count the amount of 1 in binary coordinates
+#                 coordinates[j] = edges[j + ndim * binary_code[j]] # coordinates as a place to save the edge coordinates
+#                 j = j + 1
+#             # errorhandling
+#             j = 0
+#             while j < ndim:
+#                 if coordinates[j] >= shape[ndim-1-j]:
+#                     if binary_code[j] == 0:
+#                         coordinates[j] = shape[ndim-1-j] - 1
+#                     if binary_code[j] == 1:
+#                         coordinates[j] = shape[ndim-1-j] - 2
+#                 if coordinates[j] < 0:
+#                     coordinates[j] = -1
+#                 j = j + 1
+#             j = 0
+#             while j < ndim:
+#                 # if coordinate is not in image borders
+#                 if coordinates[j] == -1:
+#                     idx = -1
+#                     break
+#                 else:
+#                     idx = idx + (coordinates[j] * structure)
+#                     structure = structure * shape[ndim-1-j]
+#                     j = j + 1
+#             
+#             # if the left hand side border is overlapped by a box, add a 0 as its value by doing nothing.
+#             if idx < 0: 
+#                 pass
+#             else:
+#                 # calculate sum
+#                 sum = sum + ((-1)**n_ones) * sat[idx]
+#             i = i + 1
+#        
+#         # calculate area size
+#         cdef double area_size = 1.0;
+#         i = 0
+#         while i < ndim:
+#             #check left border
+#             if edges[i] <= 0:
+#                 local_length[i] = 1
+#             elif edges[i+ndim] < 0:
+#                 local_length[i] = edges[i] + 1
+#             #check right border
+#             if edges[i+ndim] >= shape[ndim-1-i] - 1:
+#                 local_length[i] = 1
+#             elif edges[i] >= shape[ndim-1-i]:
+#                 local_length[i] = shape[ndim-1-i] - edges[i+ndim] - 1
+#             #calculate area size
+#             area_size = area_size * <double>local_length[i]
+#             i = i + 1
+#         free(edges)
+#         free(coordinates)
+#         free(local_length)
+#         free(binary_code)
+#         # devide sum by area size to calculate the mean value of the sub box
+#         return <double> (sum / area_size)
+#         
+#     cdef INT64_t ConvertToBinary(self, SIZE_t n, SIZE_t dim, SIZE_t* coordinates) nogil:
+#         dim = dim - 1
+#         if n / 2 != 0:
+#             self.ConvertToBinary(n / 2, dim, coordinates)
+#         coordinates[dim] = n % 2
+#         return 0
+#         
+# 
+#      
+#     cdef SIZE_t get_n_features(self) nogil:
+#         return self.n_new_features
+# 
+# 
+#     cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
+#         if feat_con == NULL:
+#             return -1
+#         elif sample_idx < 0:
+#             return -1
+#         else:
+#             self._counter += 1
+#             return self.calc_feature(feat_con, sample_idx, is_prediction)
+#     
+#     
+#     cdef SIZE_t init_split(self, FeatureConfig* feat_con = NULL) nogil:
+#         if feat_con == NULL:
+#             return -1
+#         else:
+#             self.new_split = 1
+#             feat_con.integer[0]  = (rand() % self._shape[1]) - self._shape[1] / 2
+#             feat_con.integer[1]  = (rand() % self._shape[0]) - self._shape[0] / 2
+#             feat_con.integer[2]  = (rand() % (self._max_box_size - self._min_box_size)) + self._min_box_size
+#             feat_con.integer[3]  = (rand() % (self._max_box_size - self._min_box_size)) + self._min_box_size
+# 
+#             feat_con.integer[4]  = (rand() % self._shape[1]) - self._shape[1] / 2
+#             feat_con.integer[5]  = (rand() % self._shape[0]) - self._shape[0] / 2
+#             feat_con.integer[6]  = (rand() % (self._max_box_size - self._min_box_size)) + self._min_box_size
+#             feat_con.integer[7]  = (rand() % (self._max_box_size - self._min_box_size)) + self._min_box_size
+#             return 0
+# 
+#  
+#     cdef SIZE_t init_tree(self, FeatureConfig* feat_con = NULL) nogil:        
+#         for i in range(self._storage_size):
+#             feat_con.integer[i] = 0
+#         self.new_tree = 1
+#         return 0
+# 
+# 
+#     def get_number_of_calls(self):
+#         return self._counter
+#     
+#    
+#     cdef np.ndarray _get_image_ndarray(self): #sure?
+#         """Wraps feature image as a NumPy struct array
+#  
+#         """
+#         cdef INT32_t x_size = 0;
+#         cdef INT32_t y_size = 0;
+#         cdef SIZE_t* _shape = self._shape
+#         y_size = _shape[0]
+#         x_size = _shape[1]
+#         cdef SIZE_t size = y_size * x_size * 2
+#         cdef np.npy_intp shape[1]
+#         shape[0] = <np.npy_intp> size
+#         #cdef np.npy_intp strides[1]
+#         #strides[0] = sizeof(double)
+#         cdef np.ndarray arr
+# #         Py_INCREF(np.float64)
+# #         arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> np.NPY_DOUBLE, 1, shape,
+# #                                    strides, <void*> self._image_data,
+# #                                    np.NPY_DEFAULT, None)
+#         arr = np.PyArray_SimpleNewFromData(1, shape, np.NPY_DOUBLE, self._image_data)
+#         Py_INCREF(self)
+#         arr.base = <PyObject*> self
 #          
-#          for i in range(self.n_dim):
-#              capacity = capacity * self._shape[i]
+#         return arr
+#      
+#     cdef np.ndarray _get_shape_ndarray(self): #sure?
+#         """Wraps image shape as a NumPy struct array
+#  
+#         """
+#         cdef np.npy_intp shape[1]
+#         shape[0] = <np.npy_intp> self.n_dim
+#         #cdef np.npy_intp strides[1]
+#         #strides[0] = sizeof(INT32_t)
+#         cdef np.ndarray arr
+# #         Py_INCREF(np.NPY_INTP)
+# #         arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> np.int32, 1, shape,
+# #                                    strides, <void*> self._shape,
+# #                                    np.NPY_DEFAULT, None)
+#         arr = np.PyArray_SimpleNewFromData(1, shape, np.NPY_INTP, self._shape)
+#         Py_INCREF(self)
+#         arr.base = <PyObject*> self
 #          
-#          ptr = realloc(self._image_data,capacity * 2 * sizeof(DOUBLE_t))
-#          if ptr != NULL:
-#              self._image_data = <double*> ptr
-#          _image_data = memcpy(self._image_data, (<np.ndarray> image_ndarray).data,
-#                               capacity * 2 * sizeof(DOUBLE_t))
-        return
- 
-    cpdef import_image(self, np.ndarray Xf):
-        """ Import Image that are used in on-demand feature process.
-            np.ndarray Xf
-            Xf.ndim >= 2
-        """
-        if Xf.ndim <= 1:
-            raise ValueError('The image dimensionality must be above 1. Aborting.')
-            return -1
-        
-        cdef SIZE_t image_size = 1
-        self.n_dim = <SIZE_t> Xf.ndim
-        cdef void* ptr = realloc(self._shape, self.n_dim * sizeof(np.int64))
-        if ptr == NULL:
-            raise ValueError("Can not grap shape of given numpy.ndarray. Return.")
-        self._shape = <SIZE_t*> ptr
-        
-        memcpy(self._shape, Xf.shape, self.n_dim * sizeof(SIZE_t))
-        
-        Xf = np.asarray([Xf,Xf])
-
-        #self._image[0,...] original input image
-        #self._image[1,...] summed area table
-        for i in range(self.n_dim):
-            image_size = image_size * self._shape[i]
-            Xf[1,...] = Xf[1,...].cumsum(i)
-        
-
-        Xf = np.asfortranarray(Xf.reshape([2 * image_size]), dtype=np.float64)
-        ptr = realloc(self._image_data, 2 * image_size * sizeof(np.float64))
-        if ptr == NULL:
-            raise ValueError("Can not grap values of given numpy.ndarray. Return.")
-        self._image_data = <DOUBLE_t*> ptr
-        memcpy(self._image_data, (<np.ndarray> Xf).data, image_size * 2 * sizeof(DOUBLE_t))
-        return
+#         return arr    
+#     
+#     
+# 
+# cdef class OnDemandTestClass5(OnDemandFeature):
+#     """This class uses the means of one randomly generated boxe which is 
+#     compared to the intensity of the given sample.
+#     
+#     OnDemandTestClass5(self, SIZE_t n_new_features = 10, SIZE_t max_box_size = 50, SIZE_t min_box_size = 1)
+#     
+#     SIZE_t n_new_features 
+#     SIZE_t max_box_size 
+#     SIZE_t min_box_size
+#     
+#     This is a sub-class of OnDemandFeature. It is used to generate on-demand features. you need to call
+#     the method "import_image" to use it.
+#     
+#     The image must be given as a numpy.ndarray:  cpdef import_image(self, np.ndarray Xf)
+#     
+#     To generate the mean value, a summed are table is used. Thus, the image must be given in original shape.
+#     Summed sub area is calculated from a summed area table with D-B-C+A, when # area is wanted:
+#              _____________     |
+#              |   |   |   |  ----------> x
+#              | A |   | B |     |     |
+#              |   |###|###|     |_____|
+#              | C |###|#D#|     V 
+#              -------------     y
+#         
+#     """
+#     
+#     def __cinit__(self, SIZE_t n_new_features = 10, SIZE_t max_box_size = 50, SIZE_t min_box_size = 1):
+#         self._feature = 1.0
+#         self._counter = 0
+#         self.n_new_features = n_new_features
+#         self.n_samples = 0
+#         self.n_features = 0
+#         #self._image = np.zeros(0)
+#         self._image_data = NULL
+#         self._shape = NULL
+#         self.n_dim = 0
+#         self.new_tree = 0
+#         self.new_split = 0
+#         self._max_box_size = max_box_size
+#         self._min_box_size = min_box_size
+#         self._seed = 0
+#         self._storage_size = 1
+# 
+#         
+#     property shape:
+#         def __get__(self):
+#             return self._get_shape_ndarray()
+#  
+#     property image:
+#         def __get__(self):
+#             size = 1
+#             shape = np.zeros([self.n_dim])
+#             for i in range(self.n_dim):
+#                 shape[i] = self.shape[i]
+#                 size = size * self.shape[i]
+#             return self._get_image_ndarray()[:size].reshape(shape)
+#  
+#     property SAT:
+#         def __get__(self):
+#             size = 1
+#             shape = np.zeros([self.n_dim])
+#             for i in range(self.n_dim):
+#                 shape[i] = self.shape[i]
+#                 size = size * self.shape[i]
+#             return self._get_image_ndarray()[size:].reshape(shape)
+# 
+#     def __dealloc__(self):
+#         """Destructor."""
+#         # Free all inner structures
+#         free(self._image_data)
+#         free(self._shape)
+#         
+#     def __reduce__(self):
+#         """Reduce re-implementation, for pickling."""
+#         return (OnDemandTestClass4, (self.n_new_features, 
+#                        self._max_box_size, self._min_box_size), self.__getstate__())
+# 
+#     def __getstate__(self):
+#         """Getstate re-implementation, for pickling."""
+#         d = {}
+#         d["_feature"] = self._feature
+#         d["_counter"] = self._counter
+#         d["n_new_features"] = self.n_new_features
+#         d["n_samples"] =self.n_samples
+#         d["n_features"] = self.n_features
+#         #d["_image"] = self._image
+# #        d["_image_data"] = self._get_image_ndarray()
+# #        d["_shape"] = self._get_shape_ndarray()
+#         d["n_dim"] = self.n_dim
+#         d["_seed"] = self._seed
+#         d["_min_box_size"] = self._min_box_size 
+#         d["_max_box_size"] = self._max_box_size
+#         return d
+# 
+#     def __setstate__(self, d):
+#         """Setstate re-implementation, for unpickling."""
+#         self._feature = d["_feature"]
+#         self._counter = d["_counter"]
+#         self.n_new_features = d["n_new_features"]
+#         self.n_samples = d["n_samples"]
+#         self.n_features = d["n_features"]
+#         #_image = d["_image"]
+# #         image_ndarray = d["_image_data"]
+# #         shape_ndarray = d["_shape"]
+#         self.n_dim = d["n_dim"]
+#         self._seed = d["_seed"]
+#         self._min_box_size = d["_min_box_size"]
+#         self._max_box_size = d["_max_box_size"]
+#         cdef SIZE_t capacity = 1
+#         
+# #         if (image_ndarray.dtype != np.float64 or
+# #                  not image_ndarray.flags.c_contiguous or
+# #                  shape_ndarray.dtype != np.int64 or
+# #                  not shape_ndarray.flags.c_contiguous):
+# #              raise ValueError('Did not recognise loaded array layout')
+# #                  
+# #          cdef void* ptr = realloc(self._shape, self.n_dim * sizeof(SIZE_t))
+# #          if ptr != NULL:
+# #              self._shape = <SIZE_t*> ptr
+# #          _shape = memcpy(self._shape, (<np.ndarray> shape_ndarray).data, 
+# #                          sizeof(SIZE_t) * self.n_dim)
+# #          
+# #          for i in range(self.n_dim):
+# #              capacity = capacity * self._shape[i]
+# #          
+# #          ptr = realloc(self._image_data,capacity * 2 * sizeof(DOUBLE_t))
+# #          if ptr != NULL:
+# #              self._image_data = <double*> ptr
+# #          _image_data = memcpy(self._image_data, (<np.ndarray> image_ndarray).data,
+# #                               capacity * 2 * sizeof(DOUBLE_t))
+#         return
+#  
+#     cpdef import_image(self, np.ndarray Xf):
+#         """ Import Image that are used in on-demand feature process.
+#             np.ndarray Xf
+#             Xf.ndim >= 2
+#         """
+#         if Xf.ndim <= 1:
+#             raise ValueError('The image dimensionality must be above 1. Aborting.')
+#             return
+#         
+#         cdef SIZE_t image_size = 1
+#         self.n_dim = <SIZE_t> Xf.ndim
+#         self._storage_size = 2 * self.n_dim
+#         
+#         cdef void* ptr = realloc(self._shape, self.n_dim * sizeof(np.int64))
+#         if ptr == NULL:
+#             raise ValueError("Can not grap shape of given numpy.ndarray. Return.")
+#         self._shape = <SIZE_t*> ptr
+#         
+#         memcpy(self._shape, Xf.shape, self.n_dim * sizeof(SIZE_t))
+#         
+#         Xf = np.asarray([Xf,Xf])
+# 
+#         #self._image[0,...] original input image
+#         #self._image[1,...] summed area table
+#         for i in range(self.n_dim):
+#             image_size = image_size * self._shape[i]
+#             Xf[1,...] = Xf[1,...].cumsum(i)
+#         
+# 
+#         Xf = np.asfortranarray(Xf.reshape([2 * image_size]), dtype=np.float64)
+#         ptr = realloc(self._image_data, 2 * image_size * sizeof(np.float64))
+#         if ptr == NULL:
+#             raise ValueError("Can not grap values of given numpy.ndarray. Return.")
+#         self._image_data = <DOUBLE_t*> ptr
+#         memcpy(self._image_data, (<np.ndarray> Xf).data, image_size * 2 * sizeof(DOUBLE_t))
+#         return
+#     
+#     cdef void set_n_features(self, SIZE_t n_new_features) nogil:
+#         self.n_new_features = n_new_features
+#     
+#     
+#     cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx, SIZE_t is_prediction ) nogil:
+#         cdef double R0 = self._image_data[sample_idx]
+#         cdef INT64_t* pos = <INT64_t*> malloc(sizeof(INT64_t) * self.n_dim)
+#         cdef SIZE_t* length = <SIZE_t*> malloc(sizeof(SIZE_t) * self.n_dim)
+#         cdef SIZE_t i = 0
+#         cdef SIZE_t image_size = 1
+#         cdef SIZE_t idx = sample_idx
+#         cdef INT64_t face = 0
+#         
+#         while i < self.n_dim:
+#             image_size = image_size * self._shape[i]
+#             i = i + 1
+#         
+#         cdef double R1 = 0.0
+#         face = image_size
+#         if idx < image_size:
+#             # get coordinates based location
+#             i = self.n_dim - 1
+#             while i > 0:
+#                 face = face / self._shape[self.n_dim-1-i]
+#                 pos[i] = idx / face
+#                 idx = idx % face
+#                 i = i - 1
+#                 if i == 0:
+#                     pos[i] = idx
+#             # add offsets
+#             i = 0
+#             while i < self.n_dim:
+#                 pos[i] = pos[i] + feat_con.integer[i]
+#                 length[i] = feat_con.integer[self.n_dim + i]
+#                 i = i + 1
+#     
+#             R1 = self.nd_box_from_sat(self.n_dim, pos, length, self._shape, &(self._image_data[image_size]))        
+#             self._feature = (R0 + R1) / 2.0
+#         else:
+#             self._feature = 0
+#         
+#         free(pos)
+#         free(length)
+#         return self._feature
+#         
+#         
+#     cdef DOUBLE_t nd_box_from_sat(self, SIZE_t ndim, INT64_t* pos, SIZE_t* length, SIZE_t* shape, DOUBLE_t* sat) nogil:
+#         """ claculate the integral of a subregion of the inputimage using a summed area table.
+#            
+#            Inputs neccessary:
+#            SIZE_t ndim            Number of dimensions.
+#            INT64_t* pos:          Pointer to an array with the startposition of the subarea.
+#            SIZE_t* length:        Pointer to an array with the length of the subarea in every dimension.
+#            SIZE_t shape:          Pointer to shape of data structure in *sat with length ndim.
+#            DOUBLE_t* sat:         Pointer to the summed area table.
+#            
+#            Functionallity in an 2D example:
+#                    #     _____________     |
+#                    #     |   |   |   |  ----------> x
+#                    #     | A |   | B |     |     |
+#                    #     |   |###|###|     |_____|
+#                    #     | C |###|#D#|     V 
+#                    #     -------------     y
+#                    #  sum = D-B-C+A
+#         """
+#        
+#         # define the number of values and the edges positions
+#         cdef INT64_t* edges = <INT64_t*> malloc(ndim * 2 * sizeof(INT64_t))
+#         cdef INT64_t* local_length = <INT64_t*> malloc(ndim * sizeof(INT64_t))
+#         memcpy(local_length, length, ndim*sizeof(INT64_t))
+#         cdef SIZE_t image_size = 1
+#         cdef SIZE_t n_edges = 2 ** ndim
+#         cdef DOUBLE_t sum = 0
+#         cdef SIZE_t n_ones = 0
+#         #cdef SIZE_t* counter = &ones
+#         cdef INT64_t idx = 0
+#         cdef INT64_t* coordinates = <INT64_t*> malloc(ndim * sizeof(INT64_t))
+#         cdef SIZE_t* binary_code = <SIZE_t*> malloc(ndim * sizeof(SIZE_t))
+#         cdef SIZE_t structure = 1
+#         cdef SIZE_t i = 0
+#         cdef SIZE_t j = 0
+#        
+#         while i < ndim:
+#             image_size = image_size * shape[i]
+#             edges[i] = pos[i]
+#             edges[i+ndim] =  pos[i] - length[i]
+#             i = i + 1
+#       
+#         # get value of subregion
+#         i = 0
+#         while i < n_edges:
+#             # reset parameters
+#             n_ones = 0
+#             j = 0
+#             idx = 0
+#             structure = 1
+# 
+#             # reset coordinates
+#             while j < ndim: 
+#                 coordinates[j] = 0
+#                 binary_code[j] = 0
+#                 j = j + 1
+# 
+#             # convert edge id from dec to binary
+#             self.ConvertToBinary(i, ndim, binary_code)
+# 
+#             # calculate coordinates to get the right point in SAT
+#             j = 0
+#             while j < ndim:
+#                 n_ones = n_ones + binary_code[j] # count the amount of 1 in binary coordinates
+#                 coordinates[j] = edges[j + ndim * binary_code[j]] # coordinates as a place to save the edge coordinates
+#                 j = j + 1
+#             # errorhandling
+#             j = 0
+#             while j < ndim:
+#                 if coordinates[j] >= shape[ndim-1-j]:
+#                     if binary_code[j] == 0:
+#                         coordinates[j] = shape[ndim-1-j] - 1
+#                     if binary_code[j] == 1:
+#                         coordinates[j] = shape[ndim-1-j] - 2
+#                 if coordinates[j] < 0:
+#                     coordinates[j] = -1
+#                 j = j + 1
+#             j = 0
+#             while j < ndim:
+#                 # if coordinate is not in image borders
+#                 if coordinates[j] == -1:
+#                     idx = -1
+#                     break
+#                 else:
+#                     idx = idx + (coordinates[j] * structure)
+#                     structure = structure * shape[ndim-1-j]
+#                     j = j + 1
+#             
+#             # if the left hand side border is overlapped by a box, add a 0 as its value by doing nothing.
+#             if idx < 0: 
+#                 pass
+#             else:
+#                 # calculate sum
+#                 sum = sum + ((-1)**n_ones) * sat[idx]
+#             i = i + 1
+#        
+#         # calculate area size
+#         cdef double area_size = 1.0;
+#         i = 0
+#         while i < ndim:
+#             #check left border
+#             if edges[i] <= 0:
+#                 local_length[i] = 1
+#             elif edges[i+ndim] < 0:
+#                 local_length[i] = edges[i] + 1
+#             #check right border
+#             if edges[i+ndim] >= shape[ndim-1-i] - 1:
+#                 local_length[i] = 1
+#             elif edges[i] >= shape[ndim-1-i]:
+#                 local_length[i] = shape[ndim-1-i] - edges[i+ndim] - 1
+#             #calculate area size
+#             area_size = area_size * <double>local_length[i]
+#             i = i + 1
+#         free(edges)
+#         free(coordinates)
+#         free(local_length)
+#         free(binary_code)
+#         # devide sum by area size to calculate the mean value of the sub box
+#         return <double> (sum / area_size)
+#         
+#     cdef INT64_t ConvertToBinary(self, SIZE_t n, SIZE_t dim, SIZE_t* coordinates) nogil:
+#         dim = dim - 1
+#         if n / 2 != 0:
+#             self.ConvertToBinary(n / 2, dim, coordinates)
+#         coordinates[dim] = n % 2
+#         return 0
+#         
+# 
+#      
+#     cdef SIZE_t get_n_features(self) nogil:
+#         return self.n_new_features
+# 
+# 
+#     cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
+#         if feat_con == NULL:
+#             return -1
+#         elif sample_idx < 0:
+#             return -1
+#         else:
+#             self._counter += 1
+#             return self.calc_feature(feat_con, sample_idx, is_prediction)
+#     
+#     
+#     cdef SIZE_t init_split(self, FeatureConfig* feat_con = NULL) nogil:
+#         cdef SIZE_t i = 0
+#         if feat_con == NULL:
+#             return -1
+#         else:
+#             self.new_split = 1
+#             while i < self.n_dim:
+#                 feat_con.integer[i]  = (rand() % self._shape[self.n_dim -1 -i]) - self._shape[self.n_dim -1 -i] / 2 #x offset
+#                 if self._max_box_size == self._min_box_size:
+#                     feat_con.integer[self.n_dim +i] = self._max_box_size
+#                 else:
+#                     feat_con.integer[self.n_dim +i]  = (rand() % (self._max_box_size - self._min_box_size)) + self._min_box_size #x
+#                 i = i + 1
+#             return 0
+# 
+#  
+#     cdef SIZE_t init_tree(self, FeatureConfig* feat_con = NULL) nogil:        
+#         for i in range(self._storage_size):
+#             feat_con.integer[i] = 0
+#         self.new_tree = 1
+#         return 0
+# 
+# 
+#     def get_number_of_calls(self):
+#         return self._counter
+#     
+#    
+#     cdef np.ndarray _get_image_ndarray(self): #sure?
+#         """Wraps feature image as a NumPy struct array
+#  
+#         """
+#         cdef INT32_t x_size = 0;
+#         cdef INT32_t y_size = 0;
+#         cdef SIZE_t* _shape = self._shape
+#         y_size = _shape[0]
+#         x_size = _shape[1]
+#         cdef SIZE_t size = y_size * x_size * 2
+#         cdef np.npy_intp shape[1]
+#         shape[0] = <np.npy_intp> size
+#         #cdef np.npy_intp strides[1]
+#         #strides[0] = sizeof(double)
+#         cdef np.ndarray arr
+# #         Py_INCREF(np.float64)
+# #         arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> np.NPY_DOUBLE, 1, shape,
+# #                                    strides, <void*> self._image_data,
+# #                                    np.NPY_DEFAULT, None)
+#         arr = np.PyArray_SimpleNewFromData(1, shape, np.NPY_DOUBLE, self._image_data)
+#         Py_INCREF(self)
+#         arr.base = <PyObject*> self
+#          
+#         return arr
+#      
+#     cdef np.ndarray _get_shape_ndarray(self): #sure?
+#         """Wraps image shape as a NumPy struct array
+#  
+#         """
+#         cdef np.npy_intp shape[1]
+#         shape[0] = <np.npy_intp> self.n_dim
+#         #cdef np.npy_intp strides[1]
+#         #strides[0] = sizeof(INT32_t)
+#         cdef np.ndarray arr
+# #         Py_INCREF(np.NPY_INTP)
+# #         arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> np.int32, 1, shape,
+# #                                    strides, <void*> self._shape,
+# #                                    np.NPY_DEFAULT, None)
+#         arr = np.PyArray_SimpleNewFromData(1, shape, np.NPY_INTP, self._shape)
+#         Py_INCREF(self)
+#         arr.base = <PyObject*> self
+#          
+#         return arr
     
-    cdef void set_n_features(self, SIZE_t n_new_features) nogil:
-        self.n_new_features = n_new_features
-    
-    
-    cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx, SIZE_t is_prediction ) nogil:
-        cdef INT32_t x = sample_idx % self._shape[1]
-        cdef INT32_t y = sample_idx / self._shape[1]
-        cdef double R0 = self._image_data[sample_idx]
-        cdef INT64_t* pos = <INT64_t*> malloc(sizeof(INT64_t) * self.n_dim)
-        cdef SIZE_t* length = <SIZE_t*> malloc(sizeof(SIZE_t) * self.n_dim)
-        cdef SIZE_t i = 0
-        cdef SIZE_t image_size = 1
-        
-        while i < self.n_dim:
-            image_size = image_size * self._shape[i]
-            i = i + 1
-            
-        cdef double R1 = 0.0
-        pos[0] = x + feat_con.integer[0]
-        pos[1] = y + feat_con.integer[1]
-        length[0] = feat_con.integer[2]
-        length[1] = feat_con.integer[3]
-
-        R1 = self.nd_box_from_sat(self.n_dim, pos, length, self._shape, &(self._image_data[image_size]))
-        
-        cdef double R2 = 0.0
-        pos[0] = x + feat_con.integer[4]
-        pos[1] = y + feat_con.integer[5]
-        length[0] = feat_con.integer[6]
-        length[1] = feat_con.integer[7]
-        
-        R2 = self.nd_box_from_sat(self.n_dim, pos, length, self._shape, &(self._image_data[image_size]))
-        #R1 = self.summed_area_table_subbox(x + feat_con.offset_x1, y + feat_con.offset_y1, feat_con.length_x1, feat_con.length_y1)
-        #R2 = self.summed_area_table_subbox(x + feat_con.offset_x2, y + feat_con.offset_y2, feat_con.length_x2, feat_con.length_y2)
-        self._feature = R0 - ((R1 + R2) / 2.0)
-        free(pos)
-        free(length)
-        return self._feature
-
-    cdef DOUBLE_t nd_box_from_sat(self, SIZE_t ndim, INT64_t* pos, SIZE_t* length, SIZE_t* shape, DOUBLE_t* sat) nogil:
-        """ claculate the integral of a subregion of the inputimage using a summed area table.
-           
-           Inputs neccessary:
-           SIZE_t ndim            Number of dimensions.
-           INT64_t* pos:          Pointer to an array with the startposition of the subarea.
-           SIZE_t* length:        Pointer to an array with the length of the subarea in every dimension.
-           SIZE_t shape:          Pointer to shape of data structure in *sat with length ndim.
-           DOUBLE_t* sat:         Pointer to the summed area table.
-           
-           Functionallity in an 2D example:
-                   #     _____________     |
-                   #     |   |   |   |  ----------> x
-                   #     | A |   | B |     |     |
-                   #     |   |###|###|     |_____|
-                   #     | C |###|#D#|     V 
-                   #     -------------     y
-                   #  sum = D-B-C+A
-        """
-       
-        # define the number of values and the edges positions
-        cdef INT64_t* edges = <INT64_t*> malloc(ndim * 2 * sizeof(INT64_t))
-        cdef INT64_t* local_length = <INT64_t*> malloc(ndim * sizeof(INT64_t))
-        memcpy(local_length, length, ndim*sizeof(INT64_t))
-        cdef SIZE_t image_size = 1
-        cdef SIZE_t n_edges = 2 ** ndim
-        cdef DOUBLE_t sum = 0
-        cdef SIZE_t n_ones = 0
-        #cdef SIZE_t* counter = &ones
-        cdef INT64_t idx = 0
-        cdef INT64_t* coordinates = <INT64_t*> malloc(ndim * sizeof(INT64_t))
-        cdef SIZE_t* binary_code = <SIZE_t*> malloc(ndim * sizeof(SIZE_t))
-        cdef SIZE_t structure = 1
-        cdef SIZE_t i = 0
-        cdef SIZE_t j = 0
-       
-        while i < ndim:
-            image_size = image_size * shape[i]
-            edges[i] = pos[i]
-            edges[i+ndim] =  pos[i] - length[i]
-            i = i + 1
-      
-        # get value of subregion
-        i = 0
-        while i < n_edges:
-            # reset parameters
-            n_ones = 0
-            j = 0
-            idx = 0
-            structure = 1
-
-            # reset coordinates
-            while j < ndim: 
-                coordinates[j] = 0
-                binary_code[j] = 0
-                j = j + 1
-
-            # convert edge id from dec to binary
-            self.ConvertToBinary(i, ndim, binary_code)
-
-            # calculate coordinates to get the right point in SAT
-            j = 0
-            while j < ndim:
-                n_ones = n_ones + binary_code[j] # count the amount of 1 in binary coordinates
-                coordinates[j] = edges[j + ndim * binary_code[j]] # coordinates as a place to save the edge coordinates
-                j = j + 1
-            # errorhandling
-            j = 0
-            while j < ndim:
-                if coordinates[j] >= shape[ndim-1-j]:
-                    if binary_code[j] == 0:
-                        coordinates[j] = shape[ndim-1-j] - 1
-                    if binary_code[j] == 1:
-                        coordinates[j] = shape[ndim-1-j] - 2
-                if coordinates[j] < 0:
-                    coordinates[j] = -1
-                j = j + 1
-            j = 0
-            while j < ndim:
-                # if coordinate is not in image borders
-                if coordinates[j] == -1:
-                    idx = -1
-                    break
-                else:
-                    idx = idx + (coordinates[j] * structure)
-                    structure = structure * shape[ndim-1-j]
-                    j = j + 1
-            
-            # if the left hand side border is overlapped by a box, add a 0 as its value by doing nothing.
-            if idx < 0: 
-                pass
-            else:
-                # calculate sum
-                sum = sum + ((-1)**n_ones) * sat[idx]
-            i = i + 1
-       
-        # calculate area size
-        cdef double area_size = 1.0;
-        i = 0
-        while i < ndim:
-            #check left border
-            if edges[i] <= 0:
-                local_length[i] = 1
-            elif edges[i+ndim] < 0:
-                local_length[i] = edges[i] + 1
-            #check right border
-            if edges[i+ndim] >= shape[ndim-1-i] - 1:
-                local_length[i] = 1
-            elif edges[i] >= shape[ndim-1-i]:
-                local_length[i] = shape[ndim-1-i] - edges[i+ndim] - 1
-            #calculate area size
-            area_size = area_size * <double>local_length[i]
-            i = i + 1
-        free(edges)
-        free(coordinates)
-        free(local_length)
-        free(binary_code)
-        # devide sum by area size to calculate the mean value of the sub box
-        return <double> (sum / area_size)
-        
-    cdef INT64_t ConvertToBinary(self, SIZE_t n, SIZE_t dim, SIZE_t* coordinates) nogil:
-        dim = dim - 1
-        if n / 2 != 0:
-            self.ConvertToBinary(n / 2, dim, coordinates)
-        coordinates[dim] = n % 2
-        return 0
-        
-
-     
-    cdef SIZE_t get_n_features(self) nogil:
-        return self.n_new_features
-
-
-    cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
-        if feat_con == NULL:
-            return -1
-        elif sample_idx < 0:
-            return -1
-        else:
-            self._counter += 1
-            return self.calc_feature(feat_con, sample_idx, is_prediction)
-    
-    
-    cdef SIZE_t init_split(self, FeatureConfig* feat_con = NULL) nogil:
-        if feat_con == NULL:
-            return -1
-        else:
-            self.new_split = 1
-            feat_con.integer[0]  = (rand() % self._shape[1]) - self._shape[1] / 2
-            feat_con.integer[1]  = (rand() % self._shape[0]) - self._shape[0] / 2
-            feat_con.integer[2]  = (rand() % (self._max_box_size - self._min_box_size)) + self._min_box_size
-            feat_con.integer[3]  = (rand() % (self._max_box_size - self._min_box_size)) + self._min_box_size
-
-            feat_con.integer[4]  = (rand() % self._shape[1]) - self._shape[1] / 2
-            feat_con.integer[5]  = (rand() % self._shape[0]) - self._shape[0] / 2
-            feat_con.integer[6]  = (rand() % (self._max_box_size - self._min_box_size)) + self._min_box_size
-            feat_con.integer[7]  = (rand() % (self._max_box_size - self._min_box_size)) + self._min_box_size
-            return 0
-
- 
-    cdef SIZE_t init_tree(self, FeatureConfig* feat_con = NULL) nogil:        
-        for i in range(self._storage_size):
-            feat_con.integer[i] = 0
-        self.new_tree = 1
-        return 0
-
-
-    def get_number_of_calls(self):
-        return self._counter
-    
-   
-    cdef np.ndarray _get_image_ndarray(self): #sure?
-        """Wraps feature image as a NumPy struct array
- 
-        """
-        cdef INT32_t x_size = 0;
-        cdef INT32_t y_size = 0;
-        cdef SIZE_t* _shape = self._shape
-        y_size = _shape[0]
-        x_size = _shape[1]
-        cdef SIZE_t size = y_size * x_size * 2
-        cdef np.npy_intp shape[1]
-        shape[0] = <np.npy_intp> size
-        #cdef np.npy_intp strides[1]
-        #strides[0] = sizeof(double)
-        cdef np.ndarray arr
-#         Py_INCREF(np.float64)
-#         arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> np.NPY_DOUBLE, 1, shape,
-#                                    strides, <void*> self._image_data,
-#                                    np.NPY_DEFAULT, None)
-        arr = np.PyArray_SimpleNewFromData(1, shape, np.NPY_DOUBLE, self._image_data)
-        Py_INCREF(self)
-        arr.base = <PyObject*> self
-         
-        return arr
-     
-    cdef np.ndarray _get_shape_ndarray(self): #sure?
-        """Wraps image shape as a NumPy struct array
- 
-        """
-        cdef np.npy_intp shape[1]
-        shape[0] = <np.npy_intp> self.n_dim
-        #cdef np.npy_intp strides[1]
-        #strides[0] = sizeof(INT32_t)
-        cdef np.ndarray arr
-#         Py_INCREF(np.NPY_INTP)
-#         arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> np.int32, 1, shape,
-#                                    strides, <void*> self._shape,
-#                                    np.NPY_DEFAULT, None)
-        arr = np.PyArray_SimpleNewFromData(1, shape, np.NPY_INTP, self._shape)
-        Py_INCREF(self)
-        arr.base = <PyObject*> self
-         
-        return arr    
-    
-    
-
-cdef class OnDemandTestClass5(OnDemandFeature):
+cdef class Geremia_Like_Feature(OnDemandFeature):
     """This class uses the means of one randomly generated boxe which is 
     compared to the intensity of the given sample.
     
     OnDemandTestClass5(self, SIZE_t n_new_features = 10, SIZE_t max_box_size = 50, SIZE_t min_box_size = 1)
     
     SIZE_t n_new_features 
-    SIZE_t max_box_size 
-    SIZE_t min_box_size
-    
+    SIZE_t max_box_size (default or 0 --> 1/5 image shape)
+    SIZE_t min_box_size (default or 0 --> 1/5 image shape)
+    SIZE_t offset_part  (defalult = 3 --> 1/3 image shape)
     This is a sub-class of OnDemandFeature. It is used to generate on-demand features. you need to call
     the method "import_image" to use it.
     
@@ -4631,7 +5067,7 @@ cdef class OnDemandTestClass5(OnDemandFeature):
         
     """
     
-    def __cinit__(self, SIZE_t n_new_features = 10, SIZE_t max_box_size = 50, SIZE_t min_box_size = 1):
+    def __cinit__(self, SIZE_t n_new_features = 10, SIZE_t min_box_size = 0, SIZE_t max_box_size = 0, SIZE_t offset_part = 3):
         self._feature = 1.0
         self._counter = 0
         self.n_new_features = n_new_features
@@ -4640,14 +5076,19 @@ cdef class OnDemandTestClass5(OnDemandFeature):
         #self._image = np.zeros(0)
         self._image_data = NULL
         self._shape = NULL
+        self._n_background_samples = NULL
+        self._n_background_samples_total = 0
         self.n_dim = 0
         self.new_tree = 0
         self.new_split = 0
         self._max_box_size = max_box_size
         self._min_box_size = min_box_size
-        self._seed = 0
-        self._storage_size = 1
-
+        self._seed = time(NULL)
+        self._storage_size = 14
+        self._image_size = 1
+        self._sample_per_set = 1
+        self._is_masked = 0
+        self._max_offset_as_part_of_shape = offset_part
         
     property shape:
         def __get__(self):
@@ -4670,16 +5111,23 @@ cdef class OnDemandTestClass5(OnDemandFeature):
                 shape[i] = self.shape[i]
                 size = size * self.shape[i]
             return self._get_image_ndarray()[size:].reshape(shape)
+    
+    property feature_configs:
+        def __get__(self):
+            return self._get_feature_config_ndarray()
 
     def __dealloc__(self):
         """Destructor."""
         # Free all inner structures
         free(self._image_data)
         free(self._shape)
+        free(self._ID_alloc)
+        free(self.feature_configs)
+        free(self._n_background_samples)
         
     def __reduce__(self):
         """Reduce re-implementation, for pickling."""
-        return (OnDemandTestClass4, (self.n_new_features, 
+        return (Geremia_Like_Feature, (self.n_new_features, 
                        self._max_box_size, self._min_box_size), self.__getstate__())
 
     def __getstate__(self):
@@ -4690,13 +5138,14 @@ cdef class OnDemandTestClass5(OnDemandFeature):
         d["n_new_features"] = self.n_new_features
         d["n_samples"] =self.n_samples
         d["n_features"] = self.n_features
-        #d["_image"] = self._image
-#        d["_image_data"] = self._get_image_ndarray()
-#        d["_shape"] = self._get_shape_ndarray()
         d["n_dim"] = self.n_dim
         d["_seed"] = self._seed
         d["_min_box_size"] = self._min_box_size 
         d["_max_box_size"] = self._max_box_size
+        d["_storage_size"] = self._storage_size
+        d["_image_size"]  = self._image_size
+        d["_sample_per_set"] = self._sample_per_set
+        d["_n_background_samples_total"] = self._n_background_samples_total
         return d
 
     def __setstate__(self, d):
@@ -4706,131 +5155,246 @@ cdef class OnDemandTestClass5(OnDemandFeature):
         self.n_new_features = d["n_new_features"]
         self.n_samples = d["n_samples"]
         self.n_features = d["n_features"]
-        #_image = d["_image"]
-#         image_ndarray = d["_image_data"]
-#         shape_ndarray = d["_shape"]
         self.n_dim = d["n_dim"]
         self._seed = d["_seed"]
         self._min_box_size = d["_min_box_size"]
         self._max_box_size = d["_max_box_size"]
-        cdef SIZE_t capacity = 1
-        
-#         if (image_ndarray.dtype != np.float64 or
-#                  not image_ndarray.flags.c_contiguous or
-#                  shape_ndarray.dtype != np.int64 or
-#                  not shape_ndarray.flags.c_contiguous):
-#              raise ValueError('Did not recognise loaded array layout')
-#                  
-#          cdef void* ptr = realloc(self._shape, self.n_dim * sizeof(SIZE_t))
-#          if ptr != NULL:
-#              self._shape = <SIZE_t*> ptr
-#          _shape = memcpy(self._shape, (<np.ndarray> shape_ndarray).data, 
-#                          sizeof(SIZE_t) * self.n_dim)
-#          
-#          for i in range(self.n_dim):
-#              capacity = capacity * self._shape[i]
-#          
-#          ptr = realloc(self._image_data,capacity * 2 * sizeof(DOUBLE_t))
-#          if ptr != NULL:
-#              self._image_data = <double*> ptr
-#          _image_data = memcpy(self._image_data, (<np.ndarray> image_ndarray).data,
-#                               capacity * 2 * sizeof(DOUBLE_t))
+        self._storage_size = d["_storage_size"]
+        self._image_size = d["_image_size"]
+        self._sample_per_set = d["_sample_per_set"]
+        self._n_background_samples_total = d["_n_background_samples_total"]
         return
  
-    cpdef import_image(self, np.ndarray Xf):
+    cpdef import_image(self, np.ndarray Xf, np.ndarray ID_alloc = None, np.ndarray n_background_samples = None):
         """ Import Image that are used in on-demand feature process.
             np.ndarray Xf
-            Xf.ndim >= 2
+                - Xf must be of shape [n_image,n_channel,...,x,y,z]
+                - n_images must be equal to the number of images
+                  used as training data set for the forest. 
+                - n_channels must be equal to the number of channels
+                  used as training data set for the forest. 
+                - Xf.ndim >= 2
+            dict ID_alloc
+                - giving the correlation between sample ID and
+                  position in the image.
+                - ID_alloc must be of shape [data_set_name:[feature_channel: [n_feature_samples]]]
         """
+#         print "A"
+        # error handle
         if Xf.ndim <= 1:
             raise ValueError('The image dimensionality must be above 1. Aborting.')
-            return -1
+            return
         
-        cdef SIZE_t image_size = 1
+        if ID_alloc == None:
+            self._is_masked = 0
+            self._sample_per_set = len(Xf[0,0,...])
+        else:
+            self._is_masked = 1
+            self._sample_per_set = len(ID_alloc) / Xf.shape[0]
+            print "self._sample_per_set: " + str(self._sample_per_set)
+            print "len(ID_alloc): " + str(len(ID_alloc))
+            if ID_alloc.ndim != 1:
+                raise ValueError('The dimensionality of selected features must be 1. Aborting.')
+                return
+            
+        if Xf.ndim < 3:
+            raise ValueError('Dimensionality under 3. The image vector must have at least 1 image-, 1 channel- and 1 position-dimension. Aborting.')
+            return
+        
+
+        # set size related parameters
+        self._image_size = 1
         self.n_dim = <SIZE_t> Xf.ndim
-        self._storage_size = 2 * self.n_dim
+        self._storage_size = 2 * 2 * (self.n_dim - 2) + 2 #n_box_variables * n_boxes * n_dimensions + 2*channel
         
+        # Get shape of image data
         cdef void* ptr = realloc(self._shape, self.n_dim * sizeof(np.int64))
         if ptr == NULL:
             raise ValueError("Can not grap shape of given numpy.ndarray. Return.")
         self._shape = <SIZE_t*> ptr
-        
         memcpy(self._shape, Xf.shape, self.n_dim * sizeof(SIZE_t))
+
+        # Get number not lesion samples for each case
+        if n_background_samples != None:
+            if n_background_samples.ndim == 1:
+                self._n_background_samples_total = sum(n_background_samples)
+                ptr = realloc(self._n_background_samples, self._shape[0] * sizeof(np.int64))
+                if ptr == NULL:
+                    raise ValueError("Can not grap n_background_samples of given numpy.ndarray. Return.")
+                self._n_background_samples = <SIZE_t*> ptr
+                memcpy(self._n_background_samples, (<np.ndarray> n_background_samples).data, len(n_background_samples) * sizeof(SIZE_t))
+            else:
+                raise ValueError('n_background_samples.ndim must be 1')
+        else:
+            self._n_background_samples_total = 0
+            self._n_background_samples = NULL
         
+        # ----  Compute image size and generate Summed Area Table  ---- #
+        cdef SIZE_t max_shape = self._shape[2]
+        for i in range(2,self.n_dim):
+            self._image_size = self._image_size * self._shape[i]
+            if self._shape[i] > max_shape:
+                max_shape = self._shape[i]
+
+        n_images = Xf.shape[0]
+        n_channels = Xf.shape[1]
         Xf = np.asarray([Xf,Xf])
-
-        #self._image[0,...] original input image
-        #self._image[1,...] summed area table
-        for i in range(self.n_dim):
-            image_size = image_size * self._shape[i]
-            Xf[1,...] = Xf[1,...].cumsum(i)
+        
+        for k in range(n_images):
+            for j in range(n_channels):
+                for i in range(self.n_dim-2):
+                    Xf[1,k,j,...] = Xf[1,k,j,...].cumsum(i)
         
 
-        Xf = np.asfortranarray(Xf.reshape([2 * image_size]), dtype=np.float64)
-        ptr = realloc(self._image_data, 2 * image_size * sizeof(np.float64))
+        # Set min/max box size
+        if self._min_box_size == 0:
+            self._min_box_size = max_shape / 10
+            if self._min_box_size == 0:
+                self._min_box_size = 1
+            print "min box size: " +str(self._min_box_size)
+        if self._max_box_size == 0:
+            self._max_box_size = max_shape / 5
+            if self._max_box_size == 0:
+                self._max_box_size = 1
+            print "max box size: " +str(self._max_box_size)
+        
+
+        # Store image in C array for fast computations
+        Xf = np.asfortranarray(Xf.reshape([2 * self._image_size * n_images * n_channels]), dtype=np.float64)
+        ptr = realloc(self._image_data, 2 * self._image_size * n_images * n_channels * sizeof(np.float64))
         if ptr == NULL:
-            raise ValueError("Can not grap values of given numpy.ndarray. Return.")
+            raise ValueError("Can not grap values of given numpy.ndarray for images. Return.")
         self._image_data = <DOUBLE_t*> ptr
-        memcpy(self._image_data, (<np.ndarray> Xf).data, image_size * 2 * sizeof(DOUBLE_t))
+        memcpy(self._image_data, (<np.ndarray> Xf).data, self._image_size * 2 * n_images * n_channels * sizeof(DOUBLE_t))
+        #self._image_data = (<np.ndarray> Xf).data
+        #memcpy may be replaced with a simple pointer copy to reduce memory usage if necessary.
+
+        # Store ID_alloc in C array
+        if self._is_masked == 1:
+            ptr = realloc(self._ID_alloc, len(ID_alloc) * sizeof(np.intp))
+            if ptr == NULL:
+                raise ValueError("Can not grap values of given numpy.ndarray for selected samples. Return.")
+            self._ID_alloc = <SIZE_t*> ptr
+            memcpy(self._ID_alloc, (<np.ndarray> ID_alloc).data, len(ID_alloc) * sizeof(SIZE_t))
+
+        # set seed
+        #srand(self._seed)
+
+        # init feature configs 
+        self._generate_feature_config_matrix()
         return
+    
     
     cdef void set_n_features(self, SIZE_t n_new_features) nogil:
         self.n_new_features = n_new_features
     
     
-    cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx, SIZE_t is_prediction ) nogil:
-        cdef double R0 = self._image_data[sample_idx]
-        cdef INT64_t* pos = <INT64_t*> malloc(sizeof(INT64_t) * self.n_dim)
-        cdef SIZE_t* length = <SIZE_t*> malloc(sizeof(SIZE_t) * self.n_dim)
+    cdef double calc_feature(self, FeatureConfig* feat_con, SIZE_t sample_idx, SIZE_t is_prediction) nogil:
+        cdef SIZE_t temp_ndim = self.n_dim - 2
+        cdef INT64_t* pos_R1 = <INT64_t*> malloc(sizeof(INT64_t) * temp_ndim)
+        cdef INT64_t* pos_R2 = <INT64_t*> malloc(sizeof(INT64_t) * temp_ndim)
+        cdef SIZE_t* length_R1 = <SIZE_t*> malloc(sizeof(SIZE_t) * temp_ndim)
+        cdef SIZE_t* length_R2 = <SIZE_t*> malloc(sizeof(SIZE_t) * temp_ndim)
         cdef SIZE_t i = 0
-        cdef SIZE_t image_size = 1
-        cdef SIZE_t idx = sample_idx
+        cdef SIZE_t idx = 0
+        cdef SIZE_t temp_idx = 0
         cdef INT64_t face = 0
-        
-        while i < self.n_dim:
-            image_size = image_size * self._shape[i]
-            i = i + 1
-        
+        cdef SIZE_t case_id
+        cdef SIZE_t sample_set_offset
+        cdef SIZE_t sample_set_offset_box
+        cdef SIZE_t sat_offset
         cdef double R1 = 0.0
-        face = image_size
-        if idx < image_size:
-            # get coordinates based location
-            i = self.n_dim - 1
-            while i > 0:
-                face = face / self._shape[self.n_dim-1-i]
-                pos[i] = idx / face
-                idx = idx % face
-                i = i - 1
-                if i == 0:
-                    pos[i] = idx
-            # add offsets
-            i = 0
-            while i < self.n_dim:
-                pos[i] = pos[i] + feat_con.integer[i]
-                length[i] = feat_con.integer[self.n_dim + i]
-                i = i + 1
-    
-            R1 = self.nd_box_from_sat(self.n_dim, pos, length, self._shape, &(self._image_data[image_size]))
-            
-            #R1 = self.summed_area_table_subbox(x + feat_con.offset_x1, y + feat_con.offset_y1, feat_con.length_x1, feat_con.length_y1)
-            #R2 = self.summed_area_table_subbox(x + feat_con.offset_x2, y + feat_con.offset_y2, feat_con.length_x2, feat_con.length_y2)
-            self._feature = (R0 + R1) / 2.0
-        else:
-            self._feature = 0
+        cdef double R2 = 0.0
+        cdef double R0 = 0.0
+        cdef FILE* cfile
+        cdef SIZE_t j = 0
+        cdef SIZE_t temp_sample_idx = 0
         
-        free(pos)
-        free(length)
+        # get coordinates based location       
+        if is_prediction == 0 and self._n_background_samples != NULL:
+            case_id = -1
+            temp_sample_idx = sample_idx
+            
+            if sample_idx >= self._n_background_samples_total:
+                while temp_sample_idx >= self._n_background_samples_total:
+                    case_id = case_id + 1
+                    temp_sample_idx = temp_sample_idx - (self._sample_per_set - self._n_background_samples[case_id])
+                    
+            else:
+                while temp_sample_idx >= 0:
+                    case_id = case_id + 1
+                    temp_sample_idx = temp_sample_idx - self._n_background_samples[case_id]
+        elif is_prediction == 1:
+            case_id = sample_idx / (self._sample_per_set + 1)
+        else:
+            #with gil: print "ERROR IN CASE SELECTION!"
+            return 0
+        
+        sample_set_offset = (case_id * self._shape[1]) + feat_con.integer[0]
+        sample_set_offset_box = (case_id * self._shape[1]) + feat_con.integer[1]
+        sat_offset = self._shape[0] * self._shape[1]
+        face = self._image_size
+        if self._is_masked == 0:
+            idx = sample_idx % self._image_size
+        else:
+            idx = self._ID_alloc[sample_idx]
+
+        # get coordinates based location
+        i = temp_ndim - 1
+        temp_idx = idx
+        
+        while i > 0:
+            face = face / self._shape[self.n_dim-1-i]
+            pos_R1[i] = temp_idx / face
+            pos_R2[i] = pos_R1[i]
+            temp_idx = temp_idx % face
+            i = i - 1
+            if i == 0:
+                pos_R1[i] = temp_idx
+                pos_R2[i] = pos_R1[i]
+        i = self.n_dim - 1
+
+        # add offsets
+        i = 0
+        while i < temp_ndim:
+            pos_R1[i] = pos_R1[i] + feat_con.integer[i + 2]
+            pos_R2[i] = pos_R2[i] + feat_con.integer[i + 2 * temp_ndim + 2]
+            length_R1[i] = feat_con.integer[i + temp_ndim + 2]
+            length_R2[i] = feat_con.integer[i + 3 * temp_ndim + 2]
+            i = i + 1
+#         if is_prediction == 1:
+#             cfile = fopen("error.txt","a")
+#             fprintf(cfile,"[")
+#             while j < temp_ndim:
+#                 fprintf(cfile,"%d ",pos_R1[j])
+#                 j=j+1
+#             fprintf(cfile,"],")
+#             fclose(cfile)
+        # calculate region values
+        R0 = self._image_data[idx + (sample_set_offset * self._image_size)]
+        R1 = self.nd_box_from_sat(temp_ndim, pos_R1, length_R1, &(self._shape[2]), &(self._image_data[self._image_size * (sample_set_offset_box + sat_offset)]))
+        R2 = self.nd_box_from_sat(temp_ndim, pos_R2, length_R2, &(self._shape[2]), &(self._image_data[self._image_size * (sample_set_offset_box + sat_offset)]))        
+        
+        # calculate feture value
+        self._feature = R0 - ((R1 + R2) / 2.0)
+        #self._feature = R1
+        # free allocated memory space
+        free(pos_R1)
+        free(length_R1)
+        free(pos_R2)
+        free(length_R2)
+        
         return self._feature
         
         
-    cdef DOUBLE_t nd_box_from_sat(self, SIZE_t ndim, INT64_t* pos, SIZE_t* length, SIZE_t* shape, DOUBLE_t* sat) nogil:
+    cdef double nd_box_from_sat(self, SIZE_t ndim, INT64_t* pos, SIZE_t* length, SIZE_t* shape, DOUBLE_t* sat) nogil:
         """ claculate the integral of a subregion of the inputimage using a summed area table.
            
            Inputs neccessary:
            SIZE_t ndim            Number of dimensions.
            INT64_t* pos:          Pointer to an array with the startposition of the subarea.
            SIZE_t* length:        Pointer to an array with the length of the subarea in every dimension.
-           SIZE_t shape:          Pointer to shape of data structure in *sat with length ndim.
+           SIZE_t* shape:         Pointer to shape of data structure in *sat with length ndim.
            DOUBLE_t* sat:         Pointer to the summed area table.
            
            Functionallity in an 2D example:
@@ -4847,9 +5411,8 @@ cdef class OnDemandTestClass5(OnDemandFeature):
         cdef INT64_t* edges = <INT64_t*> malloc(ndim * 2 * sizeof(INT64_t))
         cdef INT64_t* local_length = <INT64_t*> malloc(ndim * sizeof(INT64_t))
         memcpy(local_length, length, ndim*sizeof(INT64_t))
-        cdef SIZE_t image_size = 1
         cdef SIZE_t n_edges = 2 ** ndim
-        cdef DOUBLE_t sum = 0
+        cdef double sat_sum = 0
         cdef SIZE_t n_ones = 0
         #cdef SIZE_t* counter = &ones
         cdef INT64_t idx = 0
@@ -4858,23 +5421,21 @@ cdef class OnDemandTestClass5(OnDemandFeature):
         cdef SIZE_t structure = 1
         cdef SIZE_t i = 0
         cdef SIZE_t j = 0
-       
+        
         while i < ndim:
-            image_size = image_size * shape[i]
             edges[i] = pos[i]
             edges[i+ndim] =  pos[i] - length[i]
             i = i + 1
-      
         # get value of subregion
         i = 0
         while i < n_edges:
             # reset parameters
             n_ones = 0
-            j = 0
             idx = 0
             structure = 1
 
             # reset coordinates
+            j = 0
             while j < ndim: 
                 coordinates[j] = 0
                 binary_code[j] = 0
@@ -4889,6 +5450,7 @@ cdef class OnDemandTestClass5(OnDemandFeature):
                 n_ones = n_ones + binary_code[j] # count the amount of 1 in binary coordinates
                 coordinates[j] = edges[j + ndim * binary_code[j]] # coordinates as a place to save the edge coordinates
                 j = j + 1
+                
             # errorhandling
             j = 0
             while j < ndim:
@@ -4898,14 +5460,15 @@ cdef class OnDemandTestClass5(OnDemandFeature):
                     if binary_code[j] == 1:
                         coordinates[j] = shape[ndim-1-j] - 2
                 if coordinates[j] < 0:
-                    coordinates[j] = -1
+                    coordinates[j] = - 1
                 j = j + 1
+                
             j = 0
             while j < ndim:
                 # if coordinate is not in image borders
                 if coordinates[j] == -1:
                     idx = -1
-                    break
+                    j=ndim
                 else:
                     idx = idx + (coordinates[j] * structure)
                     structure = structure * shape[ndim-1-j]
@@ -4915,8 +5478,8 @@ cdef class OnDemandTestClass5(OnDemandFeature):
             if idx < 0: 
                 pass
             else:
-                # calculate sum
-                sum = sum + ((-1)**n_ones) * sat[idx]
+                # calculate sat_sum
+                sat_sum = sat_sum + (((-1)**n_ones) * sat[idx])
             i = i + 1
        
         # calculate area size
@@ -4934,14 +5497,15 @@ cdef class OnDemandTestClass5(OnDemandFeature):
             elif edges[i] >= shape[ndim-1-i]:
                 local_length[i] = shape[ndim-1-i] - edges[i+ndim] - 1
             #calculate area size
-            area_size = area_size * <double>local_length[i]
+            area_size = area_size * <DOUBLE_t>local_length[i]
             i = i + 1
+
         free(edges)
         free(coordinates)
         free(local_length)
         free(binary_code)
-        # devide sum by area size to calculate the mean value of the sub box
-        return <double> (sum / area_size)
+        # devide sat_sum by area size to calculate the mean value of the sub box
+        return  sat_sum / area_size
         
     cdef INT64_t ConvertToBinary(self, SIZE_t n, SIZE_t dim, SIZE_t* coordinates) nogil:
         dim = dim - 1
@@ -4949,12 +5513,12 @@ cdef class OnDemandTestClass5(OnDemandFeature):
             self.ConvertToBinary(n / 2, dim, coordinates)
         coordinates[dim] = n % 2
         return 0
-        
-
      
     cdef SIZE_t get_n_features(self) nogil:
         return self.n_new_features
-
+    
+    cpdef SIZE_t get_n_features_gil(self):
+        return self.n_new_features
 
     cdef double compute_sample(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
         if feat_con == NULL:
@@ -4968,20 +5532,48 @@ cdef class OnDemandTestClass5(OnDemandFeature):
     
     cdef SIZE_t init_split(self, FeatureConfig* feat_con = NULL) nogil:
         cdef SIZE_t i = 0
+        cdef SIZE_t img_ndim = self.n_dim - 2
         if feat_con == NULL:
             return -1
         else:
             self.new_split = 1
-            while i < self.n_dim:
-                feat_con.integer[i]  = (rand() % self._shape[self.n_dim -1 -i]) - self._shape[self.n_dim -1 -i] / 2 #x offset
-                feat_con.integer[self.n_dim +i]  = (rand() % (self._max_box_size - self._min_box_size)) + self._min_box_size #x
+            
+#             feat_con.integer[0] = 0
+#                 
+#             feat_con.integer[1] = 1
+#             feat_con.integer[2] = 1
+#             feat_con.integer[3] = 1
+#                   
+#             feat_con.integer[4] = 3
+#             feat_con.integer[5] = 3
+#             feat_con.integer[6] = 3
+#                   
+#             feat_con.integer[7] = 1
+#             feat_con.integer[8] = 1
+#             feat_con.integer[9] = 1
+#                   
+#             feat_con.integer[10] = 3
+#             feat_con.integer[11] = 3
+#             feat_con.integer[12] = 3
+            
+            feat_con.integer[0] = rand() % (self._shape[1])
+            feat_con.integer[1] = rand() % (self._shape[1]) 
+            while i < img_ndim:
+                #offsets
+                feat_con.integer[i + 2] = (rand() % ((self._shape[self.n_dim -1 -i] / self._max_offset_as_part_of_shape) * 2)) - self._shape[self.n_dim -1 -i] / self._max_offset_as_part_of_shape #x offset_R1
+                feat_con.integer[i + 2 * img_ndim + 2] = (rand() % ((self._shape[self.n_dim -1 -i] / self._max_offset_as_part_of_shape) * 2)) - self._shape[self.n_dim -1 -i] / self._max_offset_as_part_of_shape #x offset_R2
+                #boxes
+                if self._max_box_size == self._min_box_size:
+                    feat_con.integer[i + img_ndim + 2] = self._max_box_size #box_R1
+                    feat_con.integer[i + 3 * img_ndim + 2] = self._max_box_size #box_R2
+                else:
+                    feat_con.integer[i + img_ndim + 2] = (rand() % (self._max_box_size - self._min_box_size + 1)) + self._min_box_size #box_R1
+                    feat_con.integer[i + 3 * img_ndim + 2] = (rand() % (self._max_box_size - self._min_box_size + 1)) + self._min_box_size #box_R2
                 i = i + 1
             return 0
 
  
     cdef SIZE_t init_tree(self, FeatureConfig* feat_con = NULL) nogil:        
-        for i in range(self._storage_size):
-            feat_con.integer[i] = 0
         self.new_tree = 1
         return 0
 
@@ -4990,29 +5582,18 @@ cdef class OnDemandTestClass5(OnDemandFeature):
         return self._counter
     
    
-    cdef np.ndarray _get_image_ndarray(self): #sure?
+    cdef np.ndarray _get_image_ndarray(self):
         """Wraps feature image as a NumPy struct array
  
         """
-        cdef INT32_t x_size = 0;
-        cdef INT32_t y_size = 0;
         cdef SIZE_t* _shape = self._shape
-        y_size = _shape[0]
-        x_size = _shape[1]
-        cdef SIZE_t size = y_size * x_size * 2
+        cdef SIZE_t size = self._image_size * self._shape[0] * self._shape[1] * 2
         cdef np.npy_intp shape[1]
         shape[0] = <np.npy_intp> size
-        #cdef np.npy_intp strides[1]
-        #strides[0] = sizeof(double)
         cdef np.ndarray arr
-#         Py_INCREF(np.float64)
-#         arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> np.NPY_DOUBLE, 1, shape,
-#                                    strides, <void*> self._image_data,
-#                                    np.NPY_DEFAULT, None)
         arr = np.PyArray_SimpleNewFromData(1, shape, np.NPY_DOUBLE, self._image_data)
         Py_INCREF(self)
         arr.base = <PyObject*> self
-         
         return arr
      
     cdef np.ndarray _get_shape_ndarray(self): #sure?
@@ -5021,80 +5602,114 @@ cdef class OnDemandTestClass5(OnDemandFeature):
         """
         cdef np.npy_intp shape[1]
         shape[0] = <np.npy_intp> self.n_dim
-        #cdef np.npy_intp strides[1]
-        #strides[0] = sizeof(INT32_t)
         cdef np.ndarray arr
-#         Py_INCREF(np.NPY_INTP)
-#         arr = PyArray_NewFromDescr(np.ndarray, <np.dtype> np.int32, 1, shape,
-#                                    strides, <void*> self._shape,
-#                                    np.NPY_DEFAULT, None)
         arr = np.PyArray_SimpleNewFromData(1, shape, np.NPY_INTP, self._shape)
         Py_INCREF(self)
         arr.base = <PyObject*> self
-         
         return arr
 
+    cdef np.ndarray _get_feature_config_ndarray(self):
+        """Wraps feature configurations as a NumPy struct array
+
+        The array keeps a reference to this Tree, which manages the underlying
+        memory. Individual fields are publicly accessible as properties of the
+        Tree.
+        """
+
+        cdef SIZE_t feature_config_size = self.feature_configs[0].size
+        cdef np.ndarray integer
+        cdef np.npy_intp shape[1]
+        shape[0] = <np.npy_intp> feature_config_size
+        list = np.zeros([self.capacity,feature_config_size],dtype=np.int64)
+        for i in range(self.n_new_features):
+            list[i] = np.PyArray_SimpleNewFromData(1, shape, np.NPY_INT64, self.feature_configs[i].integer)
+        integer = np.array(((feature_config_size), list), dtype=FEATURE_CONFIG_TYPE)
+        return integer
 
 
-#     cdef double summed_area_table_subbox(self, INT32_t x, INT32_t y, INT32_t length_x, INT32_t length_y) nogil:
-#         """
-#         summed sub area is calculated from a summed area table with D-B-C+A, when # area is wanted:
-#         """
-#         #     _____________     |
-#         #     |   |   |   |  ----------> x
-#         #     | A |   | B |     |     |
-#         #     |   |###|###|     |_____|
-#         #     | C |###|#D#|     V 
-#         #     -------------     y
-#         
-#         
-#         cdef INT32_t x_size = 0;
-#         cdef INT32_t y_size = 0;
-#         cdef SIZE_t* _shape = self._shape
-#         y_size = _shape[0]
-#         x_size = _shape[1]
+#     cdef double full_image(self, FeatureConfig* feat_con = NULL, SIZE_t sample_idx = -1, SIZE_t is_prediction = 0) nogil:
+#         cdef SIZE_t temp_ndim = self.n_dim - 2
+#         cdef INT64_t* pos_R1 = <INT64_t*> malloc(sizeof(INT64_t) * temp_ndim)
+#         cdef INT64_t* pos_R2 = <INT64_t*> malloc(sizeof(INT64_t) * temp_ndim)
+#         cdef SIZE_t* length_R1 = <SIZE_t*> malloc(sizeof(SIZE_t) * temp_ndim)
+#         cdef SIZE_t* length_R2 = <SIZE_t*> malloc(sizeof(SIZE_t) * temp_ndim)
+#         cdef SIZE_t i = 0
+#         cdef SIZE_t idx = 0
+#         cdef SIZE_t temp_idx = 0
+#         cdef INT64_t face = 0
+#         cdef SIZE_t case_id
+#         #cdef SIZE_t image_id
+#         cdef SIZE_t sample_set_offset
+#         cdef double R1 = 0.0
+#         cdef double R2 = 0.0
+#         cdef double R0 = 0.0
 # 
-#         cdef INT32_t size = y_size * x_size
-#         cdef double box_size = <double> (length_x * length_y)
-#         cdef INT32_t A = 0
-#         cdef INT32_t B = 0
-#         cdef INT32_t C = 0
-#         cdef INT32_t D = 0
-#         
-#         if x < 0 or y < 0:
-#             return <double> 0
-#         if x >= x_size:
-#             length_x = length_x - (x - x_size)
-#             if length_x <= 0:
-#                 length_x = 1
-#             x = x_size - 1
-#         if y >= y_size:
-#             length_y = length_y - (y - y_size)
-#             if length_y <= 0:
-#                 length_y = 1
-#             y = y_size - 1
-#                     
-#         D = y * x_size + x
-#         if (x-length_x < 0 and y-length_y < 0):
-#             A = 0
-#             B = x
-#             C = y * x_size
-#         elif x - length_x < 0:
-#             A = (y - length_y) * x_size
-#             B = D - length_y * x_size
-#             C = y * x_size
-#         elif y - length_y < 0:
-#             A = x - length_x
-#             B = x
-#             C = D - length_x
+#         self._is_masked = 0
+#         case_id = sample_idx / self._image_size
+#         #image_id = case_id / self._shape[1]
+#         sample_set_offset = (case_id * self._shape[1]) + feat_con.integer[0] + (self._shape[0] * self._shape[1])
+#         face = self._image_size
+#         if self._is_masked == 0:
+#             idx = sample_idx % self._image_size
 #         else:
-#             A = D - (x_size * length_y) - length_x
-#             B = D - (x_size * length_y)
-#             C = D - length_x
+#             idx = self._ID_alloc[sample_idx]
 # 
-#         A = A + size # access the summed area image
-#         B = B + size
-#         C = C + size
-#         D = D + size
-#         return <double> ((self._image_data[D] - self._image_data[B] - self._image_data[C] + self._image_data[A]) / box_size)
-         
+#         # get coordinates based location
+#         i = temp_ndim - 1
+#         temp_idx = idx
+# 
+# #         cdef FILE* cfile
+# #         cfile = fopen("error.txt","a")
+# #         fprintf(cfile,"%d,",temp_idx)
+# #         fclose(cfile)
+#         while i > 0:
+#             face = face / self._shape[self.n_dim-1-i]
+#             pos_R1[i] = temp_idx / face
+#             pos_R2[i] = pos_R1[i]
+#             temp_idx = temp_idx % face
+#             i = i - 1
+#             if i == 0:
+#                 pos_R1[i] = temp_idx
+#                 pos_R2[i] = pos_R1[i]
+#         i = self.n_dim - 1
+# 
+#         # add offsets
+#         i = 0
+#         while i < temp_ndim:
+#             pos_R1[i] = pos_R1[i] + feat_con.integer[i + 1]
+#             pos_R2[i] = pos_R2[i] + feat_con.integer[i + 2 * temp_ndim + 1]
+#             length_R1[i] = feat_con.integer[i + temp_ndim + 1]
+#             length_R2[i] = feat_con.integer[i + 3 * temp_ndim + 1]
+#             i = i + 1
+# #         
+# #         cdef FILE* cfile
+# #         cdef SIZE_t j = 0
+# #         cfile = fopen("error_fullImage.txt","a")
+# #         fprintf(cfile,"[")
+# #         while j < temp_ndim:
+# #             fprintf(cfile,"%d,",pos_R1[j])
+# #             j=j+1
+# #         fprintf(cfile,"],")
+# #         fclose(cfile)
+# 
+#         # calculate region values
+#         R0 = self._image_data[idx + (case_id * self._image_size)]
+#         R1 = self.nd_box_from_sat(temp_ndim, pos_R1, length_R1, &(self._shape[2]), &(self._image_data[self._image_size * sample_set_offset]))
+#         R2 = self.nd_box_from_sat(temp_ndim, pos_R2, length_R2, &(self._shape[2]), &(self._image_data[self._image_size * sample_set_offset]))        
+#         
+#         # calculate feture value
+#         self._feature = R0 - ((R1 + R2) / 2.0)
+#         self._feature = R1
+#         # free allocated memory space
+#         free(pos_R1)
+#         free(length_R1)
+#         free(pos_R2)
+#         free(length_R2)
+#         self._is_masked = 1
+#         return self._feature
+    
+# How To Do Stuff:
+#     cdef FILE* cfile
+#     cfile = fopen("example.txt","a")
+#     fprintf(cfile,"Hello No.%d",int)
+#     fclose(cfile)
